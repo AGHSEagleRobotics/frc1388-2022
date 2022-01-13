@@ -17,6 +17,11 @@ jobs:
 
     # This grabs the WPILib docker container
     container: wpilib/roborio-cross-ubuntu:2022-18.04
+    
+    # Sets default working directory to the robot code folder
+    defaults:
+      run:
+        working-directory: ./frc1388-2022
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
