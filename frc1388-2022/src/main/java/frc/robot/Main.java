@@ -20,6 +20,9 @@ public final class Main {
    * <p>If you change your main robot class, change the parameter type.
    */
   public static void main(String... args) {
+    if(RobotBase.isSimulation()) {
+      System.setProperty("robot.logs.root", "logs");
+    }
     RobotBase.startRobot(Robot::new);
   }
 }
