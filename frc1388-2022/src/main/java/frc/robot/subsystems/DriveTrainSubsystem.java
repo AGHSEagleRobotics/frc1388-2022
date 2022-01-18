@@ -16,6 +16,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
   //define class fields
   private final DifferentialDrive m_differentialDrive;
 
+  private boolean m_isReverse = false;
+
   /** Creates a new DriveTrainSubsystem. */
   public DriveTrainSubsystem(WPI_TalonFX leftFront, WPI_TalonFX leftBack, WPI_TalonFX rightFront, WPI_TalonFX rightBack) {
 
@@ -44,18 +46,32 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
 
   public void arcadeDrive (double xSpeed, double zRotation) {
-    m_differentialDrive.arcadeDrive(xSpeed, zRotation);
+    if (!m_isReverse) {
+      m_differentialDrive.arcadeDrive(xSpeed, zRotation);
+    } else {
+      m_differentialDrive.arcadeDrive(-xSpeed, zRotation);
+    }
   }
 
   public void curvatureDrive (double xSpeed, double zRotation, boolean isQuickTurn) {
-    m_differentialDrive.curvatureDrive(xSpeed, zRotation, isQuickTurn);
+    if (!m_isReverse) {
+      m_differentialDrive.curvatureDrive(xSpeed, zRotation, isQuickTurn);
+    } else {
+      m_differentialDrive.curvatureDrive(-xSpeed, zRotation, isQuickTurn);
+    }
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed){
-    m_differentialDrive.tankDrive(leftSpeed, rightSpeed);
+    if (!m_isReverse) {
+      m_differentialDrive.tankDrive(leftSpeed, rightSpeed);
+    } else {
+      m_differentialDrive.tankDrive(-rightSpeed, -leftSpeed);
+    }
   }
 
-
+  public void toggleReverse() {
+    m_isReverse = !m_isReverse;
+  }
 
   @Override
   public void periodic() {
