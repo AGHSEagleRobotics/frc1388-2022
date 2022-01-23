@@ -24,4 +24,10 @@ public final class Constants {
         public static final int CANID_RIGHT_BACK    = -1;
 
     }
+
+    public final class USBConstants{
+        public static final int DRIVE_CONTROLLER = 0;
+        public static final int OP_CONTROLLER = 1;
+        
+    }
 }
