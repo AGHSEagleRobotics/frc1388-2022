@@ -13,7 +13,7 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public final class DriveTrainConstants{
+    public final class DriveTrainConstants {
         public static final double EXPIRATION = 0.1;
         public static final double MAX_OUTPUT = 1.0;
         public static final double DEADBAND = 0.2;
@@ -23,5 +23,12 @@ public final class Constants {
         public static final int CANID_RIGHT_FRONT   = -1;
         public static final int CANID_RIGHT_BACK    = -1;
 
+    }
+
+    public final class ShooterConstants {
+        public static final double GAINS_VELOCITY_F = 0;
+        public static final double GAINS_VELOCITY_P = 0;
+        public static final double GAINS_VELOCITY_I = 0;
+        public static final double GAINS_VELOCITY_D = 0;
     }
 }
