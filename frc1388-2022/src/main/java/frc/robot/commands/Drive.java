@@ -41,8 +41,10 @@ public class Drive extends CommandBase {
   @Override
   public void execute() {
 
-    m_driveTrainSubsystem.curvatureDrive(m_driveLeftStickYAxis.get(), m_driveRightStickXAxis.get(), true);
-
+    //One of three drives to choose from
+    m_driveTrainSubsystem.curvatureDrive(-m_driveLeftStickYAxis.get(), m_driveRightStickXAxis.get(), true);
+    // m_driveTrainSubsystem.arcadeDrive(-m_driveLeftStickYAxis.get(), m_driveRightStickXAxis.get());
+    // m_driveTrainSubsystem.tankDrive(-m_driveLeftStickYAxis.get(), -m_driveRightStickYAxis.get());
 
   }
 

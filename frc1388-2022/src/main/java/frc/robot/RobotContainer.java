@@ -15,6 +15,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -63,7 +64,13 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+
+    //Reverse
+
+    new JoystickButton(m_driveController, XboxController.Button.kBack.value)
+      .whenPressed(() -> m_driveTrainSubsystem.toggleReverse());
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
