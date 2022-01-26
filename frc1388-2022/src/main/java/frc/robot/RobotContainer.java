@@ -8,11 +8,16 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Constants.ControlerConstants;
 import frc.robot.Constants.DriveTrainConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.SetShooterTargetRPM;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,6 +26,9 @@ import edu.wpi.first.wpilibj2.command.Command;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+  public static XboxController driverControler = new XboxController(ControlerConstants.USB_DRIVER_CONTROLER);
+
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
@@ -29,6 +37,10 @@ public class RobotContainer {
     new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_BACK), 
     new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_FRONT), 
     new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_BACK)
+  );
+
+  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(
+    new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR)
   );
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -45,7 +57,19 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    new JoystickButton(driverControler, XboxController.Button.kX.value)
+      .whenPressed(new SetShooterTargetRPM(m_ShooterSubsystem, 1000.0));
+
+    new JoystickButton(driverControler, XboxController.Button.kY.value)
+      .whenPressed(new SetShooterTargetRPM(m_ShooterSubsystem, 0));
+
+    new JoystickButton(driverControler, XboxController.Button.kA.value)
+      .whenPressed(() -> m_ShooterSubsystem.setEnabled(true));
+
+    new JoystickButton(driverControler, XboxController.Button.kB.value)
+      .whenPressed(() -> m_ShooterSubsystem.setEnabled(false));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

@@ -27,8 +27,15 @@ public final class Constants {
 
     public final class ShooterConstants {
         public static final double GAINS_VELOCITY_F = 0;
-        public static final double GAINS_VELOCITY_P = 0;
+        public static final double GAINS_VELOCITY_P = 0.1; // using motor for testing
         public static final double GAINS_VELOCITY_I = 0;
         public static final double GAINS_VELOCITY_D = 0;
+
+        public static final int CANID_SHOOTER_MOTOR = 5;
+    }
+
+    public final class ControlerConstants {
+        public static final int USB_DRIVER_CONTROLER     = 0; // needs review
+        public static final int USB_OPPERATOR_CONTROLER  = 1; // needs review
     }
 }
