@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,6 +22,31 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
   /** Creates a new DriveTrainSubsystem. */
   public DriveTrainSubsystem(WPI_TalonFX leftFront, WPI_TalonFX leftBack, WPI_TalonFX rightFront, WPI_TalonFX rightBack) {
+
+    leftBack.follow(leftFront);
+    rightBack.follow(rightFront);
+
+    m_differentialDrive = new DifferentialDrive(leftFront, rightFront);
+
+    //set diferentialDrive parameters
+    m_differentialDrive.setSafetyEnabled(true);
+    m_differentialDrive.setExpiration(DriveTrainConstants.EXPIRATION);
+    m_differentialDrive.setMaxOutput(DriveTrainConstants.MAX_OUTPUT);
+    m_differentialDrive.setDeadband(DriveTrainConstants.DEADBAND); 
+
+    //set all moters to break
+    leftFront.setNeutralMode(NeutralMode.Brake);
+    leftBack.setNeutralMode(NeutralMode.Brake);
+    rightFront.setNeutralMode(NeutralMode.Brake);
+    rightBack.setNeutralMode(NeutralMode.Brake);
+    
+    //add to shuffle board
+    addChild("DifferentialDrive", m_differentialDrive);
+
+  }
+  
+  //constructor for working on Knightmare!!
+  public DriveTrainSubsystem(WPI_VictorSPX leftFront, WPI_TalonSRX leftBack, WPI_TalonSRX rightFront, WPI_VictorSPX rightBack) {
 
     leftBack.follow(leftFront);
     rightBack.follow(rightFront);

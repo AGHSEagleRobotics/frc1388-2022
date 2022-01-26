@@ -18,10 +18,18 @@ public final class Constants {
         public static final double MAX_OUTPUT = 1.0;
         public static final double DEADBAND = 0.2;
 
-        public static final int CANID_LEFT_FRONT    = -1;
-        public static final int CANID_LEFT_BACK     = -1;
-        public static final int CANID_RIGHT_FRONT   = -1;
-        public static final int CANID_RIGHT_BACK    = -1;
+        //THIS is for the 2022 ROBOT
+        // public static final int CANID_LEFT_FRONT    = -1;
+        // public static final int CANID_LEFT_BACK     = -1;
+        // public static final int CANID_RIGHT_FRONT   = -1;
+        // public static final int CANID_RIGHT_BACK    = -1;
+
+
+        //This is for KNIGHTMARE!
+        public static final int CANID_LEFT_FRONT    = 4;
+        public static final int CANID_LEFT_BACK     = 3;
+        public static final int CANID_RIGHT_FRONT   = 2;
+        public static final int CANID_RIGHT_BACK    = 1;
 
     }
 
