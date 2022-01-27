@@ -5,18 +5,14 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.DriveTrainConstants;
 import frc.robot.Constants.USBConstants;
 import frc.robot.commands.Drive;
-//import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
-//import frc.robot.subsystems.ExampleSubsystem;
-//import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -36,21 +32,20 @@ public class RobotContainer {
 
   private final DriveTrainSubsystem m_driveTrainSubsystem = new DriveTrainSubsystem(
   //THIS is for the 2022 ROBOT  
-  // new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_FRONT), 
-    // new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_BACK), 
-    // new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_FRONT), 
-    // new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_BACK)
+  new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_FRONT), 
+    new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_BACK), 
+    new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_FRONT), 
+    new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_BACK)
 
     //This is for KNIGHTMARE !
-    new WPI_VictorSPX(DriveTrainConstants.CANID_LEFT_FRONT), 
-    new WPI_TalonSRX(DriveTrainConstants.CANID_LEFT_BACK), 
-    new WPI_TalonSRX(DriveTrainConstants.CANID_RIGHT_FRONT), 
-    new WPI_VictorSPX(DriveTrainConstants.CANID_RIGHT_BACK)
+    // new WPI_VictorSPX(DriveTrainConstants.CANID_LEFT_FRONT), 
+    // new WPI_TalonSRX(DriveTrainConstants.CANID_LEFT_BACK), 
+    // new WPI_TalonSRX(DriveTrainConstants.CANID_RIGHT_FRONT), 
+    // new WPI_VictorSPX(DriveTrainConstants.CANID_RIGHT_BACK)
 
     
   );
 
-  //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -88,8 +83,7 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  // public Command getAutonomousCommand() {
-  //   // An ExampleCommand will run in autonomous
-  //   //return m_autoCommand;
-  // }
+  public Command getAutonomousCommand() {
+    return null;
+  }
 }

@@ -23,8 +23,9 @@ public class Drive extends CommandBase {
     //CompdashBoard compdashboard, 
     Supplier<Double> driveLeftStickYAxis, 
     Supplier<Double> driveRightStickYAxis,
-    Supplier<Double> driveRightStickXAxis)
-     {
+    Supplier<Double> driveRightStickXAxis
+  ) {
+    addRequirements(driveTrainSubsystem);
     // Use addRequirements() here to declare subsystem dependencies. 
 
     m_driveTrainSubsystem = driveTrainSubsystem;

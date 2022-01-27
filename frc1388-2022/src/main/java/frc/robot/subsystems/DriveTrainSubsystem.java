@@ -51,6 +51,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
     leftBack.follow(leftFront);
     rightBack.follow(rightFront);
 
+    //Needed to invert left side
+    leftFront.setInverted(true);
+    leftBack.setInverted(true);
+
     m_differentialDrive = new DifferentialDrive(leftFront, rightFront);
 
     //set diferentialDrive parameters
