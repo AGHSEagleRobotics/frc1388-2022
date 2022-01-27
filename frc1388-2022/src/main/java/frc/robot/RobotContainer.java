@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.DriveTrainConstants;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,6 +30,10 @@ public class RobotContainer {
     new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_BACK), 
     new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_FRONT), 
     new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_BACK)
+  );
+
+  private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
+
   );
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
