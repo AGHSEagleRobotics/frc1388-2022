@@ -18,6 +18,7 @@ public class ClimberCommand extends CommandBase {
   /** Creates a new ClimberCommand. */
   public ClimberCommand(
     ClimberSubsystem climberSubsystem,
+
     //CompdashBoard compdashboard, 
     Supplier<Double> extendAxis,
     Supplier<Double> articulateAxis
@@ -46,7 +47,13 @@ public class ClimberCommand extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+    // stops motors when command is interupted
+    m_climberSubsystem.setWinchPower(0);
+    m_climberSubsystem.setArticulatorPower(0);
+
+  }
 
   // Returns true when the command should end.
   @Override
