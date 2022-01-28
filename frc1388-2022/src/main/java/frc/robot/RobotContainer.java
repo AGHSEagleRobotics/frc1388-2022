@@ -5,13 +5,19 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Constants.ControlerConstants;
 import frc.robot.Constants.DriveTrainConstants;
 import frc.robot.Constants.USBConstants;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.SetShooterTargetRPM;
+import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -22,6 +28,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+  public static XboxController driverControler = new XboxController(ControlerConstants.USB_DRIVER_CONTROLER);
+
   // The robot's subsystems and commands are defined here...
 
   // components
@@ -45,6 +54,10 @@ public class RobotContainer {
     
   );
 
+  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(
+    new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR),
+    new WPI_VictorSPX(ShooterConstants.CANID_FEEDER_MOTOR)
+  );
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -75,6 +88,17 @@ public class RobotContainer {
 
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
       .whenPressed(() -> m_driveTrainSubsystem.toggleReverse());
+    new JoystickButton(driverControler, XboxController.Button.kX.value)
+      .whenPressed(new SetShooterTargetRPM(m_ShooterSubsystem, 1000.0));
+
+    new JoystickButton(driverControler, XboxController.Button.kY.value)
+      .whenPressed(new SetShooterTargetRPM(m_ShooterSubsystem, 0));
+
+    new JoystickButton(driverControler, XboxController.Button.kA.value)
+      .whenPressed(() -> m_ShooterSubsystem.setEnabled(true));
+
+    new JoystickButton(driverControler, XboxController.Button.kB.value)
+      .whenPressed(() -> m_ShooterSubsystem.setEnabled(false));
   }
 
   /**
