@@ -42,7 +42,6 @@ public class RobotContainer {
     // new WPI_TalonSRX(DriveTrainConstants.CANID_LEFT_BACK), 
     // new WPI_TalonSRX(DriveTrainConstants.CANID_RIGHT_FRONT), 
     // new WPI_VictorSPX(DriveTrainConstants.CANID_RIGHT_BACK)
-
     
   );
 

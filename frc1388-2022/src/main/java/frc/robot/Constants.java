@@ -44,5 +44,9 @@ public final class Constants {
         public static final double GAINS_VELOCITY_P = 0;
         public static final double GAINS_VELOCITY_I = 0;
         public static final double GAINS_VELOCITY_D = 0;
+
+        public static final double FORWARD_FEEDER_SPEED = 1.0;
+        public static final double REVERSE_FEEDER_SPEED = -1.0;
+        public static final double FEEDER_SPEED_OFF = 0.0;
     }
 }

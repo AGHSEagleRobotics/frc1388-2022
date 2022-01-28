@@ -28,13 +28,13 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     m_differentialDrive = new DifferentialDrive(leftFront, rightFront);
 
-    //set diferentialDrive parameters
+    //set differentialDrive parameters
     m_differentialDrive.setSafetyEnabled(true);
     m_differentialDrive.setExpiration(DriveTrainConstants.EXPIRATION);
     m_differentialDrive.setMaxOutput(DriveTrainConstants.MAX_OUTPUT);
     m_differentialDrive.setDeadband(DriveTrainConstants.DEADBAND); 
 
-    //set all moters to break
+    //set all motors to break
     leftFront.setNeutralMode(NeutralMode.Brake);
     leftBack.setNeutralMode(NeutralMode.Brake);
     rightFront.setNeutralMode(NeutralMode.Brake);
@@ -57,13 +57,13 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     m_differentialDrive = new DifferentialDrive(leftFront, rightFront);
 
-    //set diferentialDrive parameters
+    //set differentialDrive parameters
     m_differentialDrive.setSafetyEnabled(true);
     m_differentialDrive.setExpiration(DriveTrainConstants.EXPIRATION);
     m_differentialDrive.setMaxOutput(DriveTrainConstants.MAX_OUTPUT);
     m_differentialDrive.setDeadband(DriveTrainConstants.DEADBAND); 
 
-    //set all moters to break
+    //set all motors to break
     leftFront.setNeutralMode(NeutralMode.Brake);
     leftBack.setNeutralMode(NeutralMode.Brake);
     rightFront.setNeutralMode(NeutralMode.Brake);
