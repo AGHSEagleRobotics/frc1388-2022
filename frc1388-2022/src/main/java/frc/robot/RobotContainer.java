@@ -101,6 +101,7 @@ public class RobotContainer {
 
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
       .whenPressed(() -> m_driveTrainSubsystem.toggleReverse());
+
     new JoystickButton(m_driveController, XboxController.Button.kX.value)
       .whenPressed(new SetShooterTargetRPM(m_ShooterSubsystem, 1000.0));
 
@@ -112,6 +113,7 @@ public class RobotContainer {
 
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
       .whenPressed(() -> m_ShooterSubsystem.setEnabled(false));
+
   }
 
   /**

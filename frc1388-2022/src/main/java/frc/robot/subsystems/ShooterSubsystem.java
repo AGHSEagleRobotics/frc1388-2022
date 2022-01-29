@@ -51,11 +51,8 @@ public class ShooterSubsystem extends SubsystemBase {
     m_shooterMotor.config_kI(PID_IDX, ShooterConstants.GAINS_VELOCITY_I);
     m_shooterMotor.config_kD(PID_IDX, ShooterConstants.GAINS_VELOCITY_D);
 
-
     //Settings for feeder motor
     feederMotor.setNeutralMode(NeutralMode.Brake);
-
-
 
   }
 
