@@ -8,14 +8,21 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
 
+  private final WPI_VictorSPX m_feederMotor;
+  public enum FeederFunctions {
+    FORWARD, REVERSE, OFF
+  }
+
   private final WPI_TalonFX m_shooterMotor;
-  // current rpm
+
+  // current rpm for shooter
   private double m_rpm = 0;
   // is the motor enabled
   private boolean m_enabled = false;
@@ -28,9 +35,10 @@ public class ShooterSubsystem extends SubsystemBase {
   private final int COUNTS_PER_REV = 2048;
 
   /** Creates a new ShooterSubsystem. */
-  public ShooterSubsystem(WPI_TalonFX shooterMotor) {
+  public ShooterSubsystem(WPI_TalonFX shooterMotor, WPI_VictorSPX feederMotor)  {
     m_shooterMotor = shooterMotor;
-    
+    m_feederMotor = feederMotor;
+
     // Factory Default all hardware to prevent unexpected behaviour
     m_shooterMotor.configFactoryDefault();
     m_shooterMotor.setNeutralMode(NeutralMode.Coast);
@@ -42,6 +50,12 @@ public class ShooterSubsystem extends SubsystemBase {
     m_shooterMotor.config_kP(PID_IDX, ShooterConstants.GAINS_VELOCITY_P);
     m_shooterMotor.config_kI(PID_IDX, ShooterConstants.GAINS_VELOCITY_I);
     m_shooterMotor.config_kD(PID_IDX, ShooterConstants.GAINS_VELOCITY_D);
+
+
+    //Settings for feeder motor
+    feederMotor.setNeutralMode(NeutralMode.Brake);
+
+
 
   }
 
@@ -67,6 +81,32 @@ public class ShooterSubsystem extends SubsystemBase {
     return motorRPM;
   }
 
+  public void setFeederFunction (FeederFunctions function) {
+    switch (function) {
+      case FORWARD:
+        m_feederMotor.set(ShooterConstants.FORWARD_FEEDER_SPEED);
+        break;
+
+      case REVERSE:
+        m_feederMotor.set(ShooterConstants.REVERSE_FEEDER_SPEED);
+        break;
+
+      case OFF:
+        m_feederMotor.set(ShooterConstants.FEEDER_SPEED_OFF);
+        break;
+
+      default:
+        m_feederMotor.set(ShooterConstants.FEEDER_SPEED_OFF);
+        break;
+
+
+    }
+    
+
+  }
+
+
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -77,6 +117,8 @@ public class ShooterSubsystem extends SubsystemBase {
     } else {
       m_shooterMotor.set(0);
     }
+
+
 
   }
 }

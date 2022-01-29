@@ -10,14 +10,19 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ClimberConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.DriveTrainConstants;     // climber constats
 import frc.robot.Constants.USBConstants;            // USB
+import frc.robot.commands.Drive;
+import frc.robot.commands.SetShooterTargetRPM;
 import frc.robot.commands.ClimberCommand;           // climber command
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,13 +37,22 @@ public class RobotContainer {
   public static XboxController m_opController = new XboxController(USBConstants.OP_CONTROLLER);
 
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+
+  //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final DriveTrainSubsystem m_driveTrainSubsystem = new DriveTrainSubsystem(
-    new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_FRONT), 
+  //THIS is for the 2022 ROBOT  
+  new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_FRONT), 
     new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_BACK), 
     new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_FRONT), 
     new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_BACK)
+
+    //This is for KNIGHTMARE !
+    // new WPI_VictorSPX(DriveTrainConstants.CANID_LEFT_FRONT), 
+    // new WPI_TalonSRX(DriveTrainConstants.CANID_LEFT_BACK), 
+    // new WPI_TalonSRX(DriveTrainConstants.CANID_RIGHT_FRONT), 
+    // new WPI_VictorSPX(DriveTrainConstants.CANID_RIGHT_BACK)
+    
   );
 
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
@@ -46,7 +60,10 @@ public class RobotContainer {
     new WPI_TalonSRX(ClimberConstants.CANIN_ARTICULATOR)
   );
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(
+    new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR),
+    new WPI_VictorSPX(ShooterConstants.CANID_FEEDER_MOTOR)
+  );
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -60,6 +77,16 @@ public class RobotContainer {
         () -> m_opController.getRightY()
       )
     );
+    // set default commands
+    m_driveTrainSubsystem.setDefaultCommand(
+      new Drive(
+        m_driveTrainSubsystem,
+        () -> m_driveController.getLeftY(),
+        () -> m_driveController.getRightY(),
+        () -> m_driveController.getRightX()
+      ) 
+    );
+
   }
 
   /**
@@ -68,7 +95,24 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+
+    //Reverse
+
+    new JoystickButton(m_driveController, XboxController.Button.kBack.value)
+      .whenPressed(() -> m_driveTrainSubsystem.toggleReverse());
+    new JoystickButton(m_driveController, XboxController.Button.kX.value)
+      .whenPressed(new SetShooterTargetRPM(m_ShooterSubsystem, 1000.0));
+
+    new JoystickButton(m_driveController, XboxController.Button.kY.value)
+      .whenPressed(new SetShooterTargetRPM(m_ShooterSubsystem, 0));
+
+    new JoystickButton(m_driveController, XboxController.Button.kA.value)
+      .whenPressed(() -> m_ShooterSubsystem.setEnabled(true));
+
+    new JoystickButton(m_driveController, XboxController.Button.kB.value)
+      .whenPressed(() -> m_ShooterSubsystem.setEnabled(false));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -76,7 +120,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return null;
   }
 }

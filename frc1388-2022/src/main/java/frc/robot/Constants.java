@@ -24,18 +24,34 @@ public final class Constants {
         public static final double MAX_OUTPUT = 1.0;
         public static final double DEADBAND = 0.2;
 
+        //THIS is for the 2022 ROBOT
         public static final int CANID_LEFT_FRONT    = -1;
         public static final int CANID_LEFT_BACK     = -1;
         public static final int CANID_RIGHT_FRONT   = -1;
         public static final int CANID_RIGHT_BACK    = -1;
 
+
+        //This is for KNIGHTMARE!
+        // public static final int CANID_LEFT_FRONT    = 4;
+        // public static final int CANID_LEFT_BACK     = 3;
+        // public static final int CANID_RIGHT_FRONT   = 2;
+        // public static final int CANID_RIGHT_BACK    = 1;
+
     }
 
     public final class ShooterConstants {
+        public static final int CANID_SHOOTER_MOTOR = 5;
+        public static final int CANID_FEEDER_MOTOR = 6;
+
         public static final double GAINS_VELOCITY_F = 0;
-        public static final double GAINS_VELOCITY_P = 0;
+        public static final double GAINS_VELOCITY_P = 0.1; // using motor for testing
         public static final double GAINS_VELOCITY_I = 0;
         public static final double GAINS_VELOCITY_D = 0;
+
+        public static final double FORWARD_FEEDER_SPEED = 1.0;
+        public static final double REVERSE_FEEDER_SPEED = -1.0;
+        public static final double FEEDER_SPEED_OFF = 0.0;
+        
     }
 
     public final class ClimberConstants {
