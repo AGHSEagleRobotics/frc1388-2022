@@ -21,7 +21,7 @@ public class ShooterCommands extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_shooterSubsystem.startShooter();
+    m_shooterSubsystem.shooterEnabled(true);
 
     m_shooterSubsystem.shooterSpeedIsReady();
 

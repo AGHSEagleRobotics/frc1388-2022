@@ -14,6 +14,7 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.DriveTrainConstants;     // climber constats
 import frc.robot.Constants.USBConstants;            // USB
 import frc.robot.commands.Drive;
+
 import frc.robot.commands.ShooterCommands;
 import frc.robot.commands.ClimberCommand;           // climber command
 import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
@@ -56,9 +57,11 @@ public class RobotContainer {
   );
 
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
-    new WPI_TalonFX(ClimberConstants.CANIN_WINCH),
-    new WPI_TalonSRX(ClimberConstants.CANIN_ARTICULATOR)
+
+    new WPI_TalonFX(ClimberConstants.CANID_WINCH),
+    new WPI_TalonSRX(ClimberConstants.CANID_ARTICULATOR)
   );
+
 
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem(
     new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR),
