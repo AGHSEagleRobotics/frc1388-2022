@@ -54,9 +54,19 @@ public class ShooterSubsystem extends SubsystemBase {
     //Settings for feeder motor
     feederMotor.setNeutralMode(NeutralMode.Brake);
 
+  } // end ShooterSubsystem Contructor
+
+  public void startShooter() {
+    m_enabled = true;
   }
 
-  public void setEnabled (boolean enabled) {
+  public boolean shooterSpeedIsReady() {
+    //stub
+    return true;
+  
+  }
+
+  public void shooterEnabled (boolean enabled) {
     m_enabled = enabled;
   }
 
@@ -70,6 +80,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void setRelativeTargetRPM (double deltaRPM) {
     m_rpm = m_rpm + deltaRPM;
+  }
+
+  public void shooterRpmStepIncrease() {
+
+  }
+
+  public void shooterRpmStepDecrease() {
+
   }
 
   public double getRealRPM () {
@@ -95,6 +113,8 @@ public class ShooterSubsystem extends SubsystemBase {
       default:
         m_feederMotor.set(ShooterConstants.FEEDER_SPEED_OFF);
         break;
+
+      
 
 
     }

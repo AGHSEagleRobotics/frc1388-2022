@@ -14,7 +14,7 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.DriveTrainConstants;     // climber constats
 import frc.robot.Constants.USBConstants;            // USB
 import frc.robot.commands.Drive;
-import frc.robot.commands.SetShooterTargetRPM;
+import frc.robot.commands.ShooterCommands;
 import frc.robot.commands.ClimberCommand;           // climber command
 import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
@@ -60,15 +60,16 @@ public class RobotContainer {
     new WPI_TalonSRX(ClimberConstants.CANIN_ARTICULATOR)
   );
 
-  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(
+  private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem(
     new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR),
     new WPI_VictorSPX(ShooterConstants.CANID_FEEDER_MOTOR)
   );
 
+  private ShooterCommands m_shooterCommands;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
+   m_shooterCommands = new ShooterCommands(m_shooterSubsystem);
 
     m_climberSubsystem.setDefaultCommand(
       new ClimberCommand(
@@ -86,7 +87,8 @@ public class RobotContainer {
         () -> m_driveController.getRightX()
       ) 
     );
-
+  // Configure the button bindings
+    configureButtonBindings();
   }
 
   /**
@@ -103,16 +105,21 @@ public class RobotContainer {
       .whenPressed(() -> m_driveTrainSubsystem.toggleReverse());
 
     new JoystickButton(m_driveController, XboxController.Button.kX.value)
-      .whenPressed(new SetShooterTargetRPM(m_ShooterSubsystem, 1000.0));
+      .whenPressed(() -> m_shooterSubsystem.shooterRpmStepIncrease());
 
     new JoystickButton(m_driveController, XboxController.Button.kY.value)
-      .whenPressed(new SetShooterTargetRPM(m_ShooterSubsystem, 0));
+      .whenPressed(() -> m_shooterSubsystem.shooterRpmStepDecrease());
 
     new JoystickButton(m_driveController, XboxController.Button.kA.value)
-      .whenPressed(() -> m_ShooterSubsystem.setEnabled(true));
+      .whenPressed(() -> m_shooterSubsystem.shooterEnabled(true));
 
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
-      .whenPressed(() -> m_ShooterSubsystem.setEnabled(false));
+      .whenPressed(() -> m_shooterSubsystem.shooterEnabled(false));
+
+    new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
+      .whenHeld(m_shooterCommands);
+
+
 
   }
 
