@@ -40,23 +40,32 @@ public final class Constants {
     }
 
     public final class ShooterConstants {
-        public static final int CANID_SHOOTER_MOTOR = 5;
-        public static final int CANID_FEEDER_MOTOR = 6;
+        public static final int CANID_SHOOTER_MOTOR = 6;
+        public static final int CANID_FEEDER_MOTOR  = 7;
 
         public static final double GAINS_VELOCITY_F = 0;
         public static final double GAINS_VELOCITY_P = 0.1; // using motor for testing
         public static final double GAINS_VELOCITY_I = 0;
         public static final double GAINS_VELOCITY_D = 0;
 
+        public static final double RPM_RANGE = 30;              // EX. 30 = +/-30 rpm
+        public static final double RPM_TEST_ITERATIONS = 20;    // the amount of times rpm needs to be between +/- RPM_RANGE for shooterSpeedIsReady() to return true
+
+        public static final double SHOOTER_COOLDOWN_TIME = 0.5; // time in seconds to wait before shooter is turned off
+        
+        public static final double SHOOTER_RPM_STEP_CHANGE = 50;
+        public static final double MAX_SHOOTER_RPM = 6000;
+        public static final double MIN_SHOOTER_RPM = 0;
+
         public static final double FORWARD_FEEDER_SPEED = 1.0;
         public static final double REVERSE_FEEDER_SPEED = -1.0;
         public static final double FEEDER_SPEED_OFF = 0.0;
-        
+
     }
 
     public final class ClimberConstants {
-        public static final int CANIN_WINCH       = 6;
-        public static final int CANIN_ARTICULATOR = 7;
+        public static final int CANID_WINCH       = 6;
+        public static final int CANID_ARTICULATOR = 7;
 
     }
  

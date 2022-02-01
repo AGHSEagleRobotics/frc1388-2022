@@ -56,8 +56,8 @@ public class RobotContainer {
   );
 
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
-    new WPI_TalonFX(ClimberConstants.CANIN_WINCH),
-    new WPI_TalonSRX(ClimberConstants.CANIN_ARTICULATOR)
+    new WPI_TalonFX(ClimberConstants.CANID_WINCH),
+    new WPI_TalonSRX(ClimberConstants.CANID_ARTICULATOR)
   );
 
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(
@@ -109,10 +109,10 @@ public class RobotContainer {
       .whenPressed(new SetShooterTargetRPM(m_ShooterSubsystem, 0));
 
     new JoystickButton(m_driveController, XboxController.Button.kA.value)
-      .whenPressed(() -> m_ShooterSubsystem.setEnabled(true));
+      .whenPressed(() -> m_ShooterSubsystem.shooterEnabled(true));
 
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
-      .whenPressed(() -> m_ShooterSubsystem.setEnabled(false));
+      .whenPressed(() -> m_ShooterSubsystem.shooterEnabled(false));
 
   }
 
