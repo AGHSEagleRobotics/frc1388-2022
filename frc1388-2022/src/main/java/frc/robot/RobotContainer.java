@@ -15,11 +15,11 @@ import frc.robot.Constants.DriveTrainConstants;     // climber constats
 import frc.robot.Constants.USBConstants;            // USB
 import frc.robot.commands.Drive;
 
-import frc.robot.commands.ShooterCommands;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.ClimberCommand;           // climber command
 import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ShooterFeederSubsystem;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -63,16 +63,16 @@ public class RobotContainer {
   );
 
 
-  private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem(
+  private final ShooterFeederSubsystem m_shooterSubsystem = new ShooterFeederSubsystem(
     new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR),
     new WPI_VictorSPX(ShooterConstants.CANID_FEEDER_MOTOR)
   );
 
-  private ShooterCommands m_shooterCommands;
+  private Shoot m_shooterCommands;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-   m_shooterCommands = new ShooterCommands(m_shooterSubsystem);
+   m_shooterCommands = new Shoot(m_shooterSubsystem);
 
     m_climberSubsystem.setDefaultCommand(
       new ClimberCommand(

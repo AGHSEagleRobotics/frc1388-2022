@@ -5,13 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.ShooterSubsystem.FeederFunctions;
+import frc.robot.subsystems.ShooterFeederSubsystem;
+import frc.robot.subsystems.ShooterFeederSubsystem.FeederFunctions;
 
-public class ShooterCommands extends CommandBase {
-  private final ShooterSubsystem m_shooterSubsystem;
+public class Shoot extends CommandBase {
+  private final ShooterFeederSubsystem m_shooterSubsystem;
   /** Creates a new ShooterCommands. */
-  public ShooterCommands(ShooterSubsystem shooterSubsystem) {
+  public Shoot(ShooterFeederSubsystem shooterSubsystem) {
     m_shooterSubsystem = shooterSubsystem;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -23,8 +23,6 @@ public class ShooterCommands extends CommandBase {
   public void initialize() {
     m_shooterSubsystem.shooterEnabled(true);
 
-    m_shooterSubsystem.shooterSpeedIsReady();
-
   }
 
   // For shooterSpeedIsReady, we need to start feeder when shooter speed is stable for around 1/5 of a second:
@@ -35,6 +33,8 @@ public class ShooterCommands extends CommandBase {
     // check with subystem to see if shooter ready
     if (m_shooterSubsystem.shooterSpeedIsReady()) {
       //run feeder motor
+      m_shooterSubsystem.setFeederFunction(FeederFunctions.FORWARD);
+    } else {
       m_shooterSubsystem.setFeederFunction(FeederFunctions.FORWARD);
     }
   }

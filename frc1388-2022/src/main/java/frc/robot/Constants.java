@@ -49,7 +49,7 @@ public final class Constants {
         public static final double GAINS_VELOCITY_D = 0;
 
         public static final double RPM_RANGE = 30;              // EX. 30 = +/-30 rpm
-        public static final double RPM_TEST_ITERATIONS = 20;    // the amount of times rpm needs to be between +/- RPM_RANGE for shooterSpeedIsReady() to return true
+        public static final double ITERATIONS_AT_TARGET_RPM = 20;    // the amount of times rpm needs to be between +/- RPM_RANGE for shooterSpeedIsReady() to return true
 
         public static final double SHOOTER_COOLDOWN_TIME = 0.5; // time in seconds to wait before shooter is turned off
         
