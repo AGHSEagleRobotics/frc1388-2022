@@ -13,23 +13,27 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ClimberConstants;
+import frc.robot.Constants.FalconConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
 
   private final WPI_TalonFX m_winchMotor;
   private final WPI_TalonSRX m_articulatorMotor;
 
-  private double m_winchMotorPower = 0;
-  private double m_articulatorMotorPower = 0;
-
-  private static final double COUNTS_PER_REV = 2048.0;
+  // private static final double COUNTS_PER_REV = 2048.0;
     /** winch gearbox ratio */
   private static final double WINCH_GEAR_RATIO = 20.0;
     /** winch diamater in inches */ 
-  private static final double WINCH_DIAMATER = 2.0;    
+  private static final double WINCH_DIAMATER = 2.0; 
+    /** sensor position / WINCH_SENSOR_UNITS_PER_INCH = arm extention in inches */
+  private static final double WINCH_SENSOR_UNITS_PER_INCH = FalconConstants.COUNTS_PER_REV * WINCH_GEAR_RATIO / (WINCH_DIAMATER * Math.PI);
+    /** length of winch arm in inches */
+  private static final double WINCH_ARM_LENGTH = 24;
 
-
+  private static final int PID_IDX = 0;
   
+    
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem(WPI_TalonFX winchMotor, WPI_TalonSRX articulatorMotor) {
     m_winchMotor = winchMotor;
@@ -44,6 +48,15 @@ public class ClimberSubsystem extends SubsystemBase {
     m_winchMotor.setSensorPhase(false);
     m_winchMotor.setInverted(false);
     m_winchMotor.setSelectedSensorPosition(0);
+    m_winchMotor.configReverseSoftLimitThreshold(WINCH_SENSOR_UNITS_PER_INCH * WINCH_ARM_LENGTH);
+    m_winchMotor.configPeakOutputForward(ClimberConstants.CLIMBER_MAX_POWER_FORWARDS);
+    m_winchMotor.configPeakOutputReverse(ClimberConstants.CLIMBER_MAX_POWER_REVERSE);
+
+    m_winchMotor.config_kF(PID_IDX, ClimberConstants.GAINS_VELOCITY_F);
+    m_winchMotor.config_kP(PID_IDX, ClimberConstants.GAINS_VELOCITY_P);
+    m_winchMotor.config_kI(PID_IDX, ClimberConstants.GAINS_VELOCITY_I);
+    m_winchMotor.config_kD(PID_IDX, ClimberConstants.GAINS_VELOCITY_D);
+
 
     m_articulatorMotor.configFactoryDefault();
     m_articulatorMotor.setNeutralMode(NeutralMode.Brake);
@@ -52,21 +65,39 @@ public class ClimberSubsystem extends SubsystemBase {
     m_articulatorMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     m_articulatorMotor.setSensorPhase(false);
     m_articulatorMotor.setInverted(false);
-    m_articulatorMotor.setSelectedSensorPosition(0);   
+    m_articulatorMotor.setSelectedSensorPosition(0);
+    m_articulatorMotor.configPeakOutputForward(ClimberConstants.ARTICULATOR_MAX_POWER_FORWARDS);
+    m_articulatorMotor.configPeakOutputReverse(ClimberConstants.ARTICULATOR_MAX_POWER_REVERSE);
 
+    
   } 
 
+  /** set power
+   * @param power power from [-1, 1]
+  */
   public void setWinchPower (double power) {
-    m_winchMotorPower = power;
+    m_winchMotor.set(power);
+  }
+  
+    /** set speed
+     * @param speed speed in inches per second
+     */
+  public void setWinchSpeed (double speed) {
+    double velocity = speed * WINCH_SENSOR_UNITS_PER_INCH / FalconConstants.SENSOR_CYCLES_PER_SECOND;
+    m_winchMotor.set(ControlMode.Velocity, velocity);
   }
 
   /** returns inches */
   public double getWinchPossition() {
-    return m_winchMotor.getSelectedSensorPosition() / COUNTS_PER_REV / WINCH_GEAR_RATIO * WINCH_DIAMATER * Math.PI;
+    return m_winchMotor.getSelectedSensorPosition() / WINCH_SENSOR_UNITS_PER_INCH;
+  }
+
+  public boolean winchAtBottomLimit() {
+    return (m_winchMotor.isFwdLimitSwitchClosed() == 1); // todo test this
   }
 
   public void setArticulatorPower (double power) {
-    m_articulatorMotorPower = power;
+    m_articulatorMotor.set(power);
   }
 
   /** returns sensor units */
@@ -77,12 +108,11 @@ public class ClimberSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
-    m_winchMotor.set(m_winchMotorPower);
-    m_articulatorMotor.set(m_articulatorMotorPower);
-    
-    System.out.println(getWinchPossition());
+        
 
+    if (winchAtBottomLimit()) {
+      m_winchMotor.setSelectedSensorPosition(0);
+    }
 
   }
 }

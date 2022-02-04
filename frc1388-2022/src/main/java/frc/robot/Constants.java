@@ -55,8 +55,31 @@ public final class Constants {
     }
 
     public final class ClimberConstants {
-        public static final int CANIN_WINCH       = 6;
-        public static final int CANIN_ARTICULATOR = 7;
+        public static final int CANID_WINCH       = 8;
+        public static final int CANID_ARTICULATOR = 7;
+        
+        public static final double CLIMBER_MAX_POWER_FORWARDS      = 0.3;
+        public static final double CLIMBER_MAX_POWER_REVERSE       = -0.3;
+        public static final double ARTICULATOR_MAX_POWER_FORWARDS  = 0.2;
+        public static final double ARTICULATOR_MAX_POWER_REVERSE   = -1.0;
+
+        public static final double GAINS_VELOCITY_F = 0;
+        public static final double GAINS_VELOCITY_P = 0.1; // using motor for testing
+        public static final double GAINS_VELOCITY_I = 0;
+        public static final double GAINS_VELOCITY_D = 0;
+    }
+
+    public final class ClimberCommandConstants {
+            /** speed in inches per second */
+        public static final double MAX_WINCH_SPEED = 10;
+            public static final double DEADBAND = 0.2;
+
+
+    }
+
+    public final class FalconConstants {
+        public static final int SENSOR_CYCLES_PER_SECOND = 10;
+        public static final double COUNTS_PER_REV = 2048.0;
 
     }
  

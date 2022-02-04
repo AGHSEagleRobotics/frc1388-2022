@@ -6,8 +6,11 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.Constants;
+import frc.robot.Constants.ClimberCommandConstants;
 
 public class ClimberCommand extends CommandBase {
 
@@ -40,8 +43,16 @@ public class ClimberCommand extends CommandBase {
   @Override
   public void execute() {
 
-    m_climberSubsystem.setWinchPower(m_extendAxis.get());
-    m_climberSubsystem.setArticulatorPower(m_articulateAxis.get());
+    double deadband = MathUtil.applyDeadband(m_extendAxis.get(), ClimberCommandConstants.DEADBAND);
+    if ( deadband == 0) {
+      m_climberSubsystem.setWinchPower(0);
+    } else {
+      double speed = Math.copySign(Math.pow(deadband, 2) * ClimberCommandConstants.MAX_WINCH_SPEED, deadband);
+      m_climberSubsystem.setWinchSpeed(speed);
+    }
+
+    deadband = MathUtil.applyDeadband(m_articulateAxis.get(), ClimberCommandConstants.DEADBAND);
+    m_climberSubsystem.setArticulatorPower(Math.copySign(Math.pow(deadband, 2), deadband)); 
 
   }
 
