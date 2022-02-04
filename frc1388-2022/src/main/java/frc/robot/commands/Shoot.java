@@ -35,7 +35,7 @@ public class Shoot extends CommandBase {
       //run feeder motor
       m_shooterSubsystem.setFeederFunction(FeederFunctions.FORWARD);
     } else {
-      m_shooterSubsystem.setFeederFunction(FeederFunctions.FORWARD);
+      m_shooterSubsystem.setFeederFunction(FeederFunctions.OFF);
     }
   }
 
