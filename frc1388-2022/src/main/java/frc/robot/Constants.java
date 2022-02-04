@@ -59,5 +59,11 @@ public final class Constants {
         public static final int CANIN_ARTICULATOR = 7;
 
     }
+
+    public final class IntakeConstants { 
+        //FIXME 
+        public static final int CANID_WHEEL_MOTOR = -1; 
+        public static final int CANID_ARM_MOTOR = -1; 
+    }
  
 }

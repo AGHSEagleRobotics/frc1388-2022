@@ -12,14 +12,18 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.DriveTrainConstants;     // climber constats
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.USBConstants;            // USB
 import frc.robot.commands.Drive;
 import frc.robot.commands.SetShooterTargetRPM;
 import frc.robot.commands.ClimberCommand;           // climber command
 import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -65,6 +69,11 @@ public class RobotContainer {
     new WPI_VictorSPX(ShooterConstants.CANID_FEEDER_MOTOR)
   );
 
+  private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem(
+    new CANSparkMax(IntakeConstants.CANID_WHEEL_MOTOR, MotorType.kBrushless), 
+    new CANSparkMax(IntakeConstants.CANID_ARM_MOTOR, MotorType.kBrushless)
+    );
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -86,7 +95,7 @@ public class RobotContainer {
         () -> m_driveController.getRightX()
       ) 
     );
-
+    
   }
 
   /**
