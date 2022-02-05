@@ -74,7 +74,8 @@ public class RobotContainer {
       new ClimberCommand(
         m_climberSubsystem, 
         () -> m_opController.getLeftY(), 
-        () -> m_opController.getRightY()
+        () -> m_opController.getRightY(),
+        () -> m_opController.getAButton()
       )
     );
     // set default commands
@@ -101,6 +102,7 @@ public class RobotContainer {
 
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
       .whenPressed(() -> m_driveTrainSubsystem.toggleReverse());
+
     new JoystickButton(m_driveController, XboxController.Button.kX.value)
       .whenPressed(new SetShooterTargetRPM(m_ShooterSubsystem, 1000.0));
 
@@ -112,6 +114,10 @@ public class RobotContainer {
 
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
       .whenPressed(() -> m_ShooterSubsystem.setEnabled(false));
+
+    new JoystickButton(m_opController, XboxController.Button.kX.value).whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ClimberConstants.ARTICULATOR_POSITION_DOWN));
+    new JoystickButton(m_opController, XboxController.Button.kY.value).whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ClimberConstants.ARTICULATOR_POSITION_UP));
+      // () -> m_climberSubsystem.setArticulatorPosition(2000.0));
   }
 
   /**

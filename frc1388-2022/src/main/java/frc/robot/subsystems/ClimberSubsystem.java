@@ -52,24 +52,28 @@ public class ClimberSubsystem extends SubsystemBase {
     m_winchMotor.configPeakOutputForward(ClimberConstants.CLIMBER_MAX_POWER_FORWARDS);
     m_winchMotor.configPeakOutputReverse(ClimberConstants.CLIMBER_MAX_POWER_REVERSE);
 
-    m_winchMotor.config_kF(PID_IDX, ClimberConstants.GAINS_VELOCITY_F);
-    m_winchMotor.config_kP(PID_IDX, ClimberConstants.GAINS_VELOCITY_P);
-    m_winchMotor.config_kI(PID_IDX, ClimberConstants.GAINS_VELOCITY_I);
-    m_winchMotor.config_kD(PID_IDX, ClimberConstants.GAINS_VELOCITY_D);
+    m_winchMotor.config_kF(PID_IDX, ClimberConstants.WINCH_GAINS_VELOCITY_F);
+    m_winchMotor.config_kP(PID_IDX, ClimberConstants.WINCH_GAINS_VELOCITY_P);
+    m_winchMotor.config_kI(PID_IDX, ClimberConstants.WINCH_GAINS_VELOCITY_I);
+    m_winchMotor.config_kD(PID_IDX, ClimberConstants.WINCH_GAINS_VELOCITY_D);
 
 
     m_articulatorMotor.configFactoryDefault();
     m_articulatorMotor.setNeutralMode(NeutralMode.Brake);
     m_articulatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen); // todo test this
     m_articulatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen); // todo test this
-    m_articulatorMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    m_articulatorMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog);
     m_articulatorMotor.setSensorPhase(false);
     m_articulatorMotor.setInverted(false);
     m_articulatorMotor.setSelectedSensorPosition(0);
     m_articulatorMotor.configPeakOutputForward(ClimberConstants.ARTICULATOR_MAX_POWER_FORWARDS);
     m_articulatorMotor.configPeakOutputReverse(ClimberConstants.ARTICULATOR_MAX_POWER_REVERSE);
 
-    
+    m_articulatorMotor.config_kF(PID_IDX, ClimberConstants.ARTICULATOR_GAINS_POSITION_F);
+    m_articulatorMotor.config_kP(PID_IDX, ClimberConstants.ARTICULATOR_GAINS_POSITION_P);
+    m_articulatorMotor.config_kI(PID_IDX, ClimberConstants.ARTICULATOR_GAINS_POSITION_I);
+    m_articulatorMotor.config_kD(PID_IDX, ClimberConstants.ARTICULATOR_GAINS_POSITION_D);
+
   } 
 
   /** set power
@@ -99,6 +103,20 @@ public class ClimberSubsystem extends SubsystemBase {
   public void setArticulatorPower (double power) {
     m_articulatorMotor.set(power);
   }
+
+  public void setArticulatorPosition (double position) {
+    m_winchMotor.set(ControlMode.Position, position);  // todo convertion 
+  } 
+                                                     // to do swich to m_articulatorMotor, m_winchMotor for testing
+/*
+  public void toggleArticuilatorPosition (boolean on) {
+    if (on) {
+      m_winchMotor.set(ControlMode.Position,  2000);
+    } else {
+      m_winchMotor.set(ControlMode.Position,  0);
+    }
+  }
+  */
 
   /** returns sensor units */
   public double getArticulatorPossition() {

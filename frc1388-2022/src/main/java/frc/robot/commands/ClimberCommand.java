@@ -17,6 +17,7 @@ public class ClimberCommand extends CommandBase {
   private final ClimberSubsystem m_climberSubsystem;
   private final Supplier<Double> m_extendAxis;
   private final Supplier<Double> m_articulateAxis;
+  private final Supplier<Boolean> m_articulatePosition;
 
   /** Creates a new ClimberCommand. */
   public ClimberCommand(
@@ -24,12 +25,15 @@ public class ClimberCommand extends CommandBase {
 
     //CompdashBoard compdashboard, 
     Supplier<Double> extendAxis,
-    Supplier<Double> articulateAxis
+    Supplier<Double> articulateAxis,
+
+    Supplier<Boolean> articulatePosition
   ) {
 
     m_climberSubsystem = climberSubsystem;
     m_extendAxis = extendAxis;
     m_articulateAxis = articulateAxis;
+    m_articulatePosition = articulatePosition;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(climberSubsystem);

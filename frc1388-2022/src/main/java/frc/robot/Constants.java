@@ -63,10 +63,18 @@ public final class Constants {
         public static final double ARTICULATOR_MAX_POWER_FORWARDS  = 0.2;
         public static final double ARTICULATOR_MAX_POWER_REVERSE   = -1.0;
 
-        public static final double GAINS_VELOCITY_F = 0;
-        public static final double GAINS_VELOCITY_P = 0.1; // using motor for testing
-        public static final double GAINS_VELOCITY_I = 0;
-        public static final double GAINS_VELOCITY_D = 0;
+        public static final double WINCH_GAINS_VELOCITY_F =       0;
+        public static final double WINCH_GAINS_VELOCITY_P =       0.1; // using motor for testing
+        public static final double WINCH_GAINS_VELOCITY_I =       0;
+        public static final double WINCH_GAINS_VELOCITY_D =       0;
+
+        public static final double ARTICULATOR_GAINS_POSITION_F = 0;
+        public static final double ARTICULATOR_GAINS_POSITION_P = 0.1; // using motor for testing
+        public static final double ARTICULATOR_GAINS_POSITION_I = 0;
+        public static final double ARTICULATOR_GAINS_POSITION_D = 0;
+
+        public static final double ARTICULATOR_POSITION_DOWN = 2000; // TODO change this
+        public static final double ARTICULATOR_POSITION_UP   = 0;    // TODO change this
     }
 
     public final class ClimberCommandConstants {
