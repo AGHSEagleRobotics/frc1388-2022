@@ -64,6 +64,9 @@ public final class Constants {
         //FIXME 
         public static final int CANID_WHEEL_MOTOR = -1; 
         public static final int CANID_ARM_MOTOR = -1; 
+
+        public static final double ARM_SPEED_DEPLOY = 0.5;
+        public static final double WHEEL_SPEED_INTAKE = 1.0;
     }
  
 }

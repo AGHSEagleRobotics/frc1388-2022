@@ -25,7 +25,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     leftBack.follow(leftFront);
     rightBack.follow(rightFront);
-
     m_differentialDrive = new DifferentialDrive(leftFront, rightFront);
 
     //set differentialDrive parameters

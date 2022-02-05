@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxLimitSwitch.Type;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -25,6 +26,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
    public void setIntakeArmMotor(double speed){
     m_intakeArmMotor.set(speed);
+    m_intakeArmMotor.getForwardLimitSwitch(Type.kNormallyClosed);
+    m_intakeArmMotor.getReverseLimitSwitch(Type.kNormallyClosed);
    }
   
   @Override

@@ -15,6 +15,8 @@ import frc.robot.Constants.DriveTrainConstants;     // climber constats
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.USBConstants;            // USB
 import frc.robot.commands.Drive;
+import frc.robot.commands.RetractIntake;
+import frc.robot.commands.DeployIntake;
 import frc.robot.commands.SetShooterTargetRPM;
 import frc.robot.commands.ClimberCommand;           // climber command
 import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
@@ -69,7 +71,7 @@ public class RobotContainer {
     new WPI_VictorSPX(ShooterConstants.CANID_FEEDER_MOTOR)
   );
 
-  private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem(
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(
     new CANSparkMax(IntakeConstants.CANID_WHEEL_MOTOR, MotorType.kBrushless), 
     new CANSparkMax(IntakeConstants.CANID_ARM_MOTOR, MotorType.kBrushless)
     );
@@ -122,6 +124,12 @@ public class RobotContainer {
 
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
       .whenPressed(() -> m_ShooterSubsystem.setEnabled(false));
+
+    new JoystickButton(m_opController, XboxController.Button.kA.value)
+      .whenPressed(new DeployIntake(m_intakeSubsystem));
+
+      new JoystickButton(m_opController, XboxController.Button.kB.value)
+      .whenPressed(new RetractIntake(m_intakeSubsystem));
 
   }
 
