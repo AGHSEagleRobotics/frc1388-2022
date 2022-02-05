@@ -5,4 +5,5 @@ public interface AxisEnum {
     String getDescription();
 
     Integer getDefaultAxis();
+    Integer getDefaultPort();
 }

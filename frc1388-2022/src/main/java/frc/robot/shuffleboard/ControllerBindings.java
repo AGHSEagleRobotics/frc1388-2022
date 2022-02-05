@@ -3,56 +3,36 @@ package frc.robot.shuffleboard;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
+/**
+ * Top-level class to interact with the ShuffleBoard controlelr bindings
+ * 
+ * Simply call {@link ControllerBindings#getAxisValue(AxisEnum)} to get the
+ * current value of the bound axis
+ */
 public class ControllerBindings<T extends AxisEnum> {
 
     private final ShuffleboardTab m_tab = Shuffleboard.getTab("Controls");
 
-    private final Map<Integer, GenericHID> m_controllers;
+    private final Map<T, AxisBinding<T>> m_axisBindings;
 
-    private final Map<T, SendableChooser<Integer>> m_bindingChoosers;
+    public ControllerBindings(Class<T> axisEnumType, OISubsystem oi) {
+        m_axisBindings = new HashMap<>();
 
-    public ControllerBindings(Class<T> axisEnumType, GenericHID... controllers) {
-        // Convert controller list into map of port to controller (for easy lookup)
-        m_controllers = new HashMap<>();
-        for (GenericHID controller : controllers) {
-            m_controllers.put(controller.getPort(), controller);
-        }
-
-        // build widgets for setting axis bindings
-        m_bindingChoosers = new HashMap<>();
-        for (T axis : axisEnumType.getEnumConstants()) {
-
-            // Create chooser
-            var chooser = new SendableChooser<Integer>();
-            m_bindingChoosers.put(axis, chooser);
-            
-            // Add options for each axis
-            for(int i = 0; i < controllers[0].getAxisCount(); i++) {
-                chooser.addOption(Integer.toString(i), i);
-            }
-
-            // Set default if we have one
-            if (axis.getDefaultAxis() != null) {
-                chooser.setDefaultOption(axis.getDefaultAxis().toString(), axis.getDefaultAxis());
-            }
-
-            // Add choser to tab
-            m_tab.add(axis.getName(), chooser)
-                .withWidget(BuiltInWidgets.kComboBoxChooser);
+        var axisTypes = axisEnumType.getEnumConstants();
+        var axisBindingList = m_tab.getLayout("Axis Bindings", BuiltInLayouts.kList)
+            .withSize(3, axisTypes.length)
+            .withProperties(Map.of("Label Position", "TOP"))
+            .withPosition(0, 0);
+        for (T axis : axisTypes) {
+            m_axisBindings.put(axis, new AxisBinding<>(axis, oi, axisBindingList));
         }
     }
 
     public double getAxisValue(T axis) {
-        var chooser = m_bindingChoosers.get(axis);
-
-        var selectedAxis = chooser.getSelected();
-
-        return m_controllers.get(0).getRawAxis(selectedAxis);
+        return m_axisBindings.get(axis).get();
     }
 }
