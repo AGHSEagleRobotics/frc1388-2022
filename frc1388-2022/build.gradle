@@ -73,10 +73,6 @@ dependencies {
     simulationRelease wpi.sim.enableRelease()
 
     testImplementation 'junit:junit:4.12'
-
-    exec {
-        commandLine "GitJavaVersion.cmd", ">src/main/java/frc/robot/BuildInfo.java"
-    }
 }
 
 // Simulation configuration (e.g. environment variables).
@@ -96,3 +92,22 @@ jar {
 deployArtifact.jarTask = jar
 wpi.java.configureExecutableTasks(jar)
 wpi.java.configureTestTasks(test)
+
+sourceSets {
+   main {
+      java {
+         srcDir "${buildDir}/generated/sources/main/java"
+      }
+   }
+}
+
+task generateBuildInfo {
+    doLast {
+        exec {
+            // commandLine "GitJavaVersion.cmd", ">src/main/java/frc/robot/BuildInfo.java"
+            commandLine "./generateBuildInfo.sh", "${buildDir}/generated/sources/main/java/frc/robot/BuildInfo.java"
+        }
+    }
+}
+
+compileJava.dependsOn generateBuildInfo

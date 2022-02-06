@@ -161,5 +161,3 @@ bin/
 # Simulation GUI and other tools window save file
 *-window.json
 
-# Our stuff
-BuildInfo.java
