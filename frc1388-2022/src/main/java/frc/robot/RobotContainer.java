@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.DriveTrainConstants;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.shuffleboard.AxisEnumImpl;
+import frc.robot.shuffleboard.AxisEnum;
 import frc.robot.shuffleboard.ControllerBindings;
 import frc.robot.shuffleboard.OISubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 public class RobotContainer {
   private final XboxController m_controller = new XboxController(0);
 
-  private final ControllerBindings<AxisEnumImpl> m_controllerBindings = new ControllerBindings<>(AxisEnumImpl.class, new OISubsystem(m_controller));
+  private final ControllerBindings<AxisEnum> m_controllerBindings = new ControllerBindings<>(AxisEnum.class, new OISubsystem(m_controller));
 
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -49,8 +49,8 @@ public class RobotContainer {
     m_driveTrainSubsystem.setDefaultCommand(
       new RunCommand(() -> {
         m_driveTrainSubsystem.tankDrive(
-          m_controllerBindings.getAxisValue(AxisEnumImpl.LEFT_DRIVE),
-          m_controllerBindings.getAxisValue(AxisEnumImpl.RIGHT_DRIVE)
+          m_controllerBindings.getAxisValue(AxisEnum.LEFT_DRIVE),
+          m_controllerBindings.getAxisValue(AxisEnum.RIGHT_DRIVE)
         );
       }, m_driveTrainSubsystem)
     );

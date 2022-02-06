@@ -28,77 +28,15 @@ import edu.wpi.first.wpilibj2.command.button.NetworkButton;
  * Also includes some helper functions for retriving the current value of the bound
  * axis from the joystick
  */
-public class AxisBinding<T extends AxisEnum> implements Supplier<Double> {
+public class AxisBinding<T extends Action> extends ActionBinding<T> implements Supplier<Double> {
 
   private static final Logger log = LogManager.getLogger(AxisBinding.class);
 
-  private final T m_axis;
-  private final OISubsystem m_oi;
+  private static final double AXIS_DEADBAND = 0.5;
 
-  private GenericHID m_boundController;
-  private int m_boundAxis;
 
   public AxisBinding(T axis, OISubsystem oi, ShuffleboardContainer container) {
-    m_axis = axis;
-    m_oi = oi;
-
-    if (oi.getJoysticks().size() == 0) {
-      throw new IllegalArgumentException("Must provide at least one GenericHID");
-    }
-
-    m_boundController = oi.getJoysticks().get(0);
-    for (GenericHID controller : oi.getJoysticks()) {
-      if (controller.getPort() == m_axis.getDefaultPort()) {
-        m_boundController = controller;
-        break;
-      }
-    }
-
-    m_boundAxis = m_axis.getDefaultAxis();
-
-    var grid = container.getLayout(m_axis.getName(), BuiltInLayouts.kGrid)
-        .withSize(2, 1)
-        .withProperties(Map.of(
-            "Number of Columns", 2,
-            "Number of Rows", 1,
-            "Label position", "HIDDEN"));
-
-    var bindButton = grid.add("Bind", false)
-        .withWidget(BuiltInWidgets.kToggleButton)
-        .getEntry();
-
-    grid.addString("label", this::toString);
-
-    var bindCommand = new BindAxis<>(this, oi, () -> bindButton.setBoolean(false));
-
-    new NetworkButton(bindButton).whileHeld(bindCommand);
-
-    log.debug("Binding configured for {}", axis::getName);
-  }
-
-  /**
-   * @return The axis being bound
-   */
-  public T getAxis() {
-    return m_axis;
-  }
-
-  /**
-   * @return The name of the axis being bound
-   */
-  public String getAxisName() {
-    return m_axis.getName();
-  }
-
-  public void setBoundAxis(GenericHID joystick, int axisNum) {
-    if (!m_oi.getJoysticks().contains(joystick)) {
-      throw new IllegalArgumentException("joystick must be part of the OISubsystem");
-    }
-
-    log.info("Bound {} to {}:{}", m_axis::getName, joystick::getPort, () -> axisNum);
-
-    m_boundController = joystick;
-    m_boundAxis = axisNum;
+    super(axis, oi, container);
   }
 
   /**
@@ -108,7 +46,7 @@ public class AxisBinding<T extends AxisEnum> implements Supplier<Double> {
    */
   @Override
   public Double get() {
-    return m_boundController.getRawAxis(m_boundAxis);
+    return getBoundController().getRawAxis(getBoundChannel());
   }
 
   private static final Map<Class<? extends GenericHID>, Function<Integer, String>> axisPrettifiers = Map.of(
@@ -116,33 +54,40 @@ public class AxisBinding<T extends AxisEnum> implements Supplier<Double> {
       XboxController.class, axisNum -> Stream.of(XboxController.Axis.values())
           .filter(axis -> axis.value == axisNum)
           .findAny()
-          .map(axis -> axis.toString())
+          .map(XboxController.Axis::toString)
           .orElse(axisNum.toString()),
 
       PS4Controller.class, axisNum -> Stream.of(PS4Controller.Axis.values())
           .filter(axis -> axis.value == axisNum)
           .findAny()
-          .map(axis -> axis.toString())
+          .map(PS4Controller.Axis::toString)
           .toString());
 
-  /**
-   * Convert current binding to an easy to read format
-   * 
-   * @return A human readable string representation of the current binding value
-   */
+
   @Override
-  public String toString() {
+  public String getChannelName(int channel) {
+    var boundController = getBoundController();
 
     var prettifier = axisPrettifiers.getOrDefault(
-        m_boundController.getClass(),
-        axisNum -> axisNum.toString());
+            boundController.getClass(),
+            Object::toString);
 
-    var axisName = prettifier.apply(m_boundAxis);
+    return prettifier.apply(getBoundChannel());
+  }
 
-    return String.format(
-        "%s %d: %s",
-        m_boundController.getClass().getSimpleName(),
-        m_boundController.getPort(),
-        axisName);
+  @Override
+  public Integer getSelectedChannel(GenericHID joystick) {
+    Integer largestAxis = null;
+    double largestValue = AXIS_DEADBAND;
+
+    var axisCount = joystick.getAxisCount();
+    for (int i = 0; i < axisCount; i++) {
+      var axisValue = Math.abs(joystick.getRawAxis(i));
+      if (axisValue > largestValue) {
+        largestValue = axisValue;
+        largestAxis = i;
+      }
+    }
+    return largestAxis;
   }
 }

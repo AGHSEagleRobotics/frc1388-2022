@@ -4,7 +4,6 @@
 
 package frc.robot.shuffleboard;
 
-import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,27 +27,4 @@ public class OISubsystem extends SubsystemBase {
     return m_joysticks;
   }
 
-  public AbstractMap.SimpleEntry<GenericHID, Integer> findLargestAxis() {
-    GenericHID largestJoystick = null;
-    Integer largestAxis = null;
-    double largestValue = AXIS_DEADBAND; // start at deadband so any axis must be >deadband to count
-
-    for (GenericHID joystick : m_joysticks) {
-      var axisCount = joystick.getAxisCount();
-      for (int i = 0; i < axisCount; i++) {
-        var axisValue = Math.abs(joystick.getRawAxis(i));
-        if (axisValue > largestValue) {
-          largestValue = axisValue;
-          largestAxis = i;
-          largestJoystick = joystick;
-        }
-      }
-    }
-
-    if (largestJoystick == null) {
-      return null;
-    }
-    
-    return new AbstractMap.SimpleEntry<>(largestJoystick, largestAxis);
-  }
 }

@@ -15,15 +15,15 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
  */
 public class ControllerBindings<T extends AxisEnum> {
 
-    private final ShuffleboardTab m_tab = Shuffleboard.getTab("Controls");
-
     private final Map<T, AxisBinding<T>> m_axisBindings;
 
     public ControllerBindings(Class<T> axisEnumType, OISubsystem oi) {
         m_axisBindings = new HashMap<>();
 
+        ShuffleboardTab tab = Shuffleboard.getTab("Controls");
+
         var axisTypes = axisEnumType.getEnumConstants();
-        var axisBindingList = m_tab.getLayout("Axis Bindings", BuiltInLayouts.kList)
+        var axisBindingList = tab.getLayout("Axis Bindings", BuiltInLayouts.kList)
             .withSize(3, axisTypes.length)
             .withProperties(Map.of("Label Position", "TOP"))
             .withPosition(0, 0);
