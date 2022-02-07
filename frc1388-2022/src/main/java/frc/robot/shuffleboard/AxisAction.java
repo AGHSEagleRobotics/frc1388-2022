@@ -2,7 +2,7 @@ package frc.robot.shuffleboard;
 
 import edu.wpi.first.wpilibj.XboxController;
 
-public enum AxisEnum implements Action {
+public enum AxisAction implements Action {
     
     LEFT_DRIVE("Left Drive", null, 0, XboxController.Axis.kLeftY.value),
     RIGHT_DRIVE("Right Drive", null, 0, XboxController.Axis.kRightY.value);
@@ -12,7 +12,7 @@ public enum AxisEnum implements Action {
     private final Integer m_defaultAxis;
     private final Integer m_defaultPort;
 
-    AxisEnum(String name, String description, Integer defaultPort, Integer defaultAxis) {
+    AxisAction(String name, String description, Integer defaultPort, Integer defaultAxis) {
         m_name = name;
         m_description = description;
         m_defaultAxis = defaultAxis;

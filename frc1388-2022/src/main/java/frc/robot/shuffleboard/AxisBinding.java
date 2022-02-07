@@ -15,15 +15,12 @@ import org.apache.logging.log4j.Logger;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
-import edu.wpi.first.wpilibj2.command.button.NetworkButton;
 
 
 /**
  * Class that manages the ShuffleBoard aspects of binding a specifc Axis provided
- * in {@link AxisEnum} to an particular joystick port and axis
+ * in {@link AxisAction} to an particular joystick port and axis
  * 
  * Also includes some helper functions for retriving the current value of the bound
  * axis from the joystick
