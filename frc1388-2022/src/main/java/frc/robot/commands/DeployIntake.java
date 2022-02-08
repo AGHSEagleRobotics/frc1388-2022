@@ -19,6 +19,7 @@ public class DeployIntake extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intakeSubsystem); 
   }
+
   /*
    * arm motor needs to deploy 
    * wheel motor needs to run forward
@@ -38,7 +39,10 @@ public class DeployIntake extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    // m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SPEED_DEPLOY);
+    m_intakeSubsystem.setIntakeWheelSpin(0);
+  }
 
   // Returns true when the command should end.
   @Override

@@ -5,24 +5,44 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.IntakeConstants;
+import frc.robot.subsystems.IntakeSubsystem;
 
 public class RetractIntake extends CommandBase {
-  /** Creates a new RetractIntake. */
-  public RetractIntake() {
+
+  private final IntakeSubsystem m_intakeSubsystem;
+
+  /** Creates a new IntakeCommand. */
+  public RetractIntake (IntakeSubsystem intakeSubsystem) { 
+    m_intakeSubsystem = intakeSubsystem;
+    
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(intakeSubsystem); 
   }
 
-  // Called when the command is initially scheduled.
+  /*
+   * arm motor needs to deploy 
+   * wheel motor needs to run forward
+   * arm motor needs a limit 
+   */
+
+// Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SPEED_DEPLOY);
+    m_intakeSubsystem.setIntakeWheelSpin(0);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+      // m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SPEED_DEPLOY);
+      m_intakeSubsystem.setIntakeWheelSpin(0);
+  }
 
   // Returns true when the command should end.
   @Override
