@@ -25,6 +25,15 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     leftBack.follow(leftFront);
     rightBack.follow(rightFront);
+    //Inverting left motor
+    leftFront.setInverted(true);
+    leftBack.setInverted(true);
+
+    //Don't invert right motor
+    rightFront.setInverted(false);
+    rightBack.setInverted(false);
+
+    //Differential drive
     m_differentialDrive = new DifferentialDrive(leftFront, rightFront);
 
     //set differentialDrive parameters
@@ -45,33 +54,33 @@ public class DriveTrainSubsystem extends SubsystemBase {
   }
   
   //constructor for working on Knightmare!!
-  public DriveTrainSubsystem(WPI_VictorSPX leftFront, WPI_TalonSRX leftBack, WPI_TalonSRX rightFront, WPI_VictorSPX rightBack) {
+  // public DriveTrainSubsystem(WPI_VictorSPX leftFront, WPI_TalonSRX leftBack, WPI_TalonSRX rightFront, WPI_VictorSPX rightBack) {
 
-    leftBack.follow(leftFront);
-    rightBack.follow(rightFront);
+  //   leftBack.follow(leftFront);
+  //   rightBack.follow(rightFront);
 
-    //Needed to invert left side
-    leftFront.setInverted(true);
-    leftBack.setInverted(true);
+  //   //Needed to invert left side
+  //   leftFront.setInverted(false);
+  //   leftBack.setInverted(false);
 
-    m_differentialDrive = new DifferentialDrive(leftFront, rightFront);
+  //   m_differentialDrive = new DifferentialDrive(leftFront, rightFront);
 
-    //set differentialDrive parameters
-    m_differentialDrive.setSafetyEnabled(true);
-    m_differentialDrive.setExpiration(DriveTrainConstants.EXPIRATION);
-    m_differentialDrive.setMaxOutput(DriveTrainConstants.MAX_OUTPUT);
-    m_differentialDrive.setDeadband(DriveTrainConstants.DEADBAND); 
+  //   //set differentialDrive parameters
+  //   m_differentialDrive.setSafetyEnabled(true);
+  //   m_differentialDrive.setExpiration(DriveTrainConstants.EXPIRATION);
+  //   m_differentialDrive.setMaxOutput(DriveTrainConstants.MAX_OUTPUT);
+  //   m_differentialDrive.setDeadband(DriveTrainConstants.DEADBAND); 
 
-    //set all motors to break
-    leftFront.setNeutralMode(NeutralMode.Brake);
-    leftBack.setNeutralMode(NeutralMode.Brake);
-    rightFront.setNeutralMode(NeutralMode.Brake);
-    rightBack.setNeutralMode(NeutralMode.Brake);
+  //   //set all motors to break
+  //   leftFront.setNeutralMode(NeutralMode.Brake);
+  //   leftBack.setNeutralMode(NeutralMode.Brake);
+  //   rightFront.setNeutralMode(NeutralMode.Brake);
+  //   rightBack.setNeutralMode(NeutralMode.Brake);
     
-    //add to shuffle board
-    addChild("DifferentialDrive", m_differentialDrive);
+  //   //add to shuffle board
+  //   addChild("DifferentialDrive", m_differentialDrive);
 
-  }
+  // }
 
 
 
