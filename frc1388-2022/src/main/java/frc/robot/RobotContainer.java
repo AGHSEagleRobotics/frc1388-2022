@@ -12,14 +12,21 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.DriveTrainConstants;     // climber constats
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.USBConstants;            // USB
 import frc.robot.commands.Drive;
+import frc.robot.commands.Shoot;
+import frc.robot.commands.RetractIntake;
+import frc.robot.commands.DeployIntake;
 import frc.robot.commands.SetShooterTargetRPM;
 import frc.robot.commands.ClimberCommand;           // climber command
 import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterFeederSubsystem;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -60,15 +67,21 @@ public class RobotContainer {
     new WPI_TalonSRX(ClimberConstants.CANID_ARTICULATOR)
   );
 
-  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(
+
+  private final ShooterFeederSubsystem m_shooterSubsystem = new ShooterFeederSubsystem(
     new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR),
     new WPI_VictorSPX(ShooterConstants.CANID_FEEDER_MOTOR)
   );
 
+  private Shoot m_shooterCommands;
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(
+    new CANSparkMax(IntakeConstants.CANID_WHEEL_MOTOR, MotorType.kBrushless), 
+    new CANSparkMax(IntakeConstants.CANID_ARM_MOTOR, MotorType.kBrushless)
+    );
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
+   m_shooterCommands = new Shoot(m_shooterSubsystem);
 
     m_climberSubsystem.setDefaultCommand(
       new ClimberCommand(
@@ -87,7 +100,8 @@ public class RobotContainer {
         () -> m_driveController.getRightX()
       ) 
     );
-
+  // Configure the button bindings
+    configureButtonBindings();
   }
 
   /**
@@ -104,20 +118,30 @@ public class RobotContainer {
       .whenPressed(() -> m_driveTrainSubsystem.toggleReverse());
 
     new JoystickButton(m_driveController, XboxController.Button.kX.value)
-      .whenPressed(new SetShooterTargetRPM(m_ShooterSubsystem, 1000.0));
+      .whenPressed(() -> m_shooterSubsystem.shooterRpmStepIncrease());
 
     new JoystickButton(m_driveController, XboxController.Button.kY.value)
-      .whenPressed(new SetShooterTargetRPM(m_ShooterSubsystem, 0));
+      .whenPressed(() -> m_shooterSubsystem.shooterRpmStepDecrease());
 
     new JoystickButton(m_driveController, XboxController.Button.kA.value)
-      .whenPressed(() -> m_ShooterSubsystem.setEnabled(true));
+      .whenPressed(() -> m_shooterSubsystem.shooterEnabled(true));
 
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
-      .whenPressed(() -> m_ShooterSubsystem.setEnabled(false));
+      .whenPressed(() -> m_shooterSubsystem.shooterEnabled(false));
 
     new JoystickButton(m_opController, XboxController.Button.kX.value).whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ClimberConstants.ARTICULATOR_POSITION_DOWN));
     new JoystickButton(m_opController, XboxController.Button.kY.value).whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ClimberConstants.ARTICULATOR_POSITION_UP));
       // () -> m_climberSubsystem.setArticulatorPosition(2000.0));
+
+    new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
+      .whenHeld(m_shooterCommands);
+    
+    new JoystickButton(m_opController, XboxController.Button.kA.value)
+      .whenPressed(new DeployIntake(m_intakeSubsystem));
+
+    new JoystickButton(m_opController, XboxController.Button.kB.value)
+      .whenPressed(new RetractIntake(m_intakeSubsystem));
+
   }
 
   /**

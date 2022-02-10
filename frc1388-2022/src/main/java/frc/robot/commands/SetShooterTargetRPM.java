@@ -5,17 +5,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ShooterFeederSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class SetShooterTargetRPM extends InstantCommand {
 
-  private final ShooterSubsystem m_shooter;
+  private final ShooterFeederSubsystem m_shooter;
   private final double m_targetRPM;
 
-  public SetShooterTargetRPM(ShooterSubsystem shooter, double targetRPM) {
+  public SetShooterTargetRPM(ShooterFeederSubsystem shooter, double targetRPM) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = shooter;
     m_targetRPM = targetRPM;

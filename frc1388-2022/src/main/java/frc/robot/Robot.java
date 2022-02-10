@@ -31,9 +31,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    log.info("robotInit");
+
+    // log and print software version
+    log.info(
+        "Git version: " + BuildInfo.GIT_VERSION + " (branch: " + BuildInfo.GIT_BRANCH + BuildInfo.GIT_STATUS + ")");
+    log.info("Built: " + BuildInfo.BUILD_DATE + "  " + BuildInfo.BUILD_TIME);
+
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    log.info("robotInit");
     m_robotContainer = new RobotContainer();
   }
 

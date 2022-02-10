@@ -25,10 +25,10 @@ public final class Constants {
         public static final double DEADBAND = 0.2;
 
         //THIS is for the 2022 ROBOT
-        public static final int CANID_LEFT_FRONT    = -1;
-        public static final int CANID_LEFT_BACK     = -1;
-        public static final int CANID_RIGHT_FRONT   = -1;
-        public static final int CANID_RIGHT_BACK    = -1;
+        public static final int CANID_LEFT_FRONT    = 1;
+        public static final int CANID_LEFT_BACK     = 2;
+        public static final int CANID_RIGHT_FRONT   = 3;
+        public static final int CANID_RIGHT_BACK    = 4;
 
 
         //This is for KNIGHTMARE!
@@ -40,18 +40,27 @@ public final class Constants {
     }
 
     public final class ShooterConstants {
-        public static final int CANID_SHOOTER_MOTOR = 5;
-        public static final int CANID_FEEDER_MOTOR = 6;
+        public static final int CANID_SHOOTER_MOTOR = 6;
+        public static final int CANID_FEEDER_MOTOR  = 7;
 
         public static final double GAINS_VELOCITY_F = 0;
         public static final double GAINS_VELOCITY_P = 0.1; // using motor for testing
         public static final double GAINS_VELOCITY_I = 0;
         public static final double GAINS_VELOCITY_D = 0;
 
+        public static final double RPM_RANGE = 30;              // EX. 30 = +/-30 rpm
+        public static final double ITERATIONS_AT_TARGET_RPM = 20;    // the amount of times rpm needs to be between +/- RPM_RANGE for shooterSpeedIsReady() to return true
+
+        public static final double SHOOTER_COOLDOWN_TIME = 0.5; // time in seconds to wait before shooter is turned off
+        
+        public static final double SHOOTER_RPM_STEP_CHANGE = 50;
+        public static final double MAX_SHOOTER_RPM = 6000;
+        public static final double MIN_SHOOTER_RPM = 0;
+
         public static final double FORWARD_FEEDER_SPEED = 1.0;
         public static final double REVERSE_FEEDER_SPEED = -1.0;
         public static final double FEEDER_SPEED_OFF = 0.0;
-        
+
     }
 
     public final class ClimberConstants {
@@ -89,6 +98,15 @@ public final class Constants {
         public static final int SENSOR_CYCLES_PER_SECOND = 10;
         public static final double COUNTS_PER_REV = 2048.0;
 
+    }
+
+    public final class IntakeConstants { 
+        //FIXME 
+        public static final int CANID_WHEEL_MOTOR = -1; 
+        public static final int CANID_ARM_MOTOR = -1; 
+
+        public static final double ARM_SPEED_DEPLOY = 0.5;
+        public static final double WHEEL_SPEED_INTAKE = 1.0;
     }
  
 }
