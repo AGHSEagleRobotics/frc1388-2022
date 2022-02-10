@@ -74,7 +74,6 @@ public class RobotContainer {
     new WPI_VictorSPX(ShooterConstants.CANID_FEEDER_MOTOR)
   );
 
-  private Shoot m_shooterCommands;
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(
     new CANSparkMax(IntakeConstants.CANID_WHEEL_MOTOR, MotorType.kBrushless), 
     new CANSparkMax(IntakeConstants.CANID_ARM_MOTOR, MotorType.kBrushless)
@@ -82,7 +81,6 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-   m_shooterCommands = new Shoot(m_shooterSubsystem);
 
     m_climberSubsystem.setDefaultCommand(
       new ClimberCommand(
@@ -130,10 +128,12 @@ public class RobotContainer {
       .whenPressed(() -> m_shooterSubsystem.shooterEnabled(false));
 
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
-      .whenHeld(m_shooterCommands);    new JoystickButton(m_opController, XboxController.Button.kA.value)
+      .whenHeld( new Shoot(m_shooterSubsystem));    
+      
+    new JoystickButton(m_opController, XboxController.Button.kA.value)
       .whenPressed(new DeployIntake(m_intakeSubsystem));
 
-      new JoystickButton(m_opController, XboxController.Button.kB.value)
+    new JoystickButton(m_opController, XboxController.Button.kB.value)
       .whenPressed(new RetractIntake(m_intakeSubsystem));
 
   }
