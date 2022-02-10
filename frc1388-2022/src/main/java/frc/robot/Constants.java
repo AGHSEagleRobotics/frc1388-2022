@@ -77,5 +77,12 @@ public final class Constants {
         public static final double ARM_SPEED_DEPLOY = 0.5;
         public static final double WHEEL_SPEED_INTAKE = 1.0;
     }
+
+    public final class TransitionConstants {
+        public static final int CANID_TRANSITION_MOTOR = 8;
+        public static final double TRANSITION_SPEED_FORWARD_FAST = 0.1; 
+        public static final double TRANSITION_SPEED_FORWARD_SLOW = 0.1; 
+        public static final double TRANSITION_SPEED_REVERSE = -0.1;
+    }
  
 }
