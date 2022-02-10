@@ -27,6 +27,6 @@ Configuration:
       level: debug
       AppenderRef:
         - ref: STDOUT
-          level: info
-        # - ref: LOG_FILE
-        #   level: debug
+          level: debug
+        - ref: LOG_FILE
+          level: debug

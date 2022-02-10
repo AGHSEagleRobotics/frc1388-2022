@@ -82,7 +82,7 @@ public final class Constants {
         public static final double ARTICULATOR_GAINS_POSITION_I = 0;
         public static final double ARTICULATOR_GAINS_POSITION_D = 0;
 
-        public static final double ARTICULATOR_POSITION_DOWN = 2000; // TODO change this
+        public static final double ARTICULATOR_POSITION_DOWN = 20000; // TODO change this
         public static final double ARTICULATOR_POSITION_UP   = 0;    // TODO change this
     }
 
@@ -102,8 +102,8 @@ public final class Constants {
 
     public final class IntakeConstants { 
         //FIXME 
-        public static final int CANID_WHEEL_MOTOR = -1; 
-        public static final int CANID_ARM_MOTOR = -1; 
+        public static final int CANID_WHEEL_MOTOR = 31; 
+        public static final int CANID_ARM_MOTOR =   30; 
 
         public static final double ARM_SPEED_DEPLOY = 0.5;
         public static final double WHEEL_SPEED_INTAKE = 1.0;

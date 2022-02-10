@@ -11,6 +11,10 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
@@ -18,8 +22,10 @@ import frc.robot.Constants.FalconConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
 
+  private static final Logger log = LogManager.getLogger(ClimberSubsystem.class);
+
   private final WPI_TalonFX m_winchMotor;
-  private final WPI_TalonSRX m_articulatorMotor;
+  private final CANSparkMax m_articulatorMotor;
 
   // private static final double COUNTS_PER_REV = 2048.0;
     /** winch gearbox ratio */
@@ -35,7 +41,7 @@ public class ClimberSubsystem extends SubsystemBase {
   
     
   /** Creates a new ClimberSubsystem. */
-  public ClimberSubsystem(WPI_TalonFX winchMotor, WPI_TalonSRX articulatorMotor) {
+  public ClimberSubsystem(WPI_TalonFX winchMotor, CANSparkMax articulatorMotor) {
     m_winchMotor = winchMotor;
     m_articulatorMotor = articulatorMotor;
 
@@ -58,21 +64,23 @@ public class ClimberSubsystem extends SubsystemBase {
     m_winchMotor.config_kD(PID_IDX, ClimberConstants.WINCH_GAINS_VELOCITY_D);
 
 
-    m_articulatorMotor.configFactoryDefault();
-    m_articulatorMotor.setNeutralMode(NeutralMode.Brake);
-    m_articulatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen); // todo test this
-    m_articulatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen); // todo test this
-    m_articulatorMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog);
-    m_articulatorMotor.setSensorPhase(false);
     m_articulatorMotor.setInverted(false);
-    m_articulatorMotor.setSelectedSensorPosition(0);
-    m_articulatorMotor.configPeakOutputForward(ClimberConstants.ARTICULATOR_MAX_POWER_FORWARDS);
-    m_articulatorMotor.configPeakOutputReverse(ClimberConstants.ARTICULATOR_MAX_POWER_REVERSE);
+    /* for talonFX / talonSRX */
+    // m_articulatorMotor.configFactoryDefault();
+    // m_articulatorMotor.setNeutralMode(NeutralMode.Brake);
+    // m_articulatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen); // todo test this
+    // m_articulatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen); // todo test this
+    // m_articulatorMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog);
+    // m_articulatorMotor.setSensorPhase(false);
+    // m_articulatorMotor.setInverted(false);
+    // m_articulatorMotor.setSelectedSensorPosition(0);
+    // m_articulatorMotor.configPeakOutputForward(ClimberConstants.ARTICULATOR_MAX_POWER_FORWARDS);
+    // m_articulatorMotor.configPeakOutputReverse(ClimberConstants.ARTICULATOR_MAX_POWER_REVERSE);
 
-    m_articulatorMotor.config_kF(PID_IDX, ClimberConstants.ARTICULATOR_GAINS_POSITION_F);
-    m_articulatorMotor.config_kP(PID_IDX, ClimberConstants.ARTICULATOR_GAINS_POSITION_P);
-    m_articulatorMotor.config_kI(PID_IDX, ClimberConstants.ARTICULATOR_GAINS_POSITION_I);
-    m_articulatorMotor.config_kD(PID_IDX, ClimberConstants.ARTICULATOR_GAINS_POSITION_D);
+    // m_articulatorMotor.config_kF(PID_IDX, ClimberConstants.ARTICULATOR_GAINS_POSITION_F);
+    // m_articulatorMotor.config_kP(PID_IDX, ClimberConstants.ARTICULATOR_GAINS_POSITION_P);
+    // m_articulatorMotor.config_kI(PID_IDX, ClimberConstants.ARTICULATOR_GAINS_POSITION_I);
+    // m_articulatorMotor.config_kD(PID_IDX, ClimberConstants.ARTICULATOR_GAINS_POSITION_D);
 
   } 
 
@@ -105,9 +113,9 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void setArticulatorPosition (double position) {
-    m_winchMotor.set(ControlMode.Position, position);  // todo convertion 
-  } 
-                                                     // to do swich to m_articulatorMotor, m_winchMotor for testing
+    // m_articulatorMotor.setVoltage(position); // m_articulatorMotor.set(ControlMode.Position, position);  // todo convertion 
+  }
+
 /*
   public void toggleArticuilatorPosition (boolean on) {
     if (on) {
@@ -120,13 +128,14 @@ public class ClimberSubsystem extends SubsystemBase {
 
   /** returns sensor units */
   public double getArticulatorPossition() {
-    return m_articulatorMotor.getSelectedSensorPosition();
+    return 123456789; // m_articulatorMotor;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-        
+
+    log.debug("winch postition {}", this::getWinchPossition);
 
     if (winchAtBottomLimit()) {
       m_winchMotor.setSelectedSensorPosition(0);

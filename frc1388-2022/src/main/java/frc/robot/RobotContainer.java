@@ -64,7 +64,7 @@ public class RobotContainer {
 
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
     new WPI_TalonFX(ClimberConstants.CANID_WINCH),
-    new WPI_TalonSRX(ClimberConstants.CANID_ARTICULATOR)
+    new CANSparkMax(ClimberConstants.CANID_ARTICULATOR, MotorType.kBrushless)
   );
 
 
@@ -129,10 +129,6 @@ public class RobotContainer {
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
       .whenPressed(() -> m_shooterSubsystem.shooterEnabled(false));
 
-    new JoystickButton(m_opController, XboxController.Button.kX.value).whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ClimberConstants.ARTICULATOR_POSITION_DOWN));
-    new JoystickButton(m_opController, XboxController.Button.kY.value).whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ClimberConstants.ARTICULATOR_POSITION_UP));
-      // () -> m_climberSubsystem.setArticulatorPosition(2000.0));
-
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
       .whenHeld(m_shooterCommands);
     
@@ -141,6 +137,11 @@ public class RobotContainer {
 
     new JoystickButton(m_opController, XboxController.Button.kB.value)
       .whenPressed(new RetractIntake(m_intakeSubsystem));
+    new JoystickButton(m_opController, XboxController.Button.kX.value)
+      .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ClimberConstants.ARTICULATOR_POSITION_DOWN), m_climberSubsystem);
+
+    new JoystickButton(m_opController, XboxController.Button.kY.value)
+      .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ClimberConstants.ARTICULATOR_POSITION_UP), m_climberSubsystem);
 
   }
 
