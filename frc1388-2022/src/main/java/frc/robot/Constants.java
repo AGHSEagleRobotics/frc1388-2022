@@ -29,14 +29,6 @@ public final class Constants {
         public static final int CANID_LEFT_BACK     = 2;
         public static final int CANID_RIGHT_FRONT   = 3;
         public static final int CANID_RIGHT_BACK    = 4;
-
-
-        //This is for KNIGHTMARE!
-        // public static final int CANID_LEFT_FRONT    = 4;
-        // public static final int CANID_LEFT_BACK     = 3;
-        // public static final int CANID_RIGHT_FRONT   = 2;
-        // public static final int CANID_RIGHT_BACK    = 1;
-
     }
 
     public final class ShooterConstants {
