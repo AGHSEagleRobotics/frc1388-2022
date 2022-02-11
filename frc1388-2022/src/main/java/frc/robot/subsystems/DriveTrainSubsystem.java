@@ -21,7 +21,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private boolean m_isReverse = false;
 
   /** Creates a new DriveTrainSubsystem. */
-  public DriveTrainSubsystem(WPI_TalonFX leftFront, WPI_TalonFX leftBack, WPI_TalonFX rightFront, WPI_TalonFX rightBack) {
+  public DriveTrainSubsystem(WPI_VictorSPX leftFront, WPI_TalonSRX leftBack, WPI_TalonSRX rightFront, WPI_VictorSPX rightBack) {
 
     leftBack.follow(leftFront);
     rightBack.follow(rightFront);

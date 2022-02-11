@@ -48,10 +48,10 @@ public class RobotContainer {
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final DriveTrainSubsystem m_driveTrainSubsystem = new DriveTrainSubsystem(
-    new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_FRONT), 
-    new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_BACK), 
-    new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_FRONT), 
-    new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_BACK)
+    new WPI_VictorSPX(DriveTrainConstants.CANID_LEFT_FRONT), 
+    new WPI_TalonSRX(DriveTrainConstants.CANID_LEFT_BACK), 
+    new WPI_TalonSRX(DriveTrainConstants.CANID_RIGHT_FRONT), 
+    new WPI_VictorSPX(DriveTrainConstants.CANID_RIGHT_BACK)
   );
 
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
