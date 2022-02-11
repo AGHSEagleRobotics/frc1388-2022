@@ -14,6 +14,7 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.DriveTrainConstants;     // climber constats
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.USBConstants;            // USB
+import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.RetractIntake;
@@ -138,10 +139,10 @@ public class RobotContainer {
     new JoystickButton(m_opController, XboxController.Button.kB.value)
       .whenPressed(new RetractIntake(m_intakeSubsystem));
     new JoystickButton(m_opController, XboxController.Button.kX.value)
-      .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ClimberConstants.ARTICULATOR_POSITION_DOWN), m_climberSubsystem);
+      .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.REACH), m_climberSubsystem);
 
     new JoystickButton(m_opController, XboxController.Button.kY.value)
-      .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ClimberConstants.ARTICULATOR_POSITION_UP), m_climberSubsystem);
+      .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.VERTICAL), m_climberSubsystem);
 
   }
 

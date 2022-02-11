@@ -63,7 +63,7 @@ public final class Constants {
 
     }
 
-    public final class ClimberConstants {
+    public final static class ClimberConstants {
         public static final int CANID_WINCH       = 8;
         public static final int CANID_ARTICULATOR = 7;
         
@@ -82,8 +82,26 @@ public final class Constants {
         public static final double ARTICULATOR_GAINS_POSITION_I = 0;
         public static final double ARTICULATOR_GAINS_POSITION_D = 0;
 
-        public static final double ARTICULATOR_POSITION_DOWN = 20000; // TODO change this
-        public static final double ARTICULATOR_POSITION_UP   = 0;    // TODO change this
+        public static final int ARTICULATOR_POSITION_REACH = 20000; // TODO change this
+        public static final int ARTICULATOR_POSITION_VERTICAL   = 0;    // TODO change this
+
+        public static final int ARTICULATOR_IN_RANGE =     0;
+        public static final int ARTICULATOR_BELOW_RANGE = -1;
+        public static final int ARTICULATOR_ABOVE_RANGE =  1;
+
+        public static enum ArticulatorPositions {
+            VERTICAL(ARTICULATOR_POSITION_VERTICAL), REACH(ARTICULATOR_POSITION_REACH);
+
+            private int m_position;
+
+            ArticulatorPositions(int position){
+                m_position = position;
+            }
+
+            public int getPosition() {
+                return m_position;
+            }
+          }
     }
 
     public final class ClimberCommandConstants {

@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.FalconConstants;
+import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
 
 public class ClimberSubsystem extends SubsystemBase {
 
@@ -38,6 +39,9 @@ public class ClimberSubsystem extends SubsystemBase {
   private static final double WINCH_ARM_LENGTH = 24;
 
   private static final int PID_IDX = 0;
+
+  private boolean m_articulatorIsMoving = false;
+  private ArticulatorPositions m_articulatorPosition;
   
     
   /** Creates a new ClimberSubsystem. */
@@ -65,6 +69,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
 
     m_articulatorMotor.setInverted(false);
+    // m_articulatorMotor.setIdleMode(CANSparkMax.kBrake);
     /* for talonFX / talonSRX */
     // m_articulatorMotor.configFactoryDefault();
     // m_articulatorMotor.setNeutralMode(NeutralMode.Brake);
@@ -108,11 +113,28 @@ public class ClimberSubsystem extends SubsystemBase {
     return (m_winchMotor.isFwdLimitSwitchClosed() == 1); // todo test this
   }
 
+  // articulator
   public void setArticulatorPower (double power) {
     m_articulatorMotor.set(power);
   }
 
-  public void setArticulatorPosition (double position) {
+  public void setArticulatorPosition (ArticulatorPositions position) {
+    m_articulatorPosition = position;
+    m_articulatorIsMoving = true;
+    
+    // switch (position) {
+    //   case VERTICAL:
+    //     m_articulatorIsMoving = true;
+    //     setArticulatorPower(0.5);
+    //     break;
+    //   case REACH:
+    //     m_articulatorIsMoving = true;
+    //     setArticulatorPower(-0.5);
+    //     break;
+    
+    //   default:
+    //     break;
+    // }
     // m_articulatorMotor.setVoltage(position); // m_articulatorMotor.set(ControlMode.Position, position);  // todo convertion 
   }
 
@@ -131,10 +153,36 @@ public class ClimberSubsystem extends SubsystemBase {
     return 123456789; // m_articulatorMotor;
   }
 
+  public int getArticulatroPositionToTarget() {
+    if((getArticulatorPossition() <= m_articulatorPosition.getPosition() + 5) && (getArticulatorPossition() >= m_articulatorPosition.getPosition() - 5)) {
+      return ClimberConstants.ARTICULATOR_IN_RANGE;
+    } else if (getArticulatorPossition() < m_articulatorPosition.getPosition() - 5) {
+      return ClimberConstants.ARTICULATOR_BELOW_RANGE;
+    } else if (getArticulatorPossition() > m_articulatorPosition.getPosition() + 5) {
+      return ClimberConstants.ARTICULATOR_ABOVE_RANGE;
+    } 
+    return ClimberConstants.ARTICULATOR_IN_RANGE;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
 
+    // TODO check for limit swich
+
+    if (m_articulatorIsMoving) {
+      // check if it is at the target
+      //if(getArticulatorPossition() >= m_articulatorPosition.getPosition())
+      if(getArticulatroPositionToTarget() == ClimberConstants.ARTICULATOR_IN_RANGE) {
+        setArticulatorPower(0);
+        m_articulatorIsMoving = false;
+      } else if (getArticulatroPositionToTarget() == ClimberConstants.ARTICULATOR_ABOVE_RANGE) {
+        setArticulatorPower(-0.5);
+      } else if (getArticulatroPositionToTarget() == ClimberConstants.ARTICULATOR_BELOW_RANGE) {
+        setArticulatorPower(0.5);
+      }
+      // if it is, turn the power to 0
+    }
     log.debug("winch postition {}", this::getWinchPossition);
 
     if (winchAtBottomLimit()) {
