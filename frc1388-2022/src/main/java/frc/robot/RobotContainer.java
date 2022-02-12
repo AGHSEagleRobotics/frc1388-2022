@@ -53,18 +53,10 @@ public class RobotContainer {
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final DriveTrainSubsystem m_driveTrainSubsystem = new DriveTrainSubsystem(
-  //THIS is for the 2022 ROBOT  
     new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_FRONT), 
     new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_BACK), 
     new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_FRONT), 
     new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_BACK)
-
-    //This is for KNIGHTMARE !
-    // new WPI_VictorSPX(DriveTrainConstants.CANID_LEFT_FRONT), 
-    // new WPI_TalonSRX(DriveTrainConstants.CANID_LEFT_BACK), 
-    // new WPI_TalonSRX(DriveTrainConstants.CANID_RIGHT_FRONT), 
-    // new WPI_VictorSPX(DriveTrainConstants.CANID_RIGHT_BACK)
-    
   );
 
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
@@ -145,8 +137,8 @@ public class RobotContainer {
       .whenPressed(() -> m_shooterSubsystem.shooterEnabled(false));
 
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
-      .whenHeld( new Shoot(m_shooterSubsystem, m_transitionSubsystem));    
-      
+      .whenHeld( new Shoot(m_shooterSubsystem, m_transitionSubsystem));  
+    
     new JoystickButton(m_opController, XboxController.Button.kA.value)
       .whenPressed(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
 

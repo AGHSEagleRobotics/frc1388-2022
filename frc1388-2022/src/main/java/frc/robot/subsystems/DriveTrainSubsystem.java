@@ -27,10 +27,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     leftBack.follow(leftFront);
     rightBack.follow(rightFront);
-    //Inverting left motor
+
+    //Invert left motor
     leftFront.setInverted(true);
     leftBack.setInverted(true);
-
     //Don't invert right motor
     rightFront.setInverted(false);
     rightBack.setInverted(false);
@@ -54,36 +54,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
     addChild("DifferentialDrive", m_differentialDrive);
 
   }
-  
-  //constructor for working on Knightmare!!
-  // public DriveTrainSubsystem(WPI_VictorSPX leftFront, WPI_TalonSRX leftBack, WPI_TalonSRX rightFront, WPI_VictorSPX rightBack) {
-
-  //   leftBack.follow(leftFront);
-  //   rightBack.follow(rightFront);
-
-  //   //Needed to invert left side
-  //   leftFront.setInverted(false);
-  //   leftBack.setInverted(false);
-
-  //   m_differentialDrive = new DifferentialDrive(leftFront, rightFront);
-
-  //   //set differentialDrive parameters
-  //   m_differentialDrive.setSafetyEnabled(true);
-  //   m_differentialDrive.setExpiration(DriveTrainConstants.EXPIRATION);
-  //   m_differentialDrive.setMaxOutput(DriveTrainConstants.MAX_OUTPUT);
-  //   m_differentialDrive.setDeadband(DriveTrainConstants.DEADBAND); 
-
-  //   //set all motors to break
-  //   leftFront.setNeutralMode(NeutralMode.Brake);
-  //   leftBack.setNeutralMode(NeutralMode.Brake);
-  //   rightFront.setNeutralMode(NeutralMode.Brake);
-  //   rightBack.setNeutralMode(NeutralMode.Brake);
-    
-  //   //add to shuffle board
-  //   addChild("DifferentialDrive", m_differentialDrive);
-
-  // }
-
 
 
   public void arcadeDrive (double xSpeed, double zRotation) {
