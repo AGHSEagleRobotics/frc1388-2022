@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.revrobotics.REVPhysicsSim;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -106,4 +108,14 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
+
+  @Override
+  public void simulationInit() {
+    m_robotContainer.simulationInit(); 
+  }
+
+  public void simulationPeriodic() {
+    REVPhysicsSim.getInstance().run();
+  }
+
 }

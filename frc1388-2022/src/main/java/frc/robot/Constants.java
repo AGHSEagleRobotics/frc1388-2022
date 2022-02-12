@@ -64,15 +64,15 @@ public final class Constants {
     }
 
     public final class ClimberConstants {
-        public static final int CANID_WINCH       = 6;
+        public static final int CANID_WINCH = 6;
         public static final int CANID_ARTICULATOR = 7;
 
     }
 
     public final class IntakeConstants { 
         //FIXME 
-        public static final int CANID_WHEEL_MOTOR = -1; 
-        public static final int CANID_ARM_MOTOR = -1; 
+        public static final int CANID_WHEEL_MOTOR = 10; 
+        public static final int CANID_ARM_MOTOR = 9; 
 
         public static final double ARM_SPEED_DEPLOY = 0.5;
         public static final double WHEEL_SPEED_INTAKE = 1.0;
@@ -80,9 +80,10 @@ public final class Constants {
 
     public final class TransitionConstants {
         public static final int CANID_TRANSITION_MOTOR = 8;
-        public static final double TRANSITION_SPEED_FORWARD_FAST = 0.1; 
+        public static final double TRANSITION_SPEED_FORWARD_FAST = 0.5; 
         public static final double TRANSITION_SPEED_FORWARD_SLOW = 0.1; 
-        public static final double TRANSITION_SPEED_REVERSE = -0.1;
+        public static final double TRANSITION_SPEED_REVERSE_SLOW = -0.1;
+
     }
  
 }

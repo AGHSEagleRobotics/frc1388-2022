@@ -29,10 +29,11 @@ import frc.robot.subsystems.TransitionSubsystem;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -108,8 +109,9 @@ public class RobotContainer {
     );
 
     m_transitionSubsystem.setDefaultCommand(
-      new InstantCommand(
-        () -> m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_SLOW) 
+      new RunCommand(
+        () -> m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_SLOW),
+        m_transitionSubsystem 
        )
     );
       
@@ -150,8 +152,18 @@ public class RobotContainer {
 
     new JoystickButton(m_opController, XboxController.Button.kB.value)
       .whenPressed(new RetractIntake(m_intakeSubsystem));
+      
+      //Button for transition on op stick - to run transition if ball stuck?
+   new JoystickButton(m_opController, XboxController.Button.kY.value)
+      .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
+        TransitionConstants.TRANSITION_SPEED_REVERSE_SLOW),
+        m_transitionSubsystem);
 
-  //Button for operator - to run transition if ball stuck?
+      //Button for transition fast without prompting
+   new JoystickButton(m_opController, XboxController.Button.kX.value)
+     .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
+        TransitionConstants.TRANSITION_SPEED_FORWARD_FAST),
+        m_transitionSubsystem);
     
   }
 
@@ -162,5 +174,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return null;
+  }
+
+  public void simulationInit() {
+    m_transitionSubsystem.simulationInit();
   }
 }
