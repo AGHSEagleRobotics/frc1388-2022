@@ -1,8 +1,9 @@
-package frc.robot.shuffleboard;
+package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import com.eaglerobotics.lib.shuffleboard.Action;
 
-public enum ButtonAction implements Action{
+public enum ButtonAction implements Action {
   DEPLOY_INTAKE("Deploy Intake", null, 0, XboxController.Button.kA.value),
   RETRACT_INTAKE("Retract Intake", null, 0, XboxController.Button.kB.value);
 

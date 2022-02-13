@@ -1,6 +1,7 @@
-package frc.robot.shuffleboard;
+package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import com.eaglerobotics.lib.shuffleboard.Action;
 
 public enum AxisAction implements Action {
     

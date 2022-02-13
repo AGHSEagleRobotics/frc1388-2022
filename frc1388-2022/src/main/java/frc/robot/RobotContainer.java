@@ -8,19 +8,17 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveTrainConstants;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.shuffleboard.AxisAction;
-import frc.robot.shuffleboard.ButtonAction;
-import frc.robot.shuffleboard.ControllerBindings;
-import frc.robot.shuffleboard.OISubsystem;
+
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.eaglerobotics.lib.shuffleboard.ControllerBindings;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -34,7 +32,7 @@ public class RobotContainer {
 
   private final XboxController m_controller = new XboxController(0);
 
-  private final ControllerBindings<AxisAction, ButtonAction> m_controllerBindings = new ControllerBindings<>(AxisAction.class, ButtonAction.class, new OISubsystem(m_controller));
+  private final ControllerBindings<AxisAction, ButtonAction> m_controllerBindings = new ControllerBindings<>(AxisAction.class, ButtonAction.class, m_controller);
 
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
