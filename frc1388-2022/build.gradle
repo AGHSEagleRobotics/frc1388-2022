@@ -67,7 +67,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.1'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
 
-    implementation 'com.eaglerobotics:frc1388-lib:0.0.1'
+    implementation 'com.eaglerobotics:frc1388-lib:2022.0.1'
 
     roborioDebug wpi.java.deps.wpilibJniDebug(wpi.platforms.roborio)
     roborioDebug wpi.java.vendor.jniDebug(wpi.platforms.roborio)
