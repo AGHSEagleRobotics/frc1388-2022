@@ -51,7 +51,7 @@ repositories {
     maven {
         url = uri("https://maven.pkg.github.com/AGHSEagleRobotics/frc1388-lib")
         credentials {
-            password = "&#103;hp_9rK3rtYgK9sdxvEf1WoogTEHIQcSAQ3fId46"
+            password = "&#103;hp_sUWGg9DQ5NfWGeddNUohUgNaSDoZsJ3lSck0"
         }
     }
 }
