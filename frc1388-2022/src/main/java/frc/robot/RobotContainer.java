@@ -87,9 +87,10 @@ public class RobotContainer {
     m_climberSubsystem.setDefaultCommand(
       new ClimberCommand(
         m_climberSubsystem, 
-        () -> m_opController.getLeftY(), 
-        () -> m_opController.getRightY(),
-        () -> m_opController.getAButton()
+        () -> m_opController.getLeftY(),    // extend
+        () -> m_opController.getRightY(),   // articulate
+        () -> m_opController.getAButton(),  // vertical     (articulate)
+        () -> m_opController.getBButton()   // reach        (articulate)
       )
     );
     // set default commands
