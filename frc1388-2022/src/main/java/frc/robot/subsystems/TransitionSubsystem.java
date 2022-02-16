@@ -22,11 +22,6 @@ public class TransitionSubsystem extends SubsystemBase {
   public TransitionSubsystem(CANSparkMax transitionMotor) {
     m_transitionMotor = transitionMotor;
 
-    /*Not sure if needed, 
-    wanted to expiriment with neutral mode on a different motor
-
-    Is something equivalent to configFactoryDefault required?
-    */
     m_transitionMotor.restoreFactoryDefaults();
     m_transitionMotor.setIdleMode(IdleMode.kCoast);
   }

@@ -15,11 +15,13 @@ import frc.robot.Constants.TransitionConstants;
 import frc.robot.Constants.DriveTrainConstants;     // climber constats
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.USBConstants;            // USB
+import frc.robot.Dashboard.Position;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.RetractIntake;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.SetShooterTargetRPM;
+import frc.robot.commands.AutoLeave;
 import frc.robot.commands.ClimberCommand;           // climber command
 import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
@@ -43,7 +45,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-
+  private Dashboard m_Dashboard;
   // components
   public static XboxController m_driveController = new XboxController(USBConstants.DRIVE_CONTROLLER);
   public static XboxController m_opController = new XboxController(USBConstants.OP_CONTROLLER);
@@ -165,6 +167,23 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    Position position = m_Dashboard.getPosition();
+    switch (m_Dashboard.getObjective()) {
+      case LEAVETARMAC:
+      return new AutoLeave(
+        m_driveTrainSubsystem
+        );
+      //return new (Command Group)
+
+      case SHOOTBALL1:
+      
+      case PICKUPSHOOT2:
+
+      case DONOTHING:
+        break;
+      default:
+        break;
+    }
     return null;
   }
 
