@@ -22,8 +22,18 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
   private boolean m_isReverse = false;
 
+  private final WPI_TalonFX m_leftFront;
+  private final WPI_TalonFX m_leftBack;
+  private final WPI_TalonFX m_rightFront;
+  private final WPI_TalonFX m_rightBack;
+
   /** Creates a new DriveTrainSubsystem. */
   public DriveTrainSubsystem(WPI_TalonFX leftFront, WPI_TalonFX leftBack, WPI_TalonFX rightFront, WPI_TalonFX rightBack) {
+
+    m_leftFront = leftFront;
+    m_leftBack = leftBack;
+    m_rightFront = rightFront;
+    m_rightBack = rightBack;
 
     leftBack.follow(leftFront);
     rightBack.follow(rightFront);
@@ -55,6 +65,13 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
   }
 
+  public void resetLeftEncoder(){
+    m_leftFront.setSelectedSensorPosition(0);
+  }
+
+  public void resetRightEncoder(){
+    m_rightFront.setSelectedSensorPosition(0);
+  }
 
   public void arcadeDrive (double xSpeed, double zRotation) {
     if (!m_isReverse) {

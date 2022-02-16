@@ -77,5 +77,10 @@ public final class Constants {
         public static final double TRANSITION_SPEED_REVERSE_SLOW = -0.1;
 
     }
+
+    public final class AutoMoveConstants {
+        //TEST P VALUE LATER
+        public static final double P_VALUE = 0.03;
+    }
  
 }
