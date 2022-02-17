@@ -7,6 +7,7 @@ package frc.robot.commands;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.Constants;
@@ -60,6 +61,7 @@ public class ClimberCommand extends CommandBase {
 
     deadband = MathUtil.applyDeadband(m_articulateAxis.get(), ClimberCommandConstants.DEADBAND);
     System.out.println("deadband" + deadband);
+    SmartDashboard.putNumber("articulator input", deadband);
     if (deadband != 0) {
       m_climberSubsystem.setArticulatorPower(Math.copySign(Math.pow(deadband, 2), deadband));
     } else {
@@ -68,6 +70,10 @@ public class ClimberCommand extends CommandBase {
       } else if (m_articulatePositionReach.get()) {
         m_climberSubsystem.setArticulatorReach();    //m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.REACH);
       }
+    }
+
+    if (m_climberSubsystem.getArticulatorVerticalLimit()) {
+      m_climberSubsystem.setArticulatorPower(0);
     }
 
 

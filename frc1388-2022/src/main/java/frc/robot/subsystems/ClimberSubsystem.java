@@ -21,6 +21,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
@@ -53,6 +54,8 @@ public class ClimberSubsystem extends SubsystemBase {
   private SparkMaxPIDController m_articulatorPidController;
   private SparkMaxLimitSwitch m_articulatorVerticalLimitSwitch;
 
+  private DigitalInput m_reverseArticulatorLimitSwitch;
+
   
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem(WPI_TalonFX winchMotor, CANSparkMax articulatorMotor) {
@@ -78,7 +81,9 @@ public class ClimberSubsystem extends SubsystemBase {
     m_winchMotor.config_kI(PID_IDX, ClimberConstants.WINCH_GAINS_VELOCITY_I);
     m_winchMotor.config_kD(PID_IDX, ClimberConstants.WINCH_GAINS_VELOCITY_D);
 
-    // articulator
+    // =========== //
+    // articulator //
+    // =========== //
     m_articulatorMotor.restoreFactoryDefaults();
     m_articulatorMotor.setInverted(false);
     m_articulatorMotor.setIdleMode(IdleMode.kBrake); //setNeutralMode(NeutralMode.Brake);
@@ -97,6 +102,9 @@ public class ClimberSubsystem extends SubsystemBase {
     m_articulatorPidController.setI  (ClimberConstants.ARTICULATOR_GAINS_POSITION_I);
     m_articulatorPidController.setD  (ClimberConstants.ARTICULATOR_GAINS_POSITION_D);
     m_articulatorPidController.setFF (ClimberConstants.ARTICULATOR_GAINS_POSITION_F);
+
+    m_reverseArticulatorLimitSwitch = new DigitalInput(3);
+
 
     // m_articulatorPidController.setP(0);
     // m_articulatorMotor.setIdleMode(CANSparkMax.kBrake);
@@ -152,6 +160,11 @@ public class ClimberSubsystem extends SubsystemBase {
     m_articulatorPidController.setReference(ArticulatorPositions.REACH.getPosition(), CANSparkMax.ControlType.kPosition);
   }
 
+  public boolean getArticulatorVerticalLimit() {
+    return m_reverseArticulatorLimitSwitch.get();
+  }
+
+  // not being used
   public void setArticulatorPosition (ArticulatorPositions position) {
     m_articulatorPosition = position;
     m_articulatorIsMoving = true;
@@ -180,13 +193,15 @@ public class ClimberSubsystem extends SubsystemBase {
     }
   }
   */
-
+  
+  // not being used
   /** returns sensor units */
   public double getArticulatorTargetPossition() {
     return m_articulatorEncoder.getPosition() * 42; // TODO change 42 to sensor units per rev
     // return m_articulatorEncoder.getVelocity();
   } 
 
+  // not being used
   public int getArticulatroPositionToTarget() {
     if((getArticulatorTargetPossition() <= m_articulatorPosition.getPosition() + 5) && (getArticulatorTargetPossition() >= m_articulatorPosition.getPosition() - 5)) {
       return ClimberConstants.ARTICULATOR_IN_RANGE;
@@ -208,6 +223,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
     // TODO check for limit swich
 
+  // not being used
     if (m_articulatorIsMoving) {
       // check if it is at the target
       //if(getArticulatorPossition() >= m_articulatorPosition.getPosition())
@@ -231,9 +247,12 @@ public class ClimberSubsystem extends SubsystemBase {
       
     }
 
-    if (articulatorAtVerticalLimit()) {
+    if (getArticulatorVerticalLimit()) {
       m_articulatorEncoder.setPosition(0);
+      // setArticulatorVertical();
+      // setArticulatorPower(0);
     }
+    SmartDashboard.putBoolean("DIO4", m_reverseArticulatorLimitSwitch.get());
 
   }
 }

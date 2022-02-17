@@ -82,7 +82,7 @@ public final class Constants {
         public static final double ARTICULATOR_GAINS_POSITION_I = 0;
         public static final double ARTICULATOR_GAINS_POSITION_D = 0;
 
-        public static final int ARTICULATOR_POSITION_REACH    = 10;  // rotations  // TODO change this
+        public static final int ARTICULATOR_POSITION_REACH    = 5;  // rotations  // TODO change this
         public static final int ARTICULATOR_POSITION_VERTICAL = 0;   // rotations  // TODO change this
 
         public static final int ARTICULATOR_IN_RANGE    =  0;
