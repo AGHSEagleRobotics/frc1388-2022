@@ -4,12 +4,18 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.AutoMoveConstants;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class AutoLeave extends CommandBase {
 
   private final DriveTrainSubsystem m_driveTrainSubsystem;
+  private final Timer m_timer = new Timer();
+
+  private final PIDController m_PidController = new PIDController(AutoMoveConstants.P_VALUE, 0, 0);
 
   /** Creates a new AutoLeave. */
   public AutoLeave(DriveTrainSubsystem driveTrainSubsystem) {
@@ -17,7 +23,10 @@ public class AutoLeave extends CommandBase {
   m_driveTrainSubsystem = driveTrainSubsystem;
 
   addRequirements(driveTrainSubsystem);
+
+  m_PidController.setTolerance(0.5);
   }
+
 
   /*GOALS:
   Leave Tarmac length
@@ -30,11 +39,15 @@ public class AutoLeave extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_timer.start();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (m_timer.hasElapsed(2))
+    m_driveTrainSubsystem.getCurrentCommand(); //I want it to do the default command up until 2, not like this
   }
 
   // Called once the command ends or is interrupted.

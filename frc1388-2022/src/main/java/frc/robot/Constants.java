@@ -81,6 +81,7 @@ public final class Constants {
     public final class AutoMoveConstants {
         //TEST P VALUE LATER
         public static final double P_VALUE = 0.03;
+        public static final int USB_CAMERACOLOR = 0; //Not confirmed
     }
  
 }
