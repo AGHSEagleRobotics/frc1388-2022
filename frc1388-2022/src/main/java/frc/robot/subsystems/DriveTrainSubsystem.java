@@ -101,6 +101,17 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_isReverse = !m_isReverse;
   }
 
+  public double getRightEncoderDistance(){
+    return m_rightFront.getSelectedSensorPosition() 
+    / DriveTrainConstants.encoderDistanceRatio 
+    * DriveTrainConstants.WHEEL_CIRCUMFERENCE;
+  }
+  public double getLeftEncoderDistance(){
+    return m_leftFront.getSelectedSensorPosition() 
+    / DriveTrainConstants.encoderDistanceRatio 
+    * DriveTrainConstants.WHEEL_CIRCUMFERENCE;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

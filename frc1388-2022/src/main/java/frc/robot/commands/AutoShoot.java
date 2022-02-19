@@ -15,7 +15,7 @@ public class AutoShoot extends CommandBase {
   
   private final DriveTrainSubsystem m_driveTrainSubsystem;
   private final ShooterFeederSubsystem m_ShooterFeederSubsystem;
-  private final Timer timer = new Timer();
+  private final Timer m_timer = new Timer();
 
   private final PIDController m_PidController = new PIDController(AutoMoveConstants.P_VALUE, 0, 0);
 
@@ -37,9 +37,7 @@ public class AutoShoot extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    m_timer.start();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

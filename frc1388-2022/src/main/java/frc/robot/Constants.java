@@ -24,11 +24,22 @@ public final class Constants {
         public static final double MAX_OUTPUT = 1.0;
         public static final double DEADBAND = 0.2;
 
-        //THIS is for the 2022 ROBOT
         public static final int CANID_LEFT_FRONT    = 1;
         public static final int CANID_LEFT_BACK     = 2;
         public static final int CANID_RIGHT_FRONT   = 3;
         public static final int CANID_RIGHT_BACK    = 4;
+
+        //Encoder stuff
+        private final static double WHEEL_DIAMETER = 6.0; //FIXME make range value?
+        private final static double COUNTS_PER_REV = 2048;
+        private final static double FALCON_GEAR_RATIO = 4.67;
+        private final static double WHEEL_TO_SPROCKETS_DRIVE_RATIO = 5/2;
+        public final static double encoderDistanceRatio = 
+           COUNTS_PER_REV *
+           FALCON_GEAR_RATIO *
+           WHEEL_TO_SPROCKETS_DRIVE_RATIO;
+
+        public final static double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
     }
 
     public final class ShooterConstants {
