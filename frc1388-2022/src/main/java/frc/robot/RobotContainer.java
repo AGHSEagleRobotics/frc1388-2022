@@ -15,6 +15,7 @@ import frc.robot.Constants.TransitionConstants;
 import frc.robot.Constants.DriveTrainConstants;     // climber constats
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.USBConstants;            // USB
+import frc.robot.Dashboard.Objective;
 import frc.robot.Dashboard.Position;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Shoot;
@@ -168,6 +169,23 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     Position position = m_Dashboard.getPosition();
+    switch (m_Dashboard.getPosition()) {
+      case POSITION1:
+      return new AutoLeave(
+        m_driveTrainSubsystem
+        );
+      //return new (Command Group)
+
+      case POSITION2:
+      
+      case POSITION3:
+
+      case POSITION4:
+        break;
+      default:
+        break;
+    }
+    Objective Objective = m_Dashboard.getObjective();
     switch (m_Dashboard.getObjective()) {
       case LEAVETARMAC:
       return new AutoLeave(
@@ -180,12 +198,12 @@ public class RobotContainer {
       case PICKUPSHOOT2:
 
       case DONOTHING:
-        break;
-      default:
-        break;
-    }
-    return null;
+
   }
+    return null;
+
+    }
+  
 
   public void simulationInit() {
     m_transitionSubsystem.simulationInit();
