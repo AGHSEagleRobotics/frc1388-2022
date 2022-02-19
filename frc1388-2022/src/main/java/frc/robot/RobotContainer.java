@@ -102,11 +102,17 @@ public class RobotContainer {
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
       .whenPressed(() -> m_driveTrainSubsystem.toggleReverse());
 
-    new JoystickButton(m_driveController, XboxController.Button.kX.value)
-      .whenPressed(new SetShooterTargetRPM(m_ShooterSubsystem, 1000.0));
+    // new JoystickButton(m_driveController, XboxController.Button.kX.value)
+    //   .whenPressed(new SetShooterTargetRPM(m_ShooterSubsystem, 1000.0));
 
+    // new JoystickButton(m_driveController, XboxController.Button.kY.value)
+    //   .whenPressed(new SetShooterTargetRPM(m_ShooterSubsystem, 0));
+
+    new JoystickButton(m_driveController, XboxController.Button.kX.value)
+      .whenPressed(() -> m_ShooterSubsystem.shooterRpmStepIncrease());
+    
     new JoystickButton(m_driveController, XboxController.Button.kY.value)
-      .whenPressed(new SetShooterTargetRPM(m_ShooterSubsystem, 0));
+      .whenPressed(() -> m_ShooterSubsystem.shooterRpmStepDecrease());
 
     new JoystickButton(m_driveController, XboxController.Button.kA.value)
       .whenPressed(() -> m_ShooterSubsystem.shooterEnabled(true));
