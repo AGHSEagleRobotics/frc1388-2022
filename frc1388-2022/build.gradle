@@ -101,12 +101,40 @@ sourceSets {
    }
 }
 
+def runCommand(String... args) {
+    new ByteArrayOutputStream().withStream { os ->
+        exec {
+            commandLine args
+            standardOutput = os
+        }
+        os.toString().strip()
+    }
+}
+
 task generateBuildInfo {
     doLast {
-        exec {
-            // commandLine "GitJavaVersion.cmd", ">src/main/java/frc/robot/BuildInfo.java"
-            commandLine "./generateBuildInfo.sh", "${buildDir}/generated/sources/main/java/frc/robot/BuildInfo.java"
+        def gitHash = runCommand 'git', 'log', '-1', '--pretty=format:%h'
+        def gitBranch
+        try {
+            gitBranch = runCommand 'git', 'symbolic-ref', '--short', 'HEAD'
+        } catch(ignored) {
+            gitBranch = "no branch"
         }
+        def gitStatus = runCommand 'git', 'diff', '--shortstat', 'HEAD'
+        def buildDate = new Date().format('yyyy-MM-dd')
+        def buildTime = new Date().format('HH:mm:ss z')
+
+        def buildInfoClass = file("$buildDir/generated/sources/main/java/frc/robot/BuildInfo.java")
+        file("$buildDir/generated/sources/main/java/frc/robot").mkdirs()
+        buildInfoClass.text = """
+package frc.robot;
+public class BuildInfo {
+  public static final String GIT_VERSION = "$gitHash";
+  public static final String GIT_BRANCH = "$gitBranch";
+  public static final String GIT_STATUS = "$gitStatus";
+  public static final String BUILD_DATE = "$buildDate";
+  public static final String BUILD_TIME = "$buildTime";
+}""".strip()
     }
 }
 
