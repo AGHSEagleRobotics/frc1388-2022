@@ -17,11 +17,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.SetShooterTargetRPM;
-import pabeles.concurrency.ConcurrencyOps.Reset;
-import frc.robot.Constants.ShooterConstants;
 
-public class ShooterSubsystem extends SubsystemBase {
+public class ShooterFeederSubsystem extends SubsystemBase {
 
   private final WPI_VictorSPX m_feederMotor;
   public enum FeederFunctions {
@@ -35,8 +32,7 @@ public class ShooterSubsystem extends SubsystemBase {
   // is the motor enabled
   private boolean m_shooterEnabled = false;
   // is the shooter at the right rpm
-  private boolean m_shooterSpeedIsReady;
-  private int m_shooterSpeedTest = 0;
+  private int m_timeSpendAtTargetSpeed = 0;
   private static final int PID_IDX = 0;
 
   private Timer m_shooterCooldownTimer;
@@ -47,7 +43,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private final int COUNTS_PER_REV = 2048;
 
   /** Creates a new ShooterSubsystem. */
-  public ShooterSubsystem(WPI_TalonFX shooterMotor, WPI_VictorSPX feederMotor)  {
+  public ShooterFeederSubsystem(WPI_TalonFX shooterMotor, WPI_VictorSPX feederMotor)  {
     m_shooterMotor = shooterMotor;
     m_feederMotor = feederMotor;
 
@@ -65,11 +61,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
     //Settings for feeder motor
     feederMotor.setNeutralMode(NeutralMode.Brake);
-
     m_shooterCooldownTimer = new Timer();
 
     addChild("ShooterMotor", m_shooterMotor);
   } // end constructor
+
 
   public void shooterEnabled (boolean enabled) { 
     if (enabled) {
@@ -79,18 +75,23 @@ public class ShooterSubsystem extends SubsystemBase {
       m_shooterCooldownTimer.start(); // start cooldown timer
     }
   }
+  
 
   public void setTargetRPM (double rpm) {
+
     m_shooterTargetRPM = rpm;
   }
 
   public double getTargetRPM () {
+
     return m_shooterTargetRPM;
   }
 
   public void setRelativeTargetRPM (double deltaRPM) {
+
     m_shooterTargetRPM = m_shooterTargetRPM + deltaRPM;
   }
+
 
   public void shooterRpmStepIncrease() { // increase
     if (m_shooterTargetRPM + ShooterConstants.SHOOTER_RPM_STEP_CHANGE <= ShooterConstants.MAX_SHOOTER_RPM) {
@@ -120,6 +121,7 @@ public class ShooterSubsystem extends SubsystemBase {
         m_feederMotor.set(ShooterConstants.REVERSE_FEEDER_SPEED);
         break;
 
+      //Case OFF not really needed, maybe delete
       case OFF:
         m_feederMotor.set(ShooterConstants.FEEDER_SPEED_OFF);
         break;
@@ -127,20 +129,12 @@ public class ShooterSubsystem extends SubsystemBase {
       default:
         m_feederMotor.set(ShooterConstants.FEEDER_SPEED_OFF);
         break;
-
     }
+  }
     
-  }
-  
   public boolean shooterSpeedIsReady() {
-    if (m_shooterSpeedTest >= ShooterConstants.RPM_TEST_ITERATIONS) {
-      return true;
-    } else {
-      return false;
-    }
+    return m_timeSpendAtTargetSpeed >= ShooterConstants.ITERATIONS_AT_TARGET_RPM;
   }
-
-
 
   @Override
   public void periodic() {
@@ -162,9 +156,9 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     if (Math.abs(m_shooterTargetRPM - getRealRPM()) < ShooterConstants.RPM_RANGE) {
-        m_shooterSpeedTest++;
+        m_timeSpendAtTargetSpeed++;
     } else {
-      m_shooterSpeedTest = 0;
+      m_timeSpendAtTargetSpeed = 0;
     }
 
     SmartDashboard.putNumber("shooter real rpm", getRealRPM());
@@ -175,6 +169,7 @@ public class ShooterSubsystem extends SubsystemBase {
     // System.out.println(m_shooterEnabled);
 
   }  // END periodic()
-  
+
+
 
 } // END class ShooterSubsystem

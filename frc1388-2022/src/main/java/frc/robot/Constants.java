@@ -25,10 +25,10 @@ public final class Constants {
         public static final double DEADBAND = 0.2;
 
         //THIS is for the 2022 ROBOT
-        public static final int CANID_LEFT_FRONT    = -1;
-        public static final int CANID_LEFT_BACK     = -1;
-        public static final int CANID_RIGHT_FRONT   = -1;
-        public static final int CANID_RIGHT_BACK    = -1;
+        public static final int CANID_LEFT_FRONT    = 1;
+        public static final int CANID_LEFT_BACK     = 2;
+        public static final int CANID_RIGHT_FRONT   = 3;
+        public static final int CANID_RIGHT_BACK    = 4;
 
 
         //This is for KNIGHTMARE!
@@ -49,7 +49,7 @@ public final class Constants {
         public static final double GAINS_VELOCITY_D = 0;
 
         public static final double RPM_RANGE = 30;              // EX. 30 = +/-30 rpm
-        public static final double RPM_TEST_ITERATIONS = 20;    // the amount of times rpm needs to be between +/- RPM_RANGE for shooterSpeedIsReady() to return true
+        public static final double ITERATIONS_AT_TARGET_RPM = 20;    // the amount of times rpm needs to be between +/- RPM_RANGE for shooterSpeedIsReady() to return true
 
         public static final double SHOOTER_COOLDOWN_TIME = 0.5; // time in seconds to wait before shooter is turned off
         
@@ -67,6 +67,15 @@ public final class Constants {
         public static final int CANID_WINCH       = 8;
         public static final int CANID_ARTICULATOR = 7;
 
+    }
+
+    public final class IntakeConstants { 
+        //FIXME 
+        public static final int CANID_WHEEL_MOTOR = -1; 
+        public static final int CANID_ARM_MOTOR = -1; 
+
+        public static final double ARM_SPEED_DEPLOY = 0.5;
+        public static final double WHEEL_SPEED_INTAKE = 1.0;
     }
  
 }

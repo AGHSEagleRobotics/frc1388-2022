@@ -73,6 +73,10 @@ dependencies {
     simulationRelease wpi.sim.enableRelease()
 
     testImplementation 'junit:junit:4.12'
+
+    exec {
+        commandLine "GitJavaVersion.cmd", ">src/main/java/frc/robot/BuildInfo.java"
+    }
 }
 
 // Simulation configuration (e.g. environment variables).

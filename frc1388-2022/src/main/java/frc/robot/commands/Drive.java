@@ -42,10 +42,16 @@ public class Drive extends CommandBase {
   @Override
   public void execute() {
 
+    double speed = -m_driveLeftStickYAxis.get();
+    double rotation = m_driveRightStickXAxis.get();
+    
+    double leftSpeed = -m_driveLeftStickYAxis.get();
+    double rightSpeed = -m_driveRightStickYAxis.get();
+    
     //One of three drives to choose from
-    m_driveTrainSubsystem.curvatureDrive(-m_driveLeftStickYAxis.get(), m_driveRightStickXAxis.get(), true);
-    // m_driveTrainSubsystem.arcadeDrive(-m_driveLeftStickYAxis.get(), m_driveRightStickXAxis.get());
-    // m_driveTrainSubsystem.tankDrive(-m_driveLeftStickYAxis.get(), -m_driveRightStickYAxis.get());
+    m_driveTrainSubsystem.curvatureDrive( speed, rotation, true);
+    // m_driveTrainSubsystem.arcadeDrive(speed, rotation);
+    // m_driveTrainSubsystem.tankDrive(leftSpeed, rightSpeed);
 
   }
 
