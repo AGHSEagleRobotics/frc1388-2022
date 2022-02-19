@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -24,6 +25,10 @@ public class AutoMove extends CommandBase {
   public enum mode {
     kTimeDrive, kDistanceDrive
   }
+
+  /*int Timer() {
+    return 2;
+  } */
 
   /** Creates a new AutoMove. */
   public AutoMove(DriveTrainSubsystem driveTrainSubsystem, double setPoint, double speed) {
@@ -51,8 +56,10 @@ public class AutoMove extends CommandBase {
     double speed;
     double leftEncoderDistance = m_driveTrainSubsystem.getLeftEncoderDistance();
     speed = m_pidController.calculate(leftEncoderDistance);
+    speed = MathUtil.clamp(speed, -m_speed, m_speed);
     m_driveTrainSubsystem.curvatureDrive(speed, speed, false);
-    /* getRequirements(m_timer);
+  
+    /* getRequirements();
     if (m_timer > AUTON_PERIOD?) */
     //trying to stop robot after period competed
   }
