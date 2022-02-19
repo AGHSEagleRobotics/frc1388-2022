@@ -9,8 +9,12 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.fasterxml.jackson.databind.deser.DataFormatReaders.Match;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
@@ -58,15 +62,17 @@ public class ShooterFeederSubsystem extends SubsystemBase {
     //Settings for feeder motor
     feederMotor.setNeutralMode(NeutralMode.Brake);
     m_shooterCooldownTimer = new Timer();
-    m_shooterCooldownTimer.start();
+
+    addChild("ShooterMotor", m_shooterMotor);
   } // end constructor
 
 
   public void shooterEnabled (boolean enabled) { 
     if (enabled) {
       m_shooterEnabled = true;
+      // System.out.println("enabling shooter");
     } else { // if false
-      m_shooterCooldownTimer.reset(); // start cooldown timer
+      m_shooterCooldownTimer.start(); // start cooldown timer
     }
   }
   
@@ -136,13 +142,17 @@ public class ShooterFeederSubsystem extends SubsystemBase {
 
     if (m_shooterCooldownTimer.hasElapsed(ShooterConstants.SHOOTER_COOLDOWN_TIME))  { // don't turn off shooter until some time has elapsed
       m_shooterEnabled = false;
+      m_shooterCooldownTimer.stop();
+      m_shooterCooldownTimer.reset();
     }
 
     if (m_shooterEnabled) {
       double speed = m_shooterTargetRPM * COUNTS_PER_REV / SENSOR_CYCLES_PER_SECOND / SEC_PER_MIN;
-      m_shooterMotor.set(ControlMode.Velocity, speed);
+      m_shooterMotor.set(ControlMode.Velocity, speed);      
+      // System.out.println("target rpm" + m_shooterSpeedTest);
     } else {
       m_shooterMotor.set(0);
+      // System.out.println("0");
     }
 
     if (Math.abs(m_shooterTargetRPM - getRealRPM()) < ShooterConstants.RPM_RANGE) {
@@ -150,6 +160,13 @@ public class ShooterFeederSubsystem extends SubsystemBase {
     } else {
       m_timeSpendAtTargetSpeed = 0;
     }
+
+    SmartDashboard.putNumber("shooter real rpm", getRealRPM());
+    SmartDashboard.putNumber("shooter target rpm", getTargetRPM());
+    SmartDashboard.putNumber("shooter temperature F", (m_shooterMotor.getTemperature() * 9/5) + 32);
+
+    // System.out.println(m_shooterCooldownTimer.get());
+    // System.out.println(m_shooterEnabled);
 
   }  // END periodic()
 

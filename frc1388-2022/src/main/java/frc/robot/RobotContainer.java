@@ -19,7 +19,6 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.RetractIntake;
 import frc.robot.commands.DeployIntake;
-import frc.robot.commands.SetShooterTargetRPM;
 import frc.robot.commands.ClimberCommand;           // climber command
 import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
@@ -127,6 +126,9 @@ public class RobotContainer {
     new JoystickButton(m_driveController, XboxController.Button.kX.value)
       .whenPressed(() -> m_shooterSubsystem.shooterRpmStepIncrease());
 
+    new JoystickButton(m_driveController, XboxController.Button.kX.value)
+      .whenPressed(() -> m_shooterSubsystem.shooterRpmStepIncrease());
+    
     new JoystickButton(m_driveController, XboxController.Button.kY.value)
       .whenPressed(() -> m_shooterSubsystem.shooterRpmStepDecrease());
 

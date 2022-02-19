@@ -32,11 +32,11 @@ public final class Constants {
     }
 
     public final class ShooterConstants {
-        public static final int CANID_SHOOTER_MOTOR = 6;
-        public static final int CANID_FEEDER_MOTOR  = 7;
+        public static final int CANID_SHOOTER_MOTOR = 5;
+        public static final int CANID_FEEDER_MOTOR  = 6;
 
-        public static final double GAINS_VELOCITY_F = 0;
-        public static final double GAINS_VELOCITY_P = 0.1; // using motor for testing
+        public static final double GAINS_VELOCITY_F = 0.047;
+        public static final double GAINS_VELOCITY_P = 0.25; // using motor for testing
         public static final double GAINS_VELOCITY_I = 0;
         public static final double GAINS_VELOCITY_D = 0;
 
@@ -56,7 +56,7 @@ public final class Constants {
     }
 
     public final class ClimberConstants {
-        public static final int CANID_WINCH = 6;
+        public static final int CANID_WINCH       = 8;
         public static final int CANID_ARTICULATOR = 7;
 
     }
