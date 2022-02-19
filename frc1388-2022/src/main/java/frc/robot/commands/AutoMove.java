@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
@@ -14,6 +16,7 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 public class AutoMove extends CommandBase {
 
   private DriveTrainSubsystem m_driveTrainSubsystem;
+  private final Mode m_mode;
   private final double m_setPoint;
   private final double m_speed;
   private final Timer m_timer = new Timer();
@@ -22,7 +25,7 @@ public class AutoMove extends CommandBase {
   private final PIDController m_pidController = new PIDController(AutoMoveConstants.P_VALUE, 0, 0);
 
   //do I need a mode for this?
-  public enum mode {
+  public enum Mode {
     kTimeDrive, kDistanceDrive
   }
 
@@ -31,10 +34,11 @@ public class AutoMove extends CommandBase {
   } */
 
   /** Creates a new AutoMove. */
-  public AutoMove(DriveTrainSubsystem driveTrainSubsystem, double setPoint, double speed) {
+  public AutoMove(DriveTrainSubsystem driveTrainSubsystem, double setPoint, double speed, Mode mode) {
     m_driveTrainSubsystem = driveTrainSubsystem;
     m_setPoint = setPoint;
     m_speed = speed;
+    m_mode = mode;
     // Use addRequirements() here to declare subsystem dependencies.
 
     addRequirements(driveTrainSubsystem);
