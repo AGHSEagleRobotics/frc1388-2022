@@ -40,7 +40,7 @@ public final class Constants {
         public static final double GAINS_VELOCITY_I = 0;
         public static final double GAINS_VELOCITY_D = 0;
 
-        public static final double RPM_RANGE = 30;              // EX. 30 = +/-30 rpm
+        public static final double RPM_RANGE = 200;              // EX. 30 = +/-30 rpm
         public static final double ITERATIONS_AT_TARGET_RPM = 20;    // the amount of times rpm needs to be between +/- RPM_RANGE for shooterSpeedIsReady() to return true
 
         public static final double SHOOTER_COOLDOWN_TIME = 0.5; // time in seconds to wait before shooter is turned off
@@ -71,10 +71,10 @@ public final class Constants {
     }
 
     public final class TransitionConstants {
-        public static final int CANID_TRANSITION_MOTOR = 8;
-        public static final double TRANSITION_SPEED_FORWARD_FAST = 0.5; 
-        public static final double TRANSITION_SPEED_FORWARD_SLOW = 0.1; 
-        public static final double TRANSITION_SPEED_REVERSE_SLOW = -0.1;
+        public static final int CANID_TRANSITION_MOTOR = 11;
+        public static final double TRANSITION_SPEED_FORWARD_FAST = 1; 
+        public static final double TRANSITION_SPEED_FORWARD_SLOW = 0.2; 
+        public static final double TRANSITION_SPEED_REVERSE_SLOW = -0.2;
 
     }
  

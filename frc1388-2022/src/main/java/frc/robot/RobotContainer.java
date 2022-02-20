@@ -67,7 +67,7 @@ public class RobotContainer {
 
   private final ShooterFeederSubsystem m_shooterSubsystem = new ShooterFeederSubsystem(
     new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR),
-    new WPI_VictorSPX(ShooterConstants.CANID_FEEDER_MOTOR)
+    new CANSparkMax(ShooterConstants.CANID_FEEDER_MOTOR, MotorType.kBrushless)
   );
 
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(
