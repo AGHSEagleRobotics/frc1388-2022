@@ -112,6 +112,10 @@ def runCommand(String... args) {
 }
 
 task generateBuildInfo {
+    doFirst {
+        // Make sure old BuildInfo.java doesn't exist
+        delete(file("$projectDir/src/main/java/frc/robot/BuildInfo.java"))
+    }
     doLast {
         def gitHash = runCommand 'git', 'log', '-1', '--pretty=format:%h'
         def gitBranch
