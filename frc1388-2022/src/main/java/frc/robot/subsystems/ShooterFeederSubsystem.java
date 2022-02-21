@@ -10,6 +10,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.fasterxml.jackson.databind.deser.DataFormatReaders.Match;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Timer;
@@ -20,7 +22,7 @@ import frc.robot.Constants.ShooterConstants;
 
 public class ShooterFeederSubsystem extends SubsystemBase {
 
-  private final WPI_VictorSPX m_feederMotor;
+  private final CANSparkMax m_feederMotor;
   public enum FeederFunctions {
     FORWARD, REVERSE, OFF
   }
@@ -43,7 +45,7 @@ public class ShooterFeederSubsystem extends SubsystemBase {
   private final int COUNTS_PER_REV = 2048;
 
   /** Creates a new ShooterSubsystem. */
-  public ShooterFeederSubsystem(WPI_TalonFX shooterMotor, WPI_VictorSPX feederMotor)  {
+  public ShooterFeederSubsystem(WPI_TalonFX shooterMotor, CANSparkMax feederMotor)  {
     m_shooterMotor = shooterMotor;
     m_feederMotor = feederMotor;
 
@@ -60,7 +62,7 @@ public class ShooterFeederSubsystem extends SubsystemBase {
     m_shooterMotor.config_kD(PID_IDX, ShooterConstants.GAINS_VELOCITY_D);
 
     //Settings for feeder motor
-    feederMotor.setNeutralMode(NeutralMode.Brake);
+    feederMotor.setIdleMode(IdleMode.kBrake);
     m_shooterCooldownTimer = new Timer();
 
     addChild("ShooterMotor", m_shooterMotor);

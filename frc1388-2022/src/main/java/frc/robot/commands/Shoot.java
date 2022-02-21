@@ -5,17 +5,21 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.TransitionConstants;
 import frc.robot.subsystems.ShooterFeederSubsystem;
+import frc.robot.subsystems.TransitionSubsystem;
 import frc.robot.subsystems.ShooterFeederSubsystem.FeederFunctions;
 
 public class Shoot extends CommandBase {
   private final ShooterFeederSubsystem m_shooterSubsystem;
+  private final TransitionSubsystem m_transitionSubsystem;
   /** Creates a new ShooterCommands. */
-  public Shoot(ShooterFeederSubsystem shooterSubsystem) {
+  public Shoot(ShooterFeederSubsystem shooterSubsystem, TransitionSubsystem transitionSubsystem) {
     m_shooterSubsystem = shooterSubsystem;
+    m_transitionSubsystem = transitionSubsystem;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooterSubsystem);
+    addRequirements(shooterSubsystem, transitionSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -34,8 +38,10 @@ public class Shoot extends CommandBase {
     if (m_shooterSubsystem.shooterSpeedIsReady()) {
       //run feeder motor
       m_shooterSubsystem.setFeederFunction(FeederFunctions.FORWARD);
+      m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_FAST);
     } else {
       m_shooterSubsystem.setFeederFunction(FeederFunctions.OFF);
+      m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_SLOW);
     }
   }
 
@@ -46,6 +52,7 @@ public class Shoot extends CommandBase {
     m_shooterSubsystem.setFeederFunction(FeederFunctions.OFF);
     //Turn off shooter motor
     m_shooterSubsystem.shooterEnabled(false);
+    m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_SLOW);
   }
 
   // Returns true when the command should end.

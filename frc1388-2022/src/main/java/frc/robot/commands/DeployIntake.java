@@ -6,18 +6,22 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.TransitionConstants;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.TransitionSubsystem;
 
 public class DeployIntake extends CommandBase {
 
   private final IntakeSubsystem m_intakeSubsystem;
+  private final TransitionSubsystem m_transitionSubsystem;
 
   /** Creates a new IntakeCommand. */
-  public DeployIntake (IntakeSubsystem intakeSubsystem) { 
+  public DeployIntake (IntakeSubsystem intakeSubsystem, TransitionSubsystem transitionSubsystem) { 
     m_intakeSubsystem = intakeSubsystem;
+    m_transitionSubsystem = transitionSubsystem;
     
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intakeSubsystem); 
+    addRequirements(intakeSubsystem, transitionSubsystem); 
   }
 
   /*
@@ -35,6 +39,7 @@ public class DeployIntake extends CommandBase {
   public void execute() {
     m_intakeSubsystem.setIntakeArmMotor(IntakeConstants.ARM_SPEED_DEPLOY);
     m_intakeSubsystem.setIntakeWheelSpin(IntakeConstants.WHEEL_SPEED_INTAKE);
+    m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_FAST);
   }
 
   // Called once the command ends or is interrupted.
@@ -42,6 +47,7 @@ public class DeployIntake extends CommandBase {
   public void end(boolean interrupted) {
     // m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SPEED_DEPLOY);
     m_intakeSubsystem.setIntakeWheelSpin(0);
+    m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_SLOW);
   }
 
   // Returns true when the command should end.
