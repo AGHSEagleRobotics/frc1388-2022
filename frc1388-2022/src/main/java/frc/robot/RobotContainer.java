@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.TransitionConstants;
 import frc.robot.Constants.DriveTrainConstants;     // climber constats
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.USBConstants;            // USB
@@ -19,17 +20,20 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.RetractIntake;
 import frc.robot.commands.DeployIntake;
-import frc.robot.commands.SetShooterTargetRPM;
 import frc.robot.commands.ClimberCommand;           // climber command
 import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterFeederSubsystem;
+import frc.robot.subsystems.TransitionSubsystem;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -49,18 +53,10 @@ public class RobotContainer {
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final DriveTrainSubsystem m_driveTrainSubsystem = new DriveTrainSubsystem(
-  //THIS is for the 2022 ROBOT  
   new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_FRONT), 
     new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_BACK), 
     new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_FRONT), 
     new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_BACK)
-
-    //This is for KNIGHTMARE !
-    // new WPI_VictorSPX(DriveTrainConstants.CANID_LEFT_FRONT), 
-    // new WPI_TalonSRX(DriveTrainConstants.CANID_LEFT_BACK), 
-    // new WPI_TalonSRX(DriveTrainConstants.CANID_RIGHT_FRONT), 
-    // new WPI_VictorSPX(DriveTrainConstants.CANID_RIGHT_BACK)
-    
   );
 
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
@@ -71,18 +67,20 @@ public class RobotContainer {
 
   private final ShooterFeederSubsystem m_shooterSubsystem = new ShooterFeederSubsystem(
     new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR),
-    new WPI_VictorSPX(ShooterConstants.CANID_FEEDER_MOTOR)
+    new CANSparkMax(ShooterConstants.CANID_FEEDER_MOTOR, MotorType.kBrushless)
   );
 
-  private Shoot m_shooterCommands;
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(
     new CANSparkMax(IntakeConstants.CANID_WHEEL_MOTOR, MotorType.kBrushless), 
     new CANSparkMax(IntakeConstants.CANID_ARM_MOTOR, MotorType.kBrushless)
     );
 
+  private final TransitionSubsystem m_transitionSubsystem = new TransitionSubsystem(
+    new CANSparkMax(TransitionConstants.CANID_TRANSITION_MOTOR, MotorType.kBrushless)
+    );
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-   m_shooterCommands = new Shoot(m_shooterSubsystem);
 
     m_climberSubsystem.setDefaultCommand(
       new ClimberCommand(
@@ -102,6 +100,14 @@ public class RobotContainer {
         () -> m_driveController.getRightX()
       ) 
     );
+
+    m_transitionSubsystem.setDefaultCommand(
+      new RunCommand(
+        () -> m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_SLOW),
+        m_transitionSubsystem 
+       )
+    );
+      
   // Configure the button bindings
     configureButtonBindings();
   }
@@ -121,7 +127,7 @@ public class RobotContainer {
 
     new JoystickButton(m_driveController, XboxController.Button.kX.value)
       .whenPressed(() -> m_shooterSubsystem.shooterRpmStepIncrease());
-
+    
     new JoystickButton(m_driveController, XboxController.Button.kY.value)
       .whenPressed(() -> m_shooterSubsystem.shooterRpmStepDecrease());
 
@@ -132,19 +138,35 @@ public class RobotContainer {
       .whenPressed(() -> m_shooterSubsystem.shooterEnabled(false));
 
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
-      .whenHeld(m_shooterCommands);
+      .whenHeld( new Shoot(m_shooterSubsystem, m_transitionSubsystem));  
     
     new JoystickButton(m_opController, XboxController.Button.kA.value)
-      .whenPressed(new DeployIntake(m_intakeSubsystem));
+      .whenPressed(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
 
     new JoystickButton(m_opController, XboxController.Button.kB.value)
       .whenPressed(new RetractIntake(m_intakeSubsystem));
-    new JoystickButton(m_opController, XboxController.Button.kX.value)
+
+	  new JoystickButton(m_opController, XboxController.Button.kX.value)
       .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.REACH), m_climberSubsystem);
+	
+	  new JoystickButton(m_opController, XboxController.Button.kY.value)
+      .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.VERTICAL), m_climberSubsystem);      
 
-    new JoystickButton(m_opController, XboxController.Button.kY.value)
-      .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.VERTICAL), m_climberSubsystem);
+      //Button for transition on op stick - to run transition if ball stuck?
+    new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value)
+      .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
+        TransitionConstants.TRANSITION_SPEED_REVERSE_SLOW),
+        m_transitionSubsystem);
+	
+      //Button for transition fast without prompting
+   new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
+     .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
+        TransitionConstants.TRANSITION_SPEED_FORWARD_FAST),
+        m_transitionSubsystem);
 
+
+
+    
   }
 
   /**
@@ -154,5 +176,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return null;
+  }
+
+  public void simulationInit() {
+    m_transitionSubsystem.simulationInit();
   }
 }
