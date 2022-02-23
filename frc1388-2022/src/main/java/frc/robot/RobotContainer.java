@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -26,8 +25,7 @@ import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterFeederSubsystem;
 import frc.robot.subsystems.TransitionSubsystem;
-
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import frc.robot.subsystems.ShooterFeederSubsystem.FeederFunctions;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -65,7 +63,7 @@ public class RobotContainer {
   );
 
 
-  private final ShooterFeederSubsystem m_shooterSubsystem = new ShooterFeederSubsystem(
+  private final ShooterFeederSubsystem m_shooterFeederSubsystem = new ShooterFeederSubsystem(
     new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR),
     new CANSparkMax(ShooterConstants.CANID_FEEDER_MOTOR, MotorType.kBrushless)
   );
@@ -126,19 +124,19 @@ public class RobotContainer {
       .whenPressed(() -> m_driveTrainSubsystem.toggleReverse());
 
     new JoystickButton(m_driveController, XboxController.Button.kX.value)
-      .whenPressed(() -> m_shooterSubsystem.shooterRpmStepIncrease());
+      .whenPressed(() -> m_shooterFeederSubsystem.shooterRpmStepIncrease());
     
     new JoystickButton(m_driveController, XboxController.Button.kY.value)
-      .whenPressed(() -> m_shooterSubsystem.shooterRpmStepDecrease());
+      .whenPressed(() -> m_shooterFeederSubsystem.shooterRpmStepDecrease());
 
     new JoystickButton(m_driveController, XboxController.Button.kA.value)
-      .whenPressed(() -> m_shooterSubsystem.shooterEnabled(true));
+      .whenPressed(() -> m_shooterFeederSubsystem.shooterEnabled(true));
 
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
-      .whenPressed(() -> m_shooterSubsystem.shooterEnabled(false));
+      .whenPressed(() -> m_shooterFeederSubsystem.shooterEnabled(false));
 
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
-      .whenHeld( new Shoot(m_shooterSubsystem, m_transitionSubsystem));  
+      .whenHeld( new Shoot(m_shooterFeederSubsystem, m_transitionSubsystem));  
     
     new JoystickButton(m_opController, XboxController.Button.kA.value)
       .whenPressed(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
@@ -151,18 +149,21 @@ public class RobotContainer {
 	
 	  new JoystickButton(m_opController, XboxController.Button.kY.value)
       .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.VERTICAL), m_climberSubsystem);      
-
-      //Button for transition on op stick - to run transition if ball stuck?
-    new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value)
-      .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
-        TransitionConstants.TRANSITION_SPEED_REVERSE_SLOW),
-        m_transitionSubsystem);
 	
       //Button for transition fast without prompting
-   new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
+    new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
      .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
         TransitionConstants.TRANSITION_SPEED_FORWARD_FAST),
         m_transitionSubsystem);
+        
+      //Button for transition on op stick - to run transition if ball stuck?
+    new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value)
+     .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
+        TransitionConstants.TRANSITION_SPEED_REVERSE_SLOW),
+        m_transitionSubsystem);
+
+    new JoystickButton(m_opController, XboxController.Button.kBack.value)
+        .whenPressed(() -> m_shooterFeederSubsystem.setFeederFunction(FeederFunctions.REVERSE));
 
 
 
