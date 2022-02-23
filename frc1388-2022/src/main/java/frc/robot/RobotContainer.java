@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.eaglerobotics.lib.shuffleboard.ControllerBindings;
+import com.eaglerobotics.lib.shuffleboard.InputActionBindings;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,7 +32,7 @@ public class RobotContainer {
 
   private final XboxController m_controller = new XboxController(0);
 
-  private final ControllerBindings<AxisAction, ButtonAction> m_controllerBindings = new ControllerBindings<>(AxisAction.class, ButtonAction.class, m_controller);
+  private final InputActionBindings<AxisAction, ButtonAction> m_inputBindings = new InputActionBindings<>(AxisAction.class, ButtonAction.class, m_controller);
 
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -54,8 +54,8 @@ public class RobotContainer {
     m_driveTrainSubsystem.setDefaultCommand(
       new RunCommand(() -> {
         m_driveTrainSubsystem.tankDrive(
-          m_controllerBindings.getAxisValue(AxisAction.LEFT_DRIVE),
-          m_controllerBindings.getAxisValue(AxisAction.RIGHT_DRIVE)
+          m_inputBindings.getAxisValue(AxisAction.LEFT_DRIVE),
+          m_inputBindings.getAxisValue(AxisAction.RIGHT_DRIVE)
         );
       }, m_driveTrainSubsystem)
     );
@@ -68,8 +68,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_controllerBindings.getButton(ButtonAction.DEPLOY_INTAKE).whenPressed(() -> log.info("Deploying intake"));
-    m_controllerBindings.getButton(ButtonAction.RETRACT_INTAKE).whenPressed(() -> log.info("Retracting intake"));
+    m_inputBindings.getButton(ButtonAction.DEPLOY_INTAKE).whenPressed(() -> log.info("Deploying intake"));
+    m_inputBindings.getButton(ButtonAction.RETRACT_INTAKE).whenPressed(() -> log.info("Retracting intake"));
   }
 
   /**

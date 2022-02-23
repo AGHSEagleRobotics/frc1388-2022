@@ -1,28 +1,28 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
-import com.eaglerobotics.lib.shuffleboard.Action;
+import com.eaglerobotics.lib.shuffleboard.InputAction;
 
-public enum AxisAction implements Action {
+public enum AxisAction implements InputAction {
     
     LEFT_DRIVE("Left Drive", null, 0, XboxController.Axis.kLeftY.value),
     RIGHT_DRIVE("Right Drive", null, 0, XboxController.Axis.kRightY.value);
 
-    private final String m_name;
+    private final String m_label;
     private final String m_description;
     private final Integer m_defaultAxis;
     private final Integer m_defaultPort;
 
     AxisAction(String name, String description, Integer defaultPort, Integer defaultAxis) {
-        m_name = name;
+        m_label = name;
         m_description = description;
         m_defaultAxis = defaultAxis;
         m_defaultPort = defaultPort;
     }
 
     @Override
-    public String getName() {
-        return m_name;
+    public String getLabel() {
+        return m_label;
     }
 
     @Override
