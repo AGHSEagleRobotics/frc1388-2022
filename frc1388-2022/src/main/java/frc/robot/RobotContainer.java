@@ -123,6 +123,7 @@ public class RobotContainer {
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
       .whenPressed(() -> m_driveTrainSubsystem.toggleReverse());
 
+    //SHOOTER
     new JoystickButton(m_driveController, XboxController.Button.kX.value)
       .whenPressed(() -> m_shooterFeederSubsystem.shooterRpmStepIncrease());
     
@@ -138,30 +139,37 @@ public class RobotContainer {
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
       .whenHeld( new Shoot(m_shooterFeederSubsystem, m_transitionSubsystem));  
     
+    //INTAKE
     new JoystickButton(m_opController, XboxController.Button.kA.value)
       .whenPressed(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
 
     new JoystickButton(m_opController, XboxController.Button.kB.value)
       .whenPressed(new RetractIntake(m_intakeSubsystem));
 
+    //reverse intake wheel
+    new JoystickButton(m_opController, XboxController.Button.kStart.value)
+    .whenPressed(() -> m_intakeSubsystem.setIntakeWheelSpin(IntakeConstants.REVERSE_WHEEL_SPEED_INTAKE));
+
+    //CLIMBER
 	  new JoystickButton(m_opController, XboxController.Button.kX.value)
       .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.REACH), m_climberSubsystem);
 	
 	  new JoystickButton(m_opController, XboxController.Button.kY.value)
       .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.VERTICAL), m_climberSubsystem);      
 	
-      //Button for transition fast without prompting
+      //TRANTITION
     new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
      .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
         TransitionConstants.TRANSITION_SPEED_FORWARD_FAST),
         m_transitionSubsystem);
         
-      //Button for transition on op stick - to run transition if ball stuck?
+      //reverse transition
     new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value)
      .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
         TransitionConstants.TRANSITION_SPEED_REVERSE_SLOW),
         m_transitionSubsystem);
 
+    //reverse FEEDER
     new JoystickButton(m_opController, XboxController.Button.kBack.value)
         .whenPressed(() -> m_shooterFeederSubsystem.setFeederFunction(FeederFunctions.REVERSE));
 

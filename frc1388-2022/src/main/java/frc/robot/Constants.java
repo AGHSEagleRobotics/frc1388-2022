@@ -120,6 +120,7 @@ public final class Constants {
 
         public static final double ARM_SPEED_DEPLOY   = 0.5;
         public static final double WHEEL_SPEED_INTAKE = 1.0;
+        public static final double REVERSE_WHEEL_SPEED_INTAKE = - 1.0;
     }
 
     public final class TransitionConstants {
