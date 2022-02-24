@@ -32,8 +32,8 @@ public final class Constants {
     }
 
     public final class ShooterConstants {
-        public static final int CANID_SHOOTER_MOTOR = 5;
-        public static final int CANID_FEEDER_MOTOR  = 6;
+        public static final int CANID_SHOOTER_MOTOR = 5;        // TODO change this!!!!
+        public static final int CANID_FEEDER_MOTOR  = 6;      // TODO change this!!!!
 
         public static final double GAINS_VELOCITY_F = 0.047;
         public static final double GAINS_VELOCITY_P = 0.25; // using motor for testing
@@ -48,6 +48,8 @@ public final class Constants {
         public static final double SHOOTER_RPM_STEP_CHANGE = 50;
         public static final double MAX_SHOOTER_RPM         = 6000;
         public static final double MIN_SHOOTER_RPM         = 0;
+        public static final double SHOOTER_RPM_HIGHGOAL    = 4500;
+        public static final double SHOOTER_RMP_LOWGOAL     = 2000;
 
         public static final double FORWARD_FEEDER_SPEED = 1.0;
         public static final double REVERSE_FEEDER_SPEED = -1.0;
