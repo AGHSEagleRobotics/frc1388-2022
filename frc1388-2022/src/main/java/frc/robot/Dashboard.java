@@ -35,7 +35,7 @@ public class Dashboard {
     }
 
     public enum Objective {
-        LEAVETARMAC ("Just leave tarmac", 1),
+        LEAVETARMAC ("Just leave tarmac", 1), //FIXME change distances to fit
         SHOOTBALL1 ("Shoots first ball", 2),
         PICKUPSHOOT2 ("Pick up 2nd ball, shoot both", 3),
         DONOTHING ("Does nothing (POSITION 2)", 4);
@@ -68,9 +68,13 @@ public class Dashboard {
 
     public Dashboard() {
         colorcamera();
+        shuffleboardSetUp();
     }
 
     private void colorcamera() {
         m_cameraColor = CameraServer.startAutomaticCapture(AutoMoveConstants.USB_CAMERACOLOR);
+    }
+
+    public void shuffleboardSetUp(){
     }
 }

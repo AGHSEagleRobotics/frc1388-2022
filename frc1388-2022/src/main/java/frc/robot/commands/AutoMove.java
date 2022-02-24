@@ -4,13 +4,21 @@
 
 package frc.robot.commands;
 
+import java.lang.System.LoggerFinder;
+import java.lang.System.Logger.Level;
+
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+
+import org.apache.logging.log4j.core.config.Loggers;
+import org.apache.logging.log4j.core.jackson.Log4jYamlObjectMapper;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.Constants.AutoMoveConstants;
+import frc.robot.Constants.USBConstants;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class AutoMove extends CommandBase {
@@ -44,7 +52,7 @@ public class AutoMove extends CommandBase {
     addRequirements(driveTrainSubsystem);
 
     //Setting PID control tolerance
-    m_pidController.setTolerance(0.5);
+    m_pidController.setTolerance(0.5); //FIXME magic number
   }
 
   // Called when the command is initially scheduled.
@@ -61,7 +69,10 @@ public class AutoMove extends CommandBase {
     double leftEncoderDistance = m_driveTrainSubsystem.getLeftEncoderDistance();
     speed = m_pidController.calculate(leftEncoderDistance);
     speed = MathUtil.clamp(speed, -m_speed, m_speed);
+
     m_driveTrainSubsystem.curvatureDrive(speed, speed, false);
+
+    // Robot.log.info(); FIXME
   
     /* getRequirements();
     if (m_timer > AUTON_PERIOD?) */
@@ -79,6 +90,8 @@ public class AutoMove extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_timer.hasElapsed(m_setPoint);
+  
+    //return m_pidController.atSetpoint();
   }
 }

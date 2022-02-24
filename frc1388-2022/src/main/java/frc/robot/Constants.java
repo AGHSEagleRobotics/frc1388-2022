@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Encoder;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -14,9 +16,11 @@ package frc.robot;
  */
 public final class Constants {
     
-    public final class USBConstants {
+    public final class USBConstants { //ADD STATIC?
         public static final int DRIVE_CONTROLLER = 0;
         public static final int OP_CONTROLLER = 1;
+        //public static final void info(String msg) {    wanted to add this
+        //}
     }
 
     public final class DriveTrainConstants {
@@ -94,7 +98,10 @@ public final class Constants {
     public final class AutoMoveConstants {
         //TEST P VALUE LATER
         public static final double P_VALUE = 0.03;
-        public static final int USB_CAMERACOLOR = 0; //Not confirmed
+        public static final int USB_CAMERACOLOR = 0; //FIXME Not confirmed
+        public static final double AUTO_SHOOT_RPM = 5400;
+        public static final double SHOOTER_TIMER = 6.0;
+        public static final double DRIVE_WITH_ENCODER_DISTANCE = 1.0; //TODO change
     }
  
 }

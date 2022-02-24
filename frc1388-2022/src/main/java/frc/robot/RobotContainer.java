@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Constants.AutoMoveConstants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.TransitionConstants;
@@ -23,6 +24,7 @@ import frc.robot.commands.RetractIntake;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.SetShooterTargetRPM;
 import frc.robot.commands.AutoLeave;
+import frc.robot.commands.AutoMove;
 import frc.robot.commands.ClimberCommand;           // climber command
 import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
@@ -168,12 +170,13 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    Position position = m_Dashboard.getPosition();
+    Objective objective = m_Dashboard.getObjective();
     switch (m_Dashboard.getPosition()) {
       case POSITION1:
-      return new AutoLeave(
-        m_driveTrainSubsystem
-        );
+      return new AutoMove(m_driveTrainSubsystem, 
+      //m_setpoint, 
+      objective.getDistance(), 
+      AutoMoveConstants.DRIVE_WITH_ENCODER_DISTANCE, AutoMove.Mode.kDistanceDrive);
       //return new (Command Group)
 
       case POSITION2:
@@ -188,9 +191,6 @@ public class RobotContainer {
     Objective Objective = m_Dashboard.getObjective();
     switch (m_Dashboard.getObjective()) {
       case LEAVETARMAC:
-      return new AutoLeave(
-        m_driveTrainSubsystem
-        );
       //return new (Command Group)
 
       case SHOOTBALL1:
