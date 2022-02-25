@@ -98,10 +98,16 @@ public final class Constants {
     public final class AutoMoveConstants {
         //TEST P VALUE LATER
         public static final double P_VALUE = 0.03;
+        public static final double P_TOLERANCE = 0.5;
+
         public static final int USB_CAMERACOLOR = 0; //FIXME Not confirmed
+
         public static final double AUTO_SHOOT_RPM = 5400;
         public static final double SHOOTER_TIMER = 6.0;
-        public static final double DRIVE_WITH_ENCODER_DISTANCE = 1.0; //TODO change
+        public static final double ENCODER_DISTANCE_CUTOFF = 1.0; //TODO change - is this cutoff??
+        public static final double AUTO_DRIVE_SPEED = 0.5;
+
+        public static final double AUTO_TIME = 15.0;
     }
  
 }

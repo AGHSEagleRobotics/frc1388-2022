@@ -38,7 +38,8 @@ public class Dashboard {
         LEAVETARMAC ("Just leave tarmac", 1), //FIXME change distances to fit
         SHOOTBALL1 ("Shoots first ball", 2),
         PICKUPSHOOT2 ("Pick up 2nd ball, shoot both", 3),
-        DONOTHING ("Does nothing (POSITION 2)", 4);
+        AUTOSHOOT3FROM4 ("Shoot 2 from 4, shoot 3rd from 3", 4),
+        DONOTHING ("Does nothing (POSITION 2)", 0);
 
         public static final Objective Default = LEAVETARMAC;
 

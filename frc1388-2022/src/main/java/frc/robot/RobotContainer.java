@@ -24,7 +24,8 @@ import frc.robot.commands.RetractIntake;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.SetShooterTargetRPM;
 import frc.robot.commands.AutoLeave;
-import frc.robot.commands.AutoMove;
+import frc.robot.commands.AutoLeaveTarmac;
+import frc.robot.commands.AutoShoot;
 import frc.robot.commands.ClimberCommand;           // climber command
 import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
@@ -71,7 +72,7 @@ public class RobotContainer {
   );
 
 
-  private final ShooterFeederSubsystem m_shooterSubsystem = new ShooterFeederSubsystem(
+  private final ShooterFeederSubsystem m_shooterFeederSubsystem = new ShooterFeederSubsystem(
     new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR),
     new WPI_VictorSPX(ShooterConstants.CANID_FEEDER_MOTOR)
   );
@@ -130,19 +131,19 @@ public class RobotContainer {
       .whenPressed(() -> m_driveTrainSubsystem.toggleReverse());
 
     new JoystickButton(m_driveController, XboxController.Button.kX.value)
-      .whenPressed(() -> m_shooterSubsystem.shooterRpmStepIncrease());
+      .whenPressed(() -> m_shooterFeederSubsystem.shooterRpmStepIncrease());
 
     new JoystickButton(m_driveController, XboxController.Button.kY.value)
-      .whenPressed(() -> m_shooterSubsystem.shooterRpmStepDecrease());
+      .whenPressed(() -> m_shooterFeederSubsystem.shooterRpmStepDecrease());
 
     new JoystickButton(m_driveController, XboxController.Button.kA.value)
-      .whenPressed(() -> m_shooterSubsystem.shooterEnabled(true));
+      .whenPressed(() -> m_shooterFeederSubsystem.shooterEnabled(true));
 
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
-      .whenPressed(() -> m_shooterSubsystem.shooterEnabled(false));
+      .whenPressed(() -> m_shooterFeederSubsystem.shooterEnabled(false));
 
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
-      .whenHeld( new Shoot(m_shooterSubsystem, m_transitionSubsystem));  
+      .whenHeld( new Shoot(m_shooterFeederSubsystem, m_transitionSubsystem));  
     
     new JoystickButton(m_opController, XboxController.Button.kA.value)
       .whenPressed(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
@@ -173,14 +174,14 @@ public class RobotContainer {
     Objective objective = m_Dashboard.getObjective();
     switch (m_Dashboard.getPosition()) {
       case POSITION1:
-      return new AutoMove(m_driveTrainSubsystem, 
-      //m_setpoint, 
-      objective.getDistance(), 
-      AutoMoveConstants.DRIVE_WITH_ENCODER_DISTANCE, AutoMove.Mode.kDistanceDrive);
-      //return new (Command Group)
+      return new AutoLeaveTarmac(m_driveTrainSubsystem, 
+      objective.getDistance(),            //Or would I use Encoder distance?//
+      AutoMoveConstants.AUTO_DRIVE_SPEED); 
 
       case POSITION2:
-      
+      return new AutoLeaveTarmac(m_driveTrainSubsystem, 
+      objective.getDistance(),            //Or would I use Encoder distance?//
+      AutoMoveConstants.AUTO_DRIVE_SPEED); 
       case POSITION3:
 
       case POSITION4:
@@ -196,6 +197,8 @@ public class RobotContainer {
       case SHOOTBALL1:
       
       case PICKUPSHOOT2:
+
+      case AUTOSHOOT3FROM4:
 
       case DONOTHING:
 
