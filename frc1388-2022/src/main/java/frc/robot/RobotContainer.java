@@ -46,6 +46,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
 
+  DashBoard m_DashBoard;
+
   // components
   public static XboxController m_driveController = new XboxController(USBConstants.DRIVE_CONTROLLER);
   public static XboxController m_opController = new XboxController(USBConstants.OP_CONTROLLER);
@@ -109,6 +111,9 @@ public class RobotContainer {
         m_transitionSubsystem 
        )
     );
+    
+    // testing 
+    m_DashBoard = new DashBoard();
       
   // Configure the button bindings
     configureButtonBindings();
