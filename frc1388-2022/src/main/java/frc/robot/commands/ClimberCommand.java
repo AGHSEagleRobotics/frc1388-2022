@@ -60,7 +60,6 @@ public class ClimberCommand extends CommandBase {
     }
 
     deadband = MathUtil.applyDeadband(m_articulateAxis.get(), ClimberCommandConstants.DEADBAND);
-    System.out.println("deadband" + deadband);
     SmartDashboard.putNumber("articulator input", deadband);
     if (deadband != 0) {
       m_climberSubsystem.setArticulatorPower(Math.copySign(Math.pow(deadband, 2), deadband));
