@@ -16,6 +16,7 @@ import frc.robot.Constants.DriveTrainConstants; // climber constats
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.USBConstants; // USB
 import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
+import frc.robot.Constants.RumbleConstants.RumbleSide;
 import frc.robot.commands.Drive;
 import frc.robot.commands.ShootHigh;
 import frc.robot.commands.ShootLow;
@@ -25,6 +26,7 @@ import frc.robot.commands.ClimberCommand; // climber command
 import frc.robot.subsystems.ClimberSubsystem; // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem; // drive train subsystem
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.RumbleSubsystem;
 import frc.robot.subsystems.ShooterFeederSubsystem;
 import frc.robot.subsystems.TransitionSubsystem;
 
@@ -59,6 +61,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+
+  private final RumbleSubsystem m_rumbleSubsystem = new RumbleSubsystem(m_driveController);
 
   private final DriveTrainSubsystem m_driveTrainSubsystem = new DriveTrainSubsystem(
       new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_FRONT),
@@ -98,11 +102,14 @@ public class RobotContainer {
         ));
     // set default commands
     m_driveTrainSubsystem.setDefaultCommand(
-        new Drive(
-            m_driveTrainSubsystem,
-            () -> m_driveController.getLeftY(),
-            () -> m_driveController.getRightY(),
-            () -> m_driveController.getRightX()));
+      new Drive(
+        m_driveTrainSubsystem, m_rumbleSubsystem,
+        () -> m_driveController.getLeftY(),
+        () -> m_driveController.getRightY(),
+        () -> m_driveController.getRightX(),
+        () -> m_driveController.getAButton()
+      ) 
+    );
 
     m_transitionSubsystem.setDefaultCommand(
         new RunCommand(

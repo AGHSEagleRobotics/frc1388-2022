@@ -60,11 +60,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
     }
   }
 
-  public void curvatureDrive (double xSpeed, double zRotation, boolean isQuickTurn) {
+  public void curvatureDrive (double xSpeed, double zRotation, boolean precisionMode) {
     if (!m_isReverse) {
-      m_differentialDrive.curvatureDrive(xSpeed, zRotation, isQuickTurn);
+      m_differentialDrive.curvatureDrive(xSpeed, zRotation, precisionMode);
     } else {
-      m_differentialDrive.curvatureDrive(-xSpeed, zRotation, isQuickTurn);
+      m_differentialDrive.curvatureDrive(-xSpeed, zRotation, precisionMode);
     }
   }
 

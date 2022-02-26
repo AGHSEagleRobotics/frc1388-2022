@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -138,4 +140,28 @@ public final class Constants {
         }
     }
  
+    
+    public final static class RumbleConstants {
+
+        public static final double RUMBLE_PUSLE_TIME = 0.1;
+        public static final double ANTI_RUMBLE_TIME = 0.2;
+        public static final double RUMBLE_STRENGTH = 1.0;
+        public static final int RUMBLE_OFF = 0;
+        public static final int NUMBER_OF_PULSES = 2;
+
+        public static enum RumbleSide{
+            LEFT(RumbleType.kLeftRumble), 
+            RIGHT(RumbleType.kRightRumble), 
+            BOTH(RumbleType.kLeftRumble, RumbleType.kRightRumble), 
+            NONE;
+            private final RumbleType[] rumbleTypes;
+
+            RumbleSide( RumbleType... types ){
+                rumbleTypes = types;
+            }
+            public RumbleType[] getRumbleType(){
+                return rumbleTypes;
+            }
+        }
+    }
 }
