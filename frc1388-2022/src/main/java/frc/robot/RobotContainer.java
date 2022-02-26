@@ -24,7 +24,7 @@ import frc.robot.commands.RetractIntake;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.SetShooterTargetRPM;
 import frc.robot.commands.AutoLeave;
-import frc.robot.commands.AutoLeaveTarmac;
+import frc.robot.commands.AutoMove;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.ClimberCommand;           // climber command
 import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
@@ -174,12 +174,12 @@ public class RobotContainer {
     Objective objective = m_Dashboard.getObjective();
     switch (m_Dashboard.getPosition()) {
       case POSITION1:
-      return new AutoLeaveTarmac(m_driveTrainSubsystem, 
+      return new AutoMove(m_driveTrainSubsystem, 
       objective.getDistance(),            //Or would I use Encoder distance?//
       AutoMoveConstants.AUTO_DRIVE_SPEED); 
 
       case POSITION2:
-      return new AutoLeaveTarmac(m_driveTrainSubsystem, 
+      return new AutoMove(m_driveTrainSubsystem, 
       objective.getDistance(),            //Or would I use Encoder distance?//
       AutoMoveConstants.AUTO_DRIVE_SPEED); 
       case POSITION3:
