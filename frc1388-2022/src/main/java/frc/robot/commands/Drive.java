@@ -6,24 +6,34 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.RumbleConstants;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.RumbleSubsystem;
 
 public class Drive extends CommandBase {
 
   private DriveTrainSubsystem m_driveTrainSubsystem; 
-  //private CompdashBoard m_compdashboard; 
+  //private Dashboard m_Dashboard; 
+  private boolean m_precisionMode = false;
+  private boolean m_lastRightStickButton = false; 
+  private RumbleSubsystem m_precisionRumble;
   private Supplier<Double> m_driveLeftStickYAxis; 
   private Supplier<Double> m_driveRightStickYAxis;
   private Supplier<Double> m_driveRightStickXAxis;
 
+  private Supplier<Boolean> m_driveRightStickButton;
+
   /** Creates a new Drive. */
   public Drive(
     DriveTrainSubsystem driveTrainSubsystem, 
-    //CompdashBoard compdashboard, 
+    RumbleSubsystem rumble,
+    //Dashboard dashboard, 
     Supplier<Double> driveLeftStickYAxis, 
     Supplier<Double> driveRightStickYAxis,
-    Supplier<Double> driveRightStickXAxis
+    Supplier<Double> driveRightStickXAxis,
+    Supplier<Boolean> driveRightStickButton
   ) {
     addRequirements(driveTrainSubsystem);
     // Use addRequirements() here to declare subsystem dependencies. 
@@ -32,6 +42,7 @@ public class Drive extends CommandBase {
     m_driveLeftStickYAxis = driveLeftStickYAxis;
     m_driveRightStickYAxis = driveRightStickYAxis;
     m_driveRightStickXAxis = driveRightStickXAxis;
+    m_driveRightStickButton = driveRightStickButton;
   }
 
   // Called when the command is initially scheduled.
@@ -47,11 +58,24 @@ public class Drive extends CommandBase {
     
     double leftSpeed = -m_driveLeftStickYAxis.get();
     double rightSpeed = -m_driveRightStickYAxis.get();
+
+     // checks to see if the button has been pressed and then flags the precision mode
+     boolean rightStickButton = m_driveRightStickButton.get();
+     if(rightStickButton && !m_lastRightStickButton) {
+      m_precisionMode = !m_precisionMode;
+      if(m_precisionMode ){
+        m_precisionRumble.rumblePulse(RumbleConstants.RumbleSide.RIGHT);
+      }else{
+        m_precisionRumble.rumblePulse(RumbleConstants.RumbleSide.LEFT);
+      }
+    }
+    m_lastRightStickButton = rightStickButton;
     
     //One of three drives to choose from
     m_driveTrainSubsystem.curvatureDrive( speed, rotation, true);
     // m_driveTrainSubsystem.arcadeDrive(speed, rotation);
     // m_driveTrainSubsystem.tankDrive(leftSpeed, rightSpeed);
+
 
   }
 
