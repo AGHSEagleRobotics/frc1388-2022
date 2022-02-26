@@ -18,7 +18,8 @@ import frc.robot.Constants.USBConstants;            // USB
 import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
 import frc.robot.Constants.RumbleConstants.RumbleSide;
 import frc.robot.commands.Drive;
-import frc.robot.commands.Shoot;
+import frc.robot.commands.ShootHigh;
+import frc.robot.commands.ShootLow;
 import frc.robot.commands.RetractIntake;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ClimberCommand;           // climber command
@@ -36,6 +37,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -45,6 +47,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+  DashBoard m_DashBoard;
 
   // components
   public static XboxController m_driveController = new XboxController(USBConstants.DRIVE_CONTROLLER);
@@ -112,6 +116,9 @@ public class RobotContainer {
         m_transitionSubsystem 
        )
     );
+    
+    // testing 
+    m_DashBoard = new DashBoard();
       
   // Configure the button bindings
     configureButtonBindings();
@@ -130,6 +137,7 @@ public class RobotContainer {
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
       .whenPressed(() -> m_driveTrainSubsystem.toggleReverse());
 
+      /* dev mode
     new JoystickButton(m_driveController, XboxController.Button.kX.value)
       .whenPressed(() -> m_shooterSubsystem.shooterRpmStepIncrease());
     
@@ -141,10 +149,15 @@ public class RobotContainer {
 
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
       .whenPressed(() -> m_shooterSubsystem.shooterEnabled(false));
+      */
 
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
-      .whenHeld( new Shoot(m_shooterSubsystem, m_transitionSubsystem));  
-    
+      .whenHeld( new ShootHigh(m_shooterSubsystem, m_transitionSubsystem));
+
+    new Button(() -> RobotContainer.isRightDriverTriggerPressed())
+      .whileHeld(new ShootLow(m_shooterSubsystem, m_transitionSubsystem)); 
+
+
     new JoystickButton(m_opController, XboxController.Button.kA.value)
       .whenPressed(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
 
@@ -172,6 +185,10 @@ public class RobotContainer {
 
 
     
+  }
+
+  public static boolean isRightDriverTriggerPressed() {
+    return m_driveController.getRightTriggerAxis() > 0.9;
   }
 
   /**
