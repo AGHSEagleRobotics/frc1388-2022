@@ -106,7 +106,7 @@ public class RobotContainer {
         () -> m_driveController.getLeftY(),
         () -> m_driveController.getRightY(),
         () -> m_driveController.getRightX(),
-        () -> m_driveController.getAButton()
+        () -> m_driveController.getRightStickButtonPressed()
       ) 
     );
 

@@ -28,7 +28,7 @@ public class Drive extends CommandBase {
   /** Creates a new Drive. */
   public Drive(
     DriveTrainSubsystem driveTrainSubsystem, 
-    RumbleSubsystem rumble,
+    RumbleSubsystem precisionrumble,
     //Dashboard dashboard, 
     Supplier<Double> driveLeftStickYAxis, 
     Supplier<Double> driveRightStickYAxis,
@@ -39,10 +39,12 @@ public class Drive extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies. 
 
     m_driveTrainSubsystem = driveTrainSubsystem;
+    m_precisionRumble = precisionrumble;
     m_driveLeftStickYAxis = driveLeftStickYAxis;
     m_driveRightStickYAxis = driveRightStickYAxis;
     m_driveRightStickXAxis = driveRightStickXAxis;
     m_driveRightStickButton = driveRightStickButton;
+    
   }
 
   // Called when the command is initially scheduled.
@@ -60,6 +62,7 @@ public class Drive extends CommandBase {
     double rightSpeed = -m_driveRightStickYAxis.get();
 
      // checks to see if the button has been pressed and then flags the precision mode
+     //Don't trigger again if the button is continually held
      boolean rightStickButton = m_driveRightStickButton.get();
      if(rightStickButton && !m_lastRightStickButton) {
       m_precisionMode = !m_precisionMode;
@@ -69,14 +72,24 @@ public class Drive extends CommandBase {
         m_precisionRumble.rumblePulse(RumbleConstants.RumbleSide.LEFT);
       }
     }
+    //Save the value to be compared on the next tick
     m_lastRightStickButton = rightStickButton;
+
+    //When in precision mode, scale the turning precision
+    if (m_precisionMode){
+      rotation = scale (rotation);
+    }
     
     //One of three drives to choose from
-    m_driveTrainSubsystem.curvatureDrive( speed, rotation, true);
+    m_driveTrainSubsystem.curvatureDrive( speed, rotation, m_precisionMode);
     // m_driveTrainSubsystem.arcadeDrive(speed, rotation);
     // m_driveTrainSubsystem.tankDrive(leftSpeed, rightSpeed);
 
+  }
 
+  public double scale( double input ){
+    //squaring input
+    return Math.copySign(input*input, input); 
   }
 
   // Called once the command ends or is interrupted.
