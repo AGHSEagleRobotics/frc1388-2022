@@ -53,8 +53,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
 
-  Dashboard m_Dashboard;
-
   // components
   public static XboxController m_driveController = new XboxController(USBConstants.DRIVE_CONTROLLER);
   public static XboxController m_opController = new XboxController(USBConstants.OP_CONTROLLER);
@@ -205,10 +203,10 @@ public class RobotContainer {
   private void setForeward(boolean isForeward) {
     if (isForeward) {
       m_driveTrainSubsystem.setForeward(true);
-      m_Dashboard.setCamView(Cameras.FOREWARDS);
+      m_dashboard.setCamView(Cameras.FOREWARDS);
     } else {
       m_driveTrainSubsystem.setForeward(false);
-      m_Dashboard.setCamView(Cameras.REVERSE);
+      m_dashboard.setCamView(Cameras.REVERSE);
     }
   } 
 
