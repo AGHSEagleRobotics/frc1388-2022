@@ -93,7 +93,7 @@ public final class Constants {
 
             private int m_position;
 
-            ArticulatorPositions(int position){
+            ArticulatorPositions(int position) {
                 m_position = position;
             }
 
@@ -133,6 +133,13 @@ public final class Constants {
         public static final double TRANSITION_SPEED_REVERSE_SLOW = -0.2;
 
     }
+
+    public static final class DashboardConstants {
+        public static enum Cameras {
+            FOREWARDS, REVERSE
+        }
+    }
+ 
     
     public final static class RumbleConstants {
 
