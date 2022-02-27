@@ -16,6 +16,7 @@ import frc.robot.Constants.DriveTrainConstants; // climber constats
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.USBConstants; // USB
 import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
+import frc.robot.Constants.DashboardConstants.Cameras;
 import frc.robot.Constants.RumbleConstants.RumbleSide;
 import frc.robot.commands.Drive;
 import frc.robot.commands.ShootHigh;
@@ -51,8 +52,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-
-  Dashboard m_Dashboard;
 
   // components
   public static XboxController m_driveController = new XboxController(USBConstants.DRIVE_CONTROLLER);
@@ -130,8 +129,12 @@ public class RobotContainer {
 
     // Reverse
 
-    new JoystickButton(m_driveController, XboxController.Button.kBack.value)
-        .whenPressed(() -> m_driveTrainSubsystem.toggleReverse());
+
+    new JoystickButton(m_driveController, XboxController.Button.kB.value)
+      .whenPressed(() -> setForeward(true));
+
+    new JoystickButton(m_driveController, XboxController.Button.kA.value)
+      .whenPressed(() -> setForeward(false));
 
     /*
      * dev mode
@@ -202,6 +205,16 @@ public class RobotContainer {
   public static boolean isRightDriverTriggerPressed() {
     return m_driveController.getRightTriggerAxis() > 0.9;
   }
+
+  private void setForeward(boolean isForeward) {
+    if (isForeward) {
+      m_driveTrainSubsystem.setForeward(true);
+      m_dashboard.setCamView(Cameras.FOREWARDS);
+    } else {
+      m_driveTrainSubsystem.setForeward(false);
+      m_dashboard.setCamView(Cameras.REVERSE);
+    }
+  } 
 
   public static boolean isLeftDriverTriggerPressed() {
     return m_driveController.getLeftTriggerAxis() > 0.9;
