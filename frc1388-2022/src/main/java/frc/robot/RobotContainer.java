@@ -102,14 +102,12 @@ public class RobotContainer {
         ));
     // set default commands
     m_driveTrainSubsystem.setDefaultCommand(
-      new Drive(
-        m_driveTrainSubsystem, m_rumbleSubsystem,
-        () -> m_driveController.getLeftY(),
-        () -> m_driveController.getRightY(),
-        () -> m_driveController.getRightX(),
-        () -> m_driveController.getRightStickButtonPressed()
-      ) 
-    );
+        new Drive(
+            m_driveTrainSubsystem, m_rumbleSubsystem,
+            () -> m_driveController.getLeftY(),
+            () -> m_driveController.getRightY(),
+            () -> m_driveController.getRightX(),
+            () -> m_driveController.getRightStickButtonPressed()));
 
     m_transitionSubsystem.setDefaultCommand(
         new RunCommand(
@@ -150,18 +148,26 @@ public class RobotContainer {
      * .whenPressed(() -> m_shooterSubsystem.shooterEnabled(false));
      */
 
+    // INTAKE DRIVE
+    new Button(() -> isLeftDriverTriggerPressed() || isLeftOpTriggerPressed())
+        .whenHeld(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
+
+    new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
+        .whenHeld(new RetractIntake(m_intakeSubsystem));
+
+    // INTAKE OP UP
+    new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value)
+        .whenHeld(new RetractIntake(m_intakeSubsystem));
+
+    // SHOOT LOW AND HIGH GOAL
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
         .whenHeld(new ShootHigh(m_shooterSubsystem, m_transitionSubsystem));
 
-    new Button(() -> RobotContainer.isRightDriverTriggerPressed())
-        .whileHeld(new ShootLow(m_shooterSubsystem, m_transitionSubsystem));
+    new Button(RobotContainer::isRightDriverTriggerPressed)
+        .whenHeld(new ShootLow(m_shooterSubsystem, m_transitionSubsystem));
 
-    new JoystickButton(m_opController, XboxController.Button.kA.value)
-        .whenPressed(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
 
-    new JoystickButton(m_opController, XboxController.Button.kB.value)
-        .whenPressed(new RetractIntake(m_intakeSubsystem));
-
+    // Lower priority
     new JoystickButton(m_opController, XboxController.Button.kX.value)
         .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.REACH), m_climberSubsystem);
 
@@ -195,6 +201,14 @@ public class RobotContainer {
 
   public static boolean isRightDriverTriggerPressed() {
     return m_driveController.getRightTriggerAxis() > 0.9;
+  }
+
+  public static boolean isLeftDriverTriggerPressed() {
+    return m_driveController.getLeftTriggerAxis() > 0.9;
+  }
+
+  public static boolean isLeftOpTriggerPressed() {
+    return m_opController.getLeftTriggerAxis() > 0.9;
   }
 
   /**
