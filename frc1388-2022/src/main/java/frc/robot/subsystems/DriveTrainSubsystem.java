@@ -76,8 +76,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     }
   }
 
-  public void toggleReverse() {
-    m_isReverse = !m_isReverse;
+  public void setForeward(boolean isForewards) {
+    m_isReverse = !isForewards;
   }
 
   @Override
