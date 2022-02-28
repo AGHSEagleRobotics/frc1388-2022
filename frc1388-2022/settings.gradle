@@ -23,5 +23,13 @@ pluginManagement {
             name 'frcHome'
             url frcHomeMaven
         }
+
+        maven {
+            url = uri("https://maven.pkg.github.com/AGHSEagleRobotics/frc1388-lib")
+            credentials {
+                username = "PublicToken"
+                password = "g" + "hp_sUWGg9DQ5NfWGeddNUohUgNaSDoZsJ3lSck0"
+            }
+        }
     }
 }
