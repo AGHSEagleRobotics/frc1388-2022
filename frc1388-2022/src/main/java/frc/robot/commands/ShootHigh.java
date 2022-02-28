@@ -11,6 +11,7 @@ import frc.robot.subsystems.ShooterFeederSubsystem;
 import frc.robot.subsystems.TransitionSubsystem;
 import frc.robot.subsystems.ShooterFeederSubsystem.FeederFunctions;
 
+//TODO can make high and low one command
 public class ShootHigh extends CommandBase {
   private final ShooterFeederSubsystem m_shooterSubsystem;
   private final TransitionSubsystem m_transitionSubsystem;
@@ -26,7 +27,7 @@ public class ShootHigh extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_shooterSubsystem.shooterEnabled(true);
+    m_shooterSubsystem.setShooterEnabled(true);
     m_shooterSubsystem.setTargetRPM(ShooterConstants.SHOOTER_RPM_HIGHGOAL);
 
   }
@@ -53,7 +54,7 @@ public class ShootHigh extends CommandBase {
     //Turn off feeder motor
     m_shooterSubsystem.setFeederFunction(FeederFunctions.OFF);
     //Turn off shooter motor
-    m_shooterSubsystem.shooterEnabled(false);
+    m_shooterSubsystem.setShooterEnabled(false);
     m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_SLOW);
   }
 

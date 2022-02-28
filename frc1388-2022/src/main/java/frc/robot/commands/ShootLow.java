@@ -26,7 +26,7 @@ public class ShootLow extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_shooterSubsystem.shooterEnabled(true);
+    m_shooterSubsystem.setShooterEnabled(true);
     m_shooterSubsystem.setTargetRPM(ShooterConstants.SHOOTER_RMP_LOWGOAL);
 
   }
@@ -51,7 +51,7 @@ public class ShootLow extends CommandBase {
     //Turn off feeder motor
     m_shooterSubsystem.setFeederFunction(FeederFunctions.OFF);
     //Turn off shooter motor
-    m_shooterSubsystem.shooterEnabled(false);
+    m_shooterSubsystem.setShooterEnabled(false);
     m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_SLOW);
 
   }

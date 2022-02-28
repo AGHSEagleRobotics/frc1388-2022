@@ -7,7 +7,6 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSink;
-import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -25,10 +24,11 @@ public class Dashboard {
     private final ShuffleboardTab m_shuffelboardTab = Shuffleboard.getTab("Cameras");
     private ComplexWidget m_complexWidgetCam;
 
-    private Cameras m_currentCam = Cameras.FOREWARDS;
+    //TODO put enum back in here (enum's existance subject to debate)
+    private Cameras m_currentCam = Cameras.FORWARDS;
 
     public Dashboard() { // constructer
-        setCamView(Cameras.FOREWARDS);
+        setCamView(Cameras.FORWARDS);
         setupShuffelboard();
     } // end constructer
 
@@ -40,34 +40,27 @@ public class Dashboard {
     public void switchCamera() {
         System.out.println("swich camera method");
         switch (m_currentCam) {
-            case FOREWARDS: m_testVideoSink.setSource(m_reverseCamera);
+            case FORWARDS: m_testVideoSink.setSource(m_reverseCamera);
                 m_currentCam = Cameras.REVERSE;
                 break;
             case REVERSE: m_testVideoSink.setSource(m_frontCamera);
-                m_currentCam = Cameras.FOREWARDS;
+                m_currentCam = Cameras.FORWARDS;
                 break;
             default: m_testVideoSink.setSource(m_reverseCamera);
         }
-
-        // if (m_currentCam == Cameras.forewards) {
-        //     m_testVideoSink.setSource(m_reverseCamera);
-        //     // System.out.println("test camera");
-        // } else {
-        //     m_testVideoSink.setSource(m_frontCamera);
-        //     // System.out.println("other test camera");            
-        // }
     }
 
+    //This is sort of duplicated code
     public void setCamView(Cameras camera) {
         switch (camera) {
-            case FOREWARDS: m_testVideoSink.setSource(m_frontCamera);
-                m_currentCam = Cameras.FOREWARDS;
+            case FORWARDS: m_testVideoSink.setSource(m_frontCamera);
+                m_currentCam = Cameras.FORWARDS;
                 break;
             case REVERSE: m_testVideoSink.setSource(m_reverseCamera);
                 m_currentCam = Cameras.REVERSE;
                 break;
             default: m_testVideoSink.setSource(m_frontCamera);
-                m_currentCam = Cameras.FOREWARDS;
+                m_currentCam = Cameras.FORWARDS;
         }
     }
 

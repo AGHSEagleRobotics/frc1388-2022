@@ -52,6 +52,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   }
 
 
+  //Not in use
   public void arcadeDrive (double xSpeed, double zRotation) {
     if (!m_isReverse) {
       m_differentialDrive.arcadeDrive(xSpeed, zRotation);
@@ -68,6 +69,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     }
   }
 
+  //Not in use
   public void tankDrive(double leftSpeed, double rightSpeed){
     if (!m_isReverse) {
       m_differentialDrive.tankDrive(leftSpeed, rightSpeed);
@@ -76,8 +78,9 @@ public class DriveTrainSubsystem extends SubsystemBase {
     }
   }
 
-  public void setForeward(boolean isForewards) {
-    m_isReverse = !isForewards;
+  //TODO maybe change to set reverse
+  public void setForward(boolean isForwards) {
+    m_isReverse = !isForwards;
   }
 
   @Override

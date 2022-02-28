@@ -10,9 +10,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.Constants;
 import frc.robot.Constants.ClimberCommandConstants;
-import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
 
 public class ClimberCommand extends CommandBase {
 
@@ -71,7 +69,7 @@ public class ClimberCommand extends CommandBase {
       }
     }
 
-    if (m_climberSubsystem.getArticulatorVerticalLimit()) {
+    if (m_climberSubsystem.isArticulatorAtVerticalLimit()) {
       m_climberSubsystem.setArticulatorPower(0);
     }
 

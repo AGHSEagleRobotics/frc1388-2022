@@ -31,7 +31,7 @@ public class TransitionSubsystem extends SubsystemBase {
     m_transitionMotor.setIdleMode(IdleMode.kCoast);
   }
   
-
+  //Voltage for simulation
   public void setTransitionSpeed(double speed){
     if (Robot.isSimulation()) {
       m_transitionMotor.setVoltage(speed);
@@ -48,12 +48,5 @@ public class TransitionSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
-    /*"Commands"
-    RunWithIntake (intake) done
-    RunWithFeeder (shooterfeeder) done
-    (Update: Done as a default command) Use Lamda for low power
-    added button for slow reverse 
-    */
   }
 }
