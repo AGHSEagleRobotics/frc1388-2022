@@ -25,6 +25,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
     m_intakeWheelSpin.restoreFactoryDefaults();
     m_intakeWheelSpin.setIdleMode(IdleMode.kCoast);
+
+    //TODO test
+    m_intakeArmMotor.getForwardLimitSwitch(Type.kNormallyClosed);
+    m_intakeArmMotor.getReverseLimitSwitch(Type.kNormallyClosed);  
    }
 
    public void setIntakeWheelSpin(double speed){
@@ -33,9 +37,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
    public void setIntakeArmMotor(double speed){
     m_intakeArmMotor.set(speed);
-    //TODO actually use this
-    m_intakeArmMotor.getForwardLimitSwitch(Type.kNormallyClosed);
-    m_intakeArmMotor.getReverseLimitSwitch(Type.kNormallyClosed);
    }
   
   @Override

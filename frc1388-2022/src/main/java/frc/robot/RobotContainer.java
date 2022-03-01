@@ -151,15 +151,15 @@ public class RobotContainer {
 
     // INTAKE DEPLOY LEFT TRIGGER
     new Button(() -> isLeftDriverTriggerPressed() || isLeftOpTriggerPressed())
-        .whenHeld(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
+        .whenPressed(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
 
     //INTAKE DRIVE UP
     new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
-        .whenHeld(new RetractIntake(m_intakeSubsystem));
+        .whenPressed(new RetractIntake(m_intakeSubsystem));
 
     // INTAKE OP UP
     new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value)
-        .whenHeld(new RetractIntake(m_intakeSubsystem));
+        .whenPressed(new RetractIntake(m_intakeSubsystem));
 
     // SHOOT LOW AND HIGH GOAL
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
@@ -216,15 +216,15 @@ public class RobotContainer {
 
   //Change 0.9 to 0.5 in constants
   public static boolean isRightDriverTriggerPressed() {
-    return m_driveController.getRightTriggerAxis() > 0.9;
+    return m_driveController.getRightTriggerAxis() > 0.5;
   }
 
   public static boolean isLeftDriverTriggerPressed() {
-    return m_driveController.getLeftTriggerAxis() > 0.9;
+    return m_driveController.getLeftTriggerAxis() > 0.5;
   }
 
   public static boolean isLeftOpTriggerPressed() {
-    return m_opController.getLeftTriggerAxis() > 0.9;
+    return m_opController.getLeftTriggerAxis() > 0.5;
   }
 
   /**

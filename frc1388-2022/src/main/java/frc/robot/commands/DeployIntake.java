@@ -47,6 +47,7 @@ public class DeployIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     // m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SPEED_DEPLOY);
+    m_intakeSubsystem.setIntakeArmMotor(0);
     m_intakeSubsystem.setIntakeWheelSpin(0);
     m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_SLOW);
   }
