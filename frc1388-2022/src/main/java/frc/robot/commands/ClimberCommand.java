@@ -9,18 +9,12 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.Constants;
-import frc.robot.Constants.ClimberCommandConstants;
-import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
-
+import frc.robot.subsystems.ClimberSubsystem;import frc.robot.Constants.ClimberCommandConstants;
 public class ClimberCommand extends CommandBase {
 
   private final ClimberSubsystem m_climberSubsystem;
   private final Supplier<Double> m_extendAxis;
   private final Supplier<Double> m_articulateAxis;
-  private final Supplier<Boolean> m_articulatePositionVertical;
-  private final Supplier<Boolean> m_articulatePositionReach;
 
   /** Creates a new ClimberCommand. */
   public ClimberCommand(
@@ -28,16 +22,12 @@ public class ClimberCommand extends CommandBase {
 
     //CompdashBoard compdashboard, 
     Supplier<Double> extendAxis,
-    Supplier<Double> articulateAxis,
-    Supplier<Boolean> articulatePositionVertical,
-    Supplier<Boolean> articulatePositionReach
+    Supplier<Double> articulateAxis
   ) {
 
     m_climberSubsystem = climberSubsystem;
     m_extendAxis = extendAxis;
     m_articulateAxis = articulateAxis;
-    m_articulatePositionVertical = articulatePositionVertical;
-    m_articulatePositionReach  = articulatePositionReach;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(climberSubsystem);
@@ -62,21 +52,11 @@ public class ClimberCommand extends CommandBase {
     deadband = MathUtil.applyDeadband(m_articulateAxis.get(), ClimberCommandConstants.DEADBAND);
     System.out.println("deadband" + deadband);
     SmartDashboard.putNumber("articulator input", deadband);
-    if (deadband != 0) {
-      m_climberSubsystem.setArticulatorPower(Math.copySign(Math.pow(deadband, 2), deadband));
-    } else {
-      if (m_articulatePositionVertical.get()) {
-        m_climberSubsystem.setArticulatorVertical(); //m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.VERTICAL);
-      } else if (m_articulatePositionReach.get()) {
-        m_climberSubsystem.setArticulatorReach();    //m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.REACH);
-      }
-    }
+    m_climberSubsystem.setArticulatorPower(Math.copySign(Math.pow(deadband, 2), deadband));
 
     if (m_climberSubsystem.getArticulatorVerticalLimit()) {
       m_climberSubsystem.setArticulatorPower(0);
     }
-
-
   }
 
   // Called once the command ends or is interrupted.

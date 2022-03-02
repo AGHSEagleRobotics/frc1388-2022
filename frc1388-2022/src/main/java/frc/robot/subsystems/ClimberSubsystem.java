@@ -106,21 +106,6 @@ public class ClimberSubsystem extends SubsystemBase {
     m_reverseArticulatorLimitSwitch = new DigitalInput(3);
 
 
-    // m_articulatorPidController.setP(0);
-    // m_articulatorMotor.setIdleMode(CANSparkMax.kBrake);
-    /* for talonFX / talonSRX */
-    // m_articulatorMotor.configFactoryDefault();f
-    // m_articulatorMotor.setNeutralMode(NeutralMode.Brake);
-    // m_articulatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen); // todo test this
-    // m_articulatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen); // todo test this
-    // m_articulatorMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog);
-    // m_articulatorMotor.setSensorPhase(false);
-    // m_articulatorMotor.setInverted(false);
-    // m_articulatorMotor.setSelectedSensorPosition(0);
-    // m_articulatorMotor.configPeakOutputForward(ClimberConstants.ARTICULATOR_MAX_POWER_FORWARDS);
-    // m_articulatorMotor.configPeakOutputReverse(ClimberConstants.ARTICULATOR_MAX_POWER_REVERSE);
-
-
   } 
 
   /** set power
@@ -164,55 +149,6 @@ public class ClimberSubsystem extends SubsystemBase {
     return m_reverseArticulatorLimitSwitch.get();
   }
 
-  // not being used
-  public void setArticulatorPosition (ArticulatorPositions position) {
-    m_articulatorPosition = position;
-    m_articulatorIsMoving = true;
-    
-    // switch (position) {
-    //   case VERTICAL:
-    //     m_articulatorIsMoving = true;
-    //     setArticulatorPower(0.5);
-    //     break;
-    //   case REACH:
-    //     m_articulatorIsMoving = true;
-    //     setArticulatorPower(-0.5);
-    //     break;
-    
-    //   default:
-    //     break;
-    // }
-  }
-
-/*
-  public void toggleArticuilatorPosition (boolean on) {
-    if (on) {
-      m_winchMotor.set(ControlMode.Position,  2000);
-    } else {
-      m_winchMotor.set(ControlMode.Position,  0);
-    }
-  }
-  */
-  
-  // not being used
-  /** returns sensor units */
-  public double getArticulatorTargetPossition() {
-    return m_articulatorEncoder.getPosition() * 42; // TODO change 42 to sensor units per rev
-    // return m_articulatorEncoder.getVelocity();
-  } 
-
-  // not being used
-  public int getArticulatroPositionToTarget() {
-    if((getArticulatorTargetPossition() <= m_articulatorPosition.getPosition() + 5) && (getArticulatorTargetPossition() >= m_articulatorPosition.getPosition() - 5)) {
-      return ClimberConstants.ARTICULATOR_IN_RANGE;
-    } else if (getArticulatorTargetPossition() < m_articulatorPosition.getPosition() - 5) {
-      return ClimberConstants.ARTICULATOR_BELOW_RANGE;
-    } else if (getArticulatorTargetPossition() > m_articulatorPosition.getPosition() + 5) {
-      return ClimberConstants.ARTICULATOR_ABOVE_RANGE;
-    } 
-    return ClimberConstants.ARTICULATOR_IN_RANGE;
-  }
-
   public boolean articulatorAtVerticalLimit() {
     return m_articulatorVerticalLimitSwitch.isPressed();
   }
@@ -221,24 +157,8 @@ public class ClimberSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    // TODO check for limit swich
-
-  // not being used
-    if (m_articulatorIsMoving) {
-      // check if it is at the target
-      //if(getArticulatorPossition() >= m_articulatorPosition.getPosition())
-      if(getArticulatroPositionToTarget() == ClimberConstants.ARTICULATOR_IN_RANGE) {
-        setArticulatorPower(0);
-        m_articulatorIsMoving = false;
-      } else if (getArticulatroPositionToTarget() == ClimberConstants.ARTICULATOR_ABOVE_RANGE) {
-        setArticulatorPower(-0.1);
-      } else if (getArticulatroPositionToTarget() == ClimberConstants.ARTICULATOR_BELOW_RANGE) {
-        setArticulatorPower(0.1);
-      }
-      // if it is, turn the power to 0
-    }
     log.debug("winch postition {}", this::getWinchPossition);
-    log.debug("Articulator target possition {}", this::getArticulatorTargetPossition);
+    // log.debug("Articulator target possition {}", this::getArticulatorTargetPossition);
     log.debug("Articulator possition {} ", m_articulatorEncoder::getPosition);
     SmartDashboard.putNumber("Articulator possition", m_articulatorEncoder.getPosition());
 

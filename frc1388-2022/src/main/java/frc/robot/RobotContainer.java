@@ -86,11 +86,8 @@ public class RobotContainer {
       new ClimberCommand(
         m_climberSubsystem, 
         () -> m_opController.getLeftY(),    // extend
-        () -> m_opController.getRightY(),   // articulate
-        () -> m_opController.getAButton(),  // vertical     (articulate)
-        () -> m_opController.getBButton()   // reach        (articulate)
-      )
-    );
+        () -> m_opController.getRightY())    // articulate
+      );
     // set default commands
     m_driveTrainSubsystem.setDefaultCommand(
       new Drive(
@@ -146,11 +143,12 @@ public class RobotContainer {
     new JoystickButton(m_opController, XboxController.Button.kB.value)
       .whenPressed(new RetractIntake(m_intakeSubsystem));
 
-	  new JoystickButton(m_opController, XboxController.Button.kX.value)
-      .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.REACH), m_climberSubsystem);
-	
-	  new JoystickButton(m_opController, XboxController.Button.kY.value)
-      .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.VERTICAL), m_climberSubsystem);      
+      // climber set positions
+    new JoystickButton(m_opController, XboxController.Button.kX.value)
+      .whenPressed(() -> m_climberSubsystem.setArticulatorReach());
+
+      new JoystickButton(m_opController, XboxController.Button.kY.value)
+      .whenPressed(() -> m_climberSubsystem.setArticulatorVertical());
 
       //Button for transition on op stick - to run transition if ball stuck?
     new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value)
