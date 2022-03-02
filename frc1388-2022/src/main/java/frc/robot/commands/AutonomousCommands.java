@@ -21,7 +21,7 @@ public class AutonomousCommands extends SequentialCommandGroup {
     m_driveTrainSubsystem = driveTrainSubsystem;
     m_shooterFeederSubsystem = shooterFeederSubsystem;
 
-    Command AutoLeaveTarmac = new AutoLeaveTarmac(m_driveTrainSubsystem, 
+    Command AutoLeaveTarmac = new AutoMove(m_driveTrainSubsystem, 
     m_driveTrainSubsystem.getLeftEncoderDistance(),            //Or would I use Encoder distance?//
     AutoMoveConstants.AUTO_DRIVE_SPEED);
     //Set these commands up
