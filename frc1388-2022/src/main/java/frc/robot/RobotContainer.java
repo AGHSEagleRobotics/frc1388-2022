@@ -124,8 +124,8 @@ public class RobotContainer {
 
     //Reverse
 
-    new JoystickButton(m_driveController, XboxController.Button.kBack.value)
-      .whenPressed(() -> m_driveTrainSubsystem.toggleReverse());
+    new JoystickButton(m_driveController, XboxController.Button.kB.value)
+        .whenPressed(() -> m_driveTrainSubsystem.setForewards(true));
 
       /* dev mode
     new JoystickButton(m_driveController, XboxController.Button.kX.value)
