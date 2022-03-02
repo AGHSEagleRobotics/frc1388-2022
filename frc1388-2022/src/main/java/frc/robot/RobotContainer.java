@@ -216,17 +216,16 @@ public class RobotContainer {
     }
   } 
 
-  //Change 0.9 to 0.5 in constants
   public static boolean isRightDriverTriggerPressed() {
-    return m_driveController.getRightTriggerAxis() > 0.9;
+    return m_driveController.getRightTriggerAxis() > ShooterConstants.SHOOT_LOW_RIGHT_DRIVE_TRIGGER;
   }
 
   public static boolean isLeftDriverTriggerPressed() {
-    return m_driveController.getLeftTriggerAxis() > 0.9;
+    return m_driveController.getLeftTriggerAxis() > IntakeConstants.INTAKE_DEPLOY_LEFT_TRIGGER;
   }
 
   public static boolean isLeftOpTriggerPressed() {
-    return m_opController.getLeftTriggerAxis() > 0.9;
+    return m_opController.getLeftTriggerAxis() > IntakeConstants.INTAKE_DEPLOY_LEFT_TRIGGER;
   }
 
   /**
