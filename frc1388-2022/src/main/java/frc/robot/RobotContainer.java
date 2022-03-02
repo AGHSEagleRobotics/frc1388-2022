@@ -21,6 +21,7 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.ShootHigh;
 import frc.robot.commands.ShootLow;
 import frc.robot.commands.RetractIntake;
+import frc.robot.commands.ShootEject;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ClimberCommand; // climber command
 import frc.robot.subsystems.ClimberSubsystem; // climber subsystem
@@ -163,12 +164,15 @@ public class RobotContainer {
     new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value)
         .whenHeld(new RetractIntake(m_intakeSubsystem));
 
-    // SHOOT LOW AND HIGH GOAL
+    // SHOOT LOW HIGH GOAL and EJECT
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
         .whenHeld(new ShootHigh(m_shooterSubsystem, m_transitionSubsystem));
 
     new Button(RobotContainer::isRightDriverTriggerPressed)
         .whenHeld(new ShootLow(m_shooterSubsystem, m_transitionSubsystem));
+
+    new JoystickButton(m_driveController, XboxController.Button.kBack.value)
+      .whenHeld(new ShootEject(m_shooterSubsystem, m_transitionSubsystem));
 
     // Lower priority
     new JoystickButton(m_opController, XboxController.Button.kX.value)

@@ -60,6 +60,7 @@ public final class Constants {
         //High and Low goal RPM 
         public static final double SHOOTER_RPM_HIGHGOAL    = 4500;
         public static final double SHOOTER_RMP_LOWGOAL     = 2000;
+        public static final double SHOOTER_RPM_EJECT       = 1200;
 
         //Feeder speed
         public static final double FORWARD_FEEDER_SPEED = 1.0;
