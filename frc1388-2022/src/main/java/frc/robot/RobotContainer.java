@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ClimberConstants;
@@ -75,7 +76,8 @@ public class RobotContainer {
 
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(
       new CANSparkMax(IntakeConstants.CANID_ARM_MOTOR, MotorType.kBrushless),
-      new CANSparkMax(IntakeConstants.CANID_WHEEL_MOTOR, MotorType.kBrushless));
+      new CANSparkMax(IntakeConstants.CANID_WHEEL_MOTOR, MotorType.kBrushless),
+      new DigitalInput(0));
 
   private final TransitionSubsystem m_transitionSubsystem = new TransitionSubsystem(
       new CANSparkMax(TransitionConstants.CANID_TRANSITION_MOTOR, MotorType.kBrushless));
