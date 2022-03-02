@@ -62,6 +62,8 @@ public final class Constants {
         public static final double SHOOTER_RMP_LOWGOAL     = 2000;
         public static final double SHOOTER_RPM_EJECT       = 1200;
 
+        public static final double SHOOT_LOW_RIGHT_DRIVE_TRIGGER = 0.5;
+
         //Feeder speed
         public static final double FORWARD_FEEDER_SPEED = 1.0;
         public static final double REVERSE_FEEDER_SPEED = -1.0;
@@ -139,6 +141,8 @@ public final class Constants {
 
         public static final double ARM_SPEED_DEPLOY   = 0.5;
         public static final double WHEEL_SPEED_INTAKE = 1.0;
+
+        public static final double INTAKE_DEPLOY_LEFT_TRIGGER = 0.5;
     }
 
     public final class TransitionConstants {
