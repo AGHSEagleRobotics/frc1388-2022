@@ -47,7 +47,7 @@ public final class Constants {
         */
         public static final double TARGET_RPM_TOLERANCE = 200;             // EX. 30 = +/-30 rpm
         //ITERATIONS is subject to change if shooting is sloppy
-        public static final double ITERATIONS_AT_TARGET_RPM = 0;    // the amount of times rpm needs to be between +/- RPM_RANGE for shooterSpeedIsReady() to return true
+        public static final double ITERATIONS_AT_TARGET_RPM = 3;    // the amount of times rpm needs to be between +/- RPM_RANGE for shooterSpeedIsReady() to return true
 
         public static final double SHOOTER_COOLDOWN_TIME = 2.5; // time in seconds to wait before shooter is turned off (NOTE: feeder turns off instantly)
         
