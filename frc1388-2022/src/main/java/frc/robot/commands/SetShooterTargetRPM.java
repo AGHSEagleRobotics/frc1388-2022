@@ -12,6 +12,7 @@ import frc.robot.subsystems.ShooterFeederSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class SetShooterTargetRPM extends InstantCommand {
 
+  //THIS is a development tool
   private final ShooterFeederSubsystem m_shooter;
   private final double m_targetRPM;
 

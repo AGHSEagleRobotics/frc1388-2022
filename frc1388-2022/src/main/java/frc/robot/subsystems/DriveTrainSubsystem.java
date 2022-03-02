@@ -7,10 +7,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-//KNIGHTMARE IMPORTS
-// import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-// import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveTrainConstants;
@@ -73,6 +69,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_rightFront.setSelectedSensorPosition(0);
   }
 
+  //Not in use
   public void arcadeDrive (double xSpeed, double zRotation) {
     if (!m_isReverse) {
       m_differentialDrive.arcadeDrive(xSpeed, zRotation);
@@ -81,14 +78,15 @@ public class DriveTrainSubsystem extends SubsystemBase {
     }
   }
 
-  public void curvatureDrive (double xSpeed, double zRotation, boolean isQuickTurn) {
+  public void curvatureDrive (double xSpeed, double zRotation, boolean precisionMode) {
     if (!m_isReverse) {
-      m_differentialDrive.curvatureDrive(xSpeed, zRotation, isQuickTurn);
+      m_differentialDrive.curvatureDrive(xSpeed, zRotation, precisionMode);
     } else {
-      m_differentialDrive.curvatureDrive(-xSpeed, zRotation, isQuickTurn);
+      m_differentialDrive.curvatureDrive(-xSpeed, zRotation, precisionMode);
     }
   }
 
+  //Not in use
   public void tankDrive(double leftSpeed, double rightSpeed){
     if (!m_isReverse) {
       m_differentialDrive.tankDrive(leftSpeed, rightSpeed);
@@ -97,8 +95,9 @@ public class DriveTrainSubsystem extends SubsystemBase {
     }
   }
 
-  public void toggleReverse() {
-    m_isReverse = !m_isReverse;
+  //TODO maybe change to set reverse
+  public void setForward(boolean isForwards) {
+    m_isReverse = !isForwards;
   }
 
   public double getRightEncoderDistance(){

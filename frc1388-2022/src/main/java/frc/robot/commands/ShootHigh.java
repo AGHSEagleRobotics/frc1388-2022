@@ -5,16 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.TransitionConstants;
 import frc.robot.subsystems.ShooterFeederSubsystem;
 import frc.robot.subsystems.TransitionSubsystem;
 import frc.robot.subsystems.ShooterFeederSubsystem.FeederFunctions;
 
-public class Shoot extends CommandBase {
+//TODO can make high and low one command
+public class ShootHigh extends CommandBase {
   private final ShooterFeederSubsystem m_shooterSubsystem;
   private final TransitionSubsystem m_transitionSubsystem;
   /** Creates a new ShooterCommands. */
-  public Shoot(ShooterFeederSubsystem shooterSubsystem, TransitionSubsystem transitionSubsystem) {
+  public ShootHigh(ShooterFeederSubsystem shooterSubsystem, TransitionSubsystem transitionSubsystem) {
     m_shooterSubsystem = shooterSubsystem;
     m_transitionSubsystem = transitionSubsystem;
 
@@ -25,7 +27,8 @@ public class Shoot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_shooterSubsystem.shooterEnabled(true);
+    m_shooterSubsystem.setShooterEnabled(true);
+    m_shooterSubsystem.setTargetRPM(ShooterConstants.SHOOTER_RPM_HIGHGOAL);
 
   }
 
@@ -51,7 +54,7 @@ public class Shoot extends CommandBase {
     //Turn off feeder motor
     m_shooterSubsystem.setFeederFunction(FeederFunctions.OFF);
     //Turn off shooter motor
-    m_shooterSubsystem.shooterEnabled(false);
+    m_shooterSubsystem.setShooterEnabled(false);
     m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_SLOW);
   }
 
