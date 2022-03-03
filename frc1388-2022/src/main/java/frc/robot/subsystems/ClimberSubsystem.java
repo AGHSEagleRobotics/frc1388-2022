@@ -103,7 +103,6 @@ public class ClimberSubsystem extends SubsystemBase {
 
     //Make forward instead of reverse, clarify "reverse" is towards the "front" FIXME
     m_reverseArticulatorLimitSwitch = new DigitalInput(3);
-
   } 
 
   /** set power
@@ -147,10 +146,6 @@ public class ClimberSubsystem extends SubsystemBase {
     return m_reverseArticulatorLimitSwitch.get();
   }
 
-  public boolean articulatorAtVerticalLimit() {
-    return m_articulatorVerticalLimitSwitch.isPressed();
-  }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -170,8 +165,6 @@ public class ClimberSubsystem extends SubsystemBase {
       // setArticulatorVertical();
       // setArticulatorPower(0);
     }
-    //Update - The name should be what it is, change - also review limit switches TODO
-    SmartDashboard.putBoolean("DIO4", m_reverseArticulatorLimitSwitch.get());
 
   }
 }
