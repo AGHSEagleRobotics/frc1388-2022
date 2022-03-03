@@ -150,6 +150,7 @@ public final class Constants {
         public static final double TRANSITION_SPEED_FORWARD_FAST = 0.75; 
         public static final double TRANSITION_SPEED_FORWARD_SLOW = 0.2; 
         public static final double TRANSITION_SPEED_REVERSE_SLOW = -0.2;
+        public static final double TRANSITION_SPEED_REVERSE_MEDIUM = -0.5;
 
     }
 
