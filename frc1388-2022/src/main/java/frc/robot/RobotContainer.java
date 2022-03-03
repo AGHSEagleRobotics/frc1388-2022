@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -66,7 +67,9 @@ public class RobotContainer {
       new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_FRONT),
       new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_BACK),
       new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_FRONT),
-      new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_BACK));
+      new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_BACK),
+      new ADIS16470_IMU()
+      );
 
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
       new WPI_TalonFX(ClimberConstants.CANID_WINCH),
