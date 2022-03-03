@@ -21,6 +21,7 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.ShootHigh;
 import frc.robot.commands.ShootLow;
 import frc.robot.commands.RetractIntake;
+import frc.robot.commands.ReverseShootEject;
 import frc.robot.commands.ShootEject;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ClimberCommand; // climber command
@@ -128,6 +129,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
 
+    new JoystickButton(m_driveController, XboxController.Button.kB.value)
+        .whenPressed(() -> m_driveTrainSubsystem.setForward(true));
 
     /*
      * dev mode
@@ -169,9 +172,14 @@ public class RobotContainer {
     new Button(RobotContainer::isRightDriverTriggerPressed)
         .whenHeld(new ShootLow(m_shooterSubsystem, m_transitionSubsystem));
 
+    //Eject commands
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
       .whenHeld(new ShootEject(m_shooterSubsystem, m_transitionSubsystem));
-      // climber set positions
+
+    new Button (() -> isDriverDPadPressed()).whenHeld(new ReverseShootEject(
+      m_intakeSubsystem, m_transitionSubsystem, m_shooterSubsystem));
+
+    // Lower priority
     new JoystickButton(m_opController, XboxController.Button.kX.value)
       .whenPressed(() -> m_climberSubsystem.setArticulatorReach());
 
@@ -227,6 +235,10 @@ public class RobotContainer {
 
   public static boolean isLeftOpTriggerPressed() {
     return m_opController.getLeftTriggerAxis() > IntakeConstants.INTAKE_DEPLOY_LEFT_TRIGGER;
+  }
+
+  public static boolean isDriverDPadPressed() {
+    return m_driveController.getPOV() != -1 ;
   }
 
   /**
