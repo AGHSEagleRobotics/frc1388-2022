@@ -24,6 +24,7 @@ import org.apache.logging.log4j.Logger;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ClimberCommandConstants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.FalconConstants;
 import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
@@ -47,9 +48,6 @@ public class ClimberSubsystem extends SubsystemBase {
   private static final double WINCH_ARM_LENGTH = 24;
 
   private static final int PID_IDX = 0;
-
-  private boolean m_articulatorIsMoving = false;
-  private ArticulatorPositions m_articulatorPosition;
 
   private SparkMaxPIDController m_articulatorPidController;
   private SparkMaxLimitSwitch m_articulatorVerticalLimitSwitch;
@@ -89,6 +87,7 @@ public class ClimberSubsystem extends SubsystemBase {
     m_articulatorMotor.setIdleMode(IdleMode.kBrake); //setNeutralMode(NeutralMode.Brake);
     m_articulatorEncoder = m_articulatorMotor.getEncoder();
     m_articulatorPidController = m_articulatorMotor.getPIDController();
+    m_articulatorMotor.setSecondaryCurrentLimit(ClimberConstants.ARTICULATOR_MAX_SMART_CURRENT_LIMIT);
 
     m_articulatorMotor.enableSoftLimit  (CANSparkMax.SoftLimitDirection.kForward, true);
     m_articulatorMotor.enableSoftLimit  (CANSparkMax.SoftLimitDirection.kReverse, true);
