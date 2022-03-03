@@ -22,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ClimberCommandConstants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.FalconConstants;
 import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
@@ -45,9 +46,6 @@ public class ClimberSubsystem extends SubsystemBase {
   private static final double WINCH_ARM_LENGTH = 24;
 
   private static final int PID_IDX = 0;
-
-  private boolean m_articulatorIsMoving = false;
-  private ArticulatorPositions m_articulatorPosition;
 
   private SparkMaxPIDController m_articulatorPidController;
   private SparkMaxLimitSwitch m_articulatorVerticalLimitSwitch;
@@ -87,6 +85,7 @@ public class ClimberSubsystem extends SubsystemBase {
     m_articulatorMotor.setIdleMode(IdleMode.kBrake); //setNeutralMode(NeutralMode.Brake);
     m_articulatorEncoder = m_articulatorMotor.getEncoder();
     m_articulatorPidController = m_articulatorMotor.getPIDController();
+    m_articulatorMotor.setSecondaryCurrentLimit(ClimberConstants.ARTICULATOR_MAX_SMART_CURRENT_LIMIT);
 
     m_articulatorMotor.setSoftLimit     (CANSparkMax.SoftLimitDirection.kForward, ClimberConstants.ARTIUCLATOR_REACH_SOFT_LIMIT);
     m_articulatorMotor.setSoftLimit     (CANSparkMax.SoftLimitDirection.kReverse, ClimberConstants.ARTIUCLATOR_VERTICAL_SOFT_LIMIT);
@@ -148,55 +147,6 @@ public class ClimberSubsystem extends SubsystemBase {
     return m_reverseArticulatorLimitSwitch.get();
   }
 
-  // low priority
-  public void setArticulatorPosition (ArticulatorPositions position) {
-    m_articulatorPosition = position;
-    m_articulatorIsMoving = true;
-    
-    // switch (position) {
-    //   case VERTICAL:
-    //     m_articulatorIsMoving = true;
-    //     setArticulatorPower(0.5);
-    //     break;
-    //   case REACH:
-    //     m_articulatorIsMoving = true;
-    //     setArticulatorPower(-0.5);
-    //     break;
-    
-    //   default:
-    //     break;
-    // }
-  }
-
-/*
-  public void toggleArticuilatorPosition (boolean on) {
-    if (on) {
-      m_winchMotor.set(ControlMode.Position,  2000);
-    } else {
-      m_winchMotor.set(ControlMode.Position,  0);
-    }
-  }
-  */
-  
-  // low priority
-  /** returns sensor units */
-  public double getArticulatorTargetPossition() {
-    return m_articulatorEncoder.getPosition() * 42; // TODO change 42 to sensor units per rev
-    // return m_articulatorEncoder.getVelocity();
-  } 
-
-  // low priority
-  public int getArticulatroPositionToTarget() {
-    if((getArticulatorTargetPossition() <= m_articulatorPosition.getPosition() + 5) && (getArticulatorTargetPossition() >= m_articulatorPosition.getPosition() - 5)) {
-      return ClimberConstants.ARTICULATOR_IN_RANGE;
-    } else if (getArticulatorTargetPossition() < m_articulatorPosition.getPosition() - 5) {
-      return ClimberConstants.ARTICULATOR_BELOW_RANGE;
-    } else if (getArticulatorTargetPossition() > m_articulatorPosition.getPosition() + 5) {
-      return ClimberConstants.ARTICULATOR_ABOVE_RANGE;
-    } 
-    return ClimberConstants.ARTICULATOR_IN_RANGE;
-  }
-
   public boolean articulatorAtVerticalLimit() {
     return m_articulatorVerticalLimitSwitch.isPressed();
   }
@@ -205,24 +155,7 @@ public class ClimberSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    // TODO check for limit swich
-
-  // low priority
-    if (m_articulatorIsMoving) {
-      // check if it is at the target
-      //if(getArticulatorPossition() >= m_articulatorPosition.getPosition())
-      if(getArticulatroPositionToTarget() == ClimberConstants.ARTICULATOR_IN_RANGE) {
-        setArticulatorPower(0);
-        m_articulatorIsMoving = false;
-      } else if (getArticulatroPositionToTarget() == ClimberConstants.ARTICULATOR_ABOVE_RANGE) {
-        setArticulatorPower(-0.1);
-      } else if (getArticulatroPositionToTarget() == ClimberConstants.ARTICULATOR_BELOW_RANGE) {
-        setArticulatorPower(0.1);
-      }
-      // if it is, turn the power to 0
-    }
-    log.debug("winch postition {}", this::getWinchPosition);
-    log.debug("Articulator target possition {}", this::getArticulatorTargetPossition);
+    // log.debug("Articulator target possition {}", this::getArticulatorTargetPossition);
     log.debug("Articulator possition {} ", m_articulatorEncoder::getPosition);
     SmartDashboard.putNumber("Articulator possition", m_articulatorEncoder.getPosition());
 

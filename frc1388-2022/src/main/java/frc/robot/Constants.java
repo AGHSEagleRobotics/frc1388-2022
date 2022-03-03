@@ -79,6 +79,7 @@ public final class Constants {
         public static final double CLIMBER_MAX_POWER_REVERSE       = -0.3;
         public static final double ARTICULATOR_MAX_POWER_FORWARDS  = 0.2;
         public static final double ARTICULATOR_MAX_POWER_REVERSE   = -1.0;
+        public static final int    ARTICULATOR_MAX_SMART_CURRENT_LIMIT = 40; // AMPS
 
         public static final double WINCH_GAINS_VELOCITY_F = 0;
         public static final double WINCH_GAINS_VELOCITY_P = 0.1; // using motor for testing

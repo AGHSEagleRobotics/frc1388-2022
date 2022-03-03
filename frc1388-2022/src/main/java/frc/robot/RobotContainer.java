@@ -90,16 +90,14 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
-    // set default commands
-    //REVIEW CLIMBER DEFAULTS IN ROBOT CONTAINER
     m_climberSubsystem.setDefaultCommand(
-        new ClimberCommand(
-            m_climberSubsystem,
-            () -> m_opController.getLeftY(), // extend
-            () -> m_opController.getRightY(), // articulate
-            () -> m_opController.getYButton(), // vertical (articulate)
-            () -> m_opController.getXButton() // reach (articulate)
-        ));
+      new ClimberCommand(
+        m_climberSubsystem, 
+        () -> m_opController.getLeftY(),    // extend
+        () -> m_opController.getRightY())    // articulate
+      );
+    // set default commands
+
 
     m_driveTrainSubsystem.setDefaultCommand(
         new Drive(
@@ -173,14 +171,13 @@ public class RobotContainer {
 
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
       .whenHeld(new ShootEject(m_shooterSubsystem, m_transitionSubsystem));
-
-    // Lower priority
+      // climber set positions
     new JoystickButton(m_opController, XboxController.Button.kX.value)
-        .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.REACH), m_climberSubsystem);
+      .whenPressed(() -> m_climberSubsystem.setArticulatorReach());
 
-    new JoystickButton(m_opController, XboxController.Button.kY.value)
-        .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.VERTICAL),
-            m_climberSubsystem);
+      new JoystickButton(m_opController, XboxController.Button.kY.value)
+      .whenPressed(() -> m_climberSubsystem.setArticulatorVertical());
+
 
     // Reverse
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
