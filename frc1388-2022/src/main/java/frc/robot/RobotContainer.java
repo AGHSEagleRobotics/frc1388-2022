@@ -131,6 +131,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
 
+    new JoystickButton(m_driveController, XboxController.Button.kB.value)
+        .whenPressed(() -> m_driveTrainSubsystem.setForward(true));
 
     /*
      * dev mode
