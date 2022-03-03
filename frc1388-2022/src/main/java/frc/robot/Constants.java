@@ -40,7 +40,7 @@ public final class Constants {
         private final static double COUNTS_PER_ROTATION_RATIO = 1/COUNTS_PER_REV;
         private final static double WHEEL_DIAMETER = 6.0; //FIXME make range value?
         private final static double FALCON_TO_SIMPLE_BOX_GEAR_RATIO = 1/4.67;
-        private final static double SIMPLE_BOX_TO_WHEELS_RATIO = 12/30; //12 sprockets simple box to 30 sprockets wheel
+        private final static double SIMPLE_BOX_TO_WHEELS_RATIO = 12.0/30.0; //12 sprockets simple box to 30 sprockets wheel
         public final static double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
         public final static double ENCODER_DISTANCE_RATIO = 
            COUNTS_PER_ROTATION_RATIO *

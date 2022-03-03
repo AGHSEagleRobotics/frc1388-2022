@@ -59,7 +59,7 @@ public class AutoMove extends CommandBase {
     speed = m_pidController.calculate(leftEncoderDistance, m_setPoint);
     speed = MathUtil.clamp(speed, -m_speed, m_speed);
 
-    m_driveTrainSubsystem.curvatureDrive(speed, speed, false);
+    m_driveTrainSubsystem.curvatureDrive(speed, 0, false);
 
     log.info("Distance: {} \tspeed: {} \tsetPoint: {}", leftEncoderDistance, speed, m_setPoint); 
   

@@ -25,7 +25,6 @@ import frc.robot.commands.ShootHigh;
 import frc.robot.commands.ShootLow;
 import frc.robot.commands.RetractIntake;
 import frc.robot.commands.DeployIntake;
-import frc.robot.commands.AutoLeave;
 import frc.robot.commands.AutoMove;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.ClimberCommand;           // climber command
