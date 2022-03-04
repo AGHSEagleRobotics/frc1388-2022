@@ -13,19 +13,17 @@ import frc.robot.subsystems.ShooterFeederSubsystem;
 
 public class AutoShoot extends CommandBase {
   
-  private final ShooterFeederSubsystem m_ShooterFeederSubsystem;
+  private final ShooterFeederSubsystem m_shooterFeederSubsystem;
   private final Timer m_timer = new Timer();
   private final double m_speed;
-  private final double m_shooterTargetRPM;
 
   private final PIDController m_PidController = new PIDController(AutoMoveConstants.P_VALUE, 0, 0);
 
   /** Creates a new AutoShoot. */
-  public AutoShoot(ShooterFeederSubsystem shooterFeederSubsystem, double speed, double shooterTargetRPM) {
+  public AutoShoot(ShooterFeederSubsystem shooterFeederSubsystem, double speed) {
 
-    m_ShooterFeederSubsystem = shooterFeederSubsystem;
+    m_shooterFeederSubsystem = shooterFeederSubsystem;
     m_speed = speed;
-    m_shooterTargetRPM = shooterTargetRPM;
 
     addRequirements(shooterFeederSubsystem);
 
