@@ -56,6 +56,7 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
 
+
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final DriveTrainSubsystem m_driveTrainSubsystem = new DriveTrainSubsystem(
@@ -85,6 +86,8 @@ public class RobotContainer {
   private final TransitionSubsystem m_transitionSubsystem = new TransitionSubsystem(
     new CANSparkMax(TransitionConstants.CANID_TRANSITION_MOTOR, MotorType.kBrushless)
     );
+
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -124,6 +127,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
+      .whenPressed(new AutoShoot(m_shooterFeederSubsystem));
 
     //Reverse
 
