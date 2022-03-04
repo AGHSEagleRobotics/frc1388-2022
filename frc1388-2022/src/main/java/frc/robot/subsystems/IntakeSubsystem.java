@@ -4,41 +4,40 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.SparkMaxLimitSwitch.Type;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
 
 public class IntakeSubsystem extends SubsystemBase {
 
   private final WPI_TalonSRX m_intakeArmMotor;
   private final CANSparkMax m_intakeWheelSpin;
- // private final RelativeEncoder m_intakeEncoder;
+  private final Encoder m_intakeArmEncoder;
   private final DigitalInput m_intakeLimitUp;
+  private boolean m_isEncoderReset = false;
 
   /** Creates a new IntakeSubsystem. */
-  public IntakeSubsystem(WPI_TalonSRX intakeArmMotor, CANSparkMax intakeWheelSpin, DigitalInput intakeLimitUp) {
+  public IntakeSubsystem(WPI_TalonSRX intakeArmMotor, CANSparkMax intakeWheelSpin, DigitalInput intakeLimitUp, Encoder intakeArmEncoder) {
     m_intakeArmMotor = intakeArmMotor;
     m_intakeWheelSpin = intakeWheelSpin;
     m_intakeLimitUp = intakeLimitUp;
+    m_intakeArmEncoder = intakeArmEncoder;
 
     m_intakeArmMotor.configFactoryDefault();
     m_intakeArmMotor.setInverted(true);
-    // m_intakeArmMotor.setidl FIXME set to break mode
+    m_intakeArmMotor.setNeutralMode(NeutralMode.Brake);
 
     m_intakeWheelSpin.restoreFactoryDefaults();
     m_intakeWheelSpin.setIdleMode(IdleMode.kCoast);
     m_intakeWheelSpin.setInverted(true);
 
-   // m_intakeEncoder = m_intakeArmMotor.getEncoder(); FIXME
-
+    m_intakeArmEncoder.getDistancePerPulse();
+    m_intakeArmEncoder.getDistance();
    }
 
    public void setIntakeWheelSpin(double speed){
@@ -46,12 +45,19 @@ public class IntakeSubsystem extends SubsystemBase {
    }
 
    public void setIntakeArmMotor(double speed){
-    m_intakeArmMotor.set(speed);
-   
+     //
+    if ( (m_isEncoderReset && speed > 0) || (speed < 0)) {
+      m_intakeArmMotor.set(speed); 
+      }  //else setmotor raise arm until hit limit switch
    }
+   //We need to allow the encoder to be reset when the limit switch is triggered - what's going to trigger the arm to move up? Teleop? Auto?
+   //Turn off the motor and reset encoder when limit switch is hit (periodic)
+   //Turn off motor when INTAKE_ARM_DOWN_ENCODER_COUNT has been reached
+
   
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
   }
 }

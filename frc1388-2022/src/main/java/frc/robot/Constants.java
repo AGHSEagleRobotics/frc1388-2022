@@ -144,6 +144,17 @@ public final class Constants {
         public static final double WHEEL_SPEED_INTAKE = 0.5;
 
         public static final double INTAKE_DEPLOY_LEFT_TRIGGER = 0.5;
+
+        //DIO ports for sensors
+        public static final int DIGITAL_INPUT_LIMIT_SWITCH_PORT = 0;
+        public static final int DIGITAL_INPUT_ENCODER_CHANNEL_A = 1;
+        public static final int DIGITAL_INPUT_ENCODER_CHANNEL_B = 2;
+
+        //Encoder constants
+        public static final int INTAKE_ARM_ENCODER_COUNTS_PER_REV = 8192;
+        public static final double INTAKE_ARM_ENCODER_ROTATIONS = 1.75;
+        public static final int INTAKE_ARM_DOWN_ENCODER_COUNT = 
+            (int) INTAKE_ARM_ENCODER_ROTATIONS * INTAKE_ARM_ENCODER_COUNTS_PER_REV;
     }
 
     public final class TransitionConstants {

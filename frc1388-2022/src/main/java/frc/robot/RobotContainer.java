@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ClimberConstants;
@@ -84,7 +85,8 @@ public class RobotContainer {
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(
       new WPI_TalonSRX(IntakeConstants.CANID_ARM_MOTOR),
       new CANSparkMax(IntakeConstants.CANID_WHEEL_MOTOR, MotorType.kBrushless),
-      new DigitalInput(0));
+      new DigitalInput(IntakeConstants.DIGITAL_INPUT_LIMIT_SWITCH_PORT),
+      new Encoder(IntakeConstants.DIGITAL_INPUT_ENCODER_CHANNEL_A, IntakeConstants.DIGITAL_INPUT_ENCODER_CHANNEL_B));
 
   private final TransitionSubsystem m_transitionSubsystem = new TransitionSubsystem(
       new CANSparkMax(TransitionConstants.CANID_TRANSITION_MOTOR, MotorType.kBrushless));
