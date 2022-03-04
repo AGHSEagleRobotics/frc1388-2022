@@ -2,7 +2,7 @@ import edu.wpi.first.gradlerio.deploy.roborio.RoboRIO
 
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2022.3.1"
+    id "edu.wpi.first.GradleRIO" version "2022.4.1"
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -73,10 +73,6 @@ dependencies {
     simulationRelease wpi.sim.enableRelease()
 
     testImplementation 'junit:junit:4.12'
-
-    exec {
-        commandLine "GitJavaVersion.cmd", ">src/main/java/frc/robot/BuildInfo.java"
-    }
 }
 
 // Simulation configuration (e.g. environment variables).
@@ -96,3 +92,54 @@ jar {
 deployArtifact.jarTask = jar
 wpi.java.configureExecutableTasks(jar)
 wpi.java.configureTestTasks(test)
+
+sourceSets {
+   main {
+      java {
+         srcDir "${buildDir}/generated/sources/main/java"
+      }
+   }
+}
+
+def runCommand(String... args) {
+    new ByteArrayOutputStream().withStream { os ->
+        exec {
+            commandLine args
+            standardOutput = os
+        }
+        os.toString().strip()
+    }
+}
+
+task generateBuildInfo {
+    doFirst {
+        // Make sure old BuildInfo.java doesn't exist
+        delete(file("$projectDir/src/main/java/frc/robot/BuildInfo.java"))
+    }
+    doLast {
+        def gitHash = runCommand 'git', 'log', '-1', '--pretty=format:%h'
+        def gitBranch
+        try {
+            gitBranch = runCommand 'git', 'symbolic-ref', '--short', 'HEAD'
+        } catch(ignored) {
+            gitBranch = "no branch"
+        }
+        def gitStatus = runCommand 'git', 'diff', '--shortstat', 'HEAD'
+        def buildDate = new Date().format('yyyy-MM-dd')
+        def buildTime = new Date().format('HH:mm:ss z')
+
+        def buildInfoClass = file("$buildDir/generated/sources/main/java/frc/robot/BuildInfo.java")
+        file("$buildDir/generated/sources/main/java/frc/robot").mkdirs()
+        buildInfoClass.text = """
+package frc.robot;
+public class BuildInfo {
+  public static final String GIT_VERSION = "$gitHash";
+  public static final String GIT_BRANCH = "$gitBranch";
+  public static final String GIT_STATUS = "$gitStatus";
+  public static final String BUILD_DATE = "$buildDate";
+  public static final String BUILD_TIME = "$buildTime";
+}""".strip()
+    }
+}
+
+compileJava.dependsOn generateBuildInfo

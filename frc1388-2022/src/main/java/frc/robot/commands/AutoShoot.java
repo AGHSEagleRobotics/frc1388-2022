@@ -43,7 +43,7 @@ public class AutoShoot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_ShooterFeederSubsystem.shooterEnabled(true);
+    m_ShooterFeederSubsystem.setShooterEnabled(true);
     m_ShooterFeederSubsystem.setTargetRPM(4500); // FIXME magic number shooter rpm
     m_timer.stop();
     m_timer.reset();
@@ -67,7 +67,7 @@ public class AutoShoot extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_ShooterFeederSubsystem.shooterEnabled(false);
+    m_ShooterFeederSubsystem.setShooterEnabled(false);
     m_ShooterFeederSubsystem.setFeederFunction(FeederFunctions.OFF);
   }
 
