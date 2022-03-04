@@ -38,11 +38,11 @@ public final class Constants {
         //Encoder stuff
         private final static double COUNTS_PER_REV = 2048;
         private final static double COUNTS_PER_ROTATION_RATIO = 1/COUNTS_PER_REV;
-        private final static double WHEEL_DIAMETER = 6.0; //FIXME make range value?
+        private final static double WHEEL_DIAMETER_INCHES = 6.0; // make range value?
         private final static double FALCON_TO_SIMPLE_BOX_GEAR_RATIO = 1/4.67;
         private final static double SIMPLE_BOX_TO_WHEELS_RATIO = 12.0/30.0; //12 sprockets simple box to 30 sprockets wheel
-        public final static double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
-        public final static double ENCODER_DISTANCE_RATIO = 
+        public final static double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER_INCHES;
+        public final static double ENCODER_SENSOR_UNITS_TO_INCHES_RATIO = 
            COUNTS_PER_ROTATION_RATIO *
            FALCON_TO_SIMPLE_BOX_GEAR_RATIO *
            SIMPLE_BOX_TO_WHEELS_RATIO *
@@ -178,6 +178,7 @@ public final class Constants {
         public static final double AUTO_DRIVE_SPEED = 0.5;
 
         public static final double AUTO_TIME = 15.0;
+        public static final double AUTO_TARMAC_DISTANCE = 90; //inches
     }
  
 

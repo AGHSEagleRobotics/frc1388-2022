@@ -15,13 +15,17 @@ public class AutoShoot extends CommandBase {
   
   private final ShooterFeederSubsystem m_ShooterFeederSubsystem;
   private final Timer m_timer = new Timer();
+  private final double m_speed;
+  private final double m_shooterTargetRPM;
 
   private final PIDController m_PidController = new PIDController(AutoMoveConstants.P_VALUE, 0, 0);
 
   /** Creates a new AutoShoot. */
-  public AutoShoot(ShooterFeederSubsystem shooterFeederSubsystem) {
+  public AutoShoot(ShooterFeederSubsystem shooterFeederSubsystem, double speed, double shooterTargetRPM) {
 
     m_ShooterFeederSubsystem = shooterFeederSubsystem;
+    m_speed = speed;
+    m_shooterTargetRPM = shooterTargetRPM;
 
     addRequirements(shooterFeederSubsystem);
 

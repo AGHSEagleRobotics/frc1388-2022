@@ -102,12 +102,12 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
   public double getRightEncoderDistance(){
     return m_rightFront.getSelectedSensorPosition() 
-    / DriveTrainConstants.ENCODER_DISTANCE_RATIO 
+    / DriveTrainConstants.ENCODER_SENSOR_UNITS_TO_INCHES_RATIO 
     * DriveTrainConstants.WHEEL_CIRCUMFERENCE;
   }
   public double getLeftEncoderDistance(){
     return m_leftFront.getSelectedSensorPosition() 
-    / DriveTrainConstants.ENCODER_DISTANCE_RATIO 
+    / DriveTrainConstants.ENCODER_SENSOR_UNITS_TO_INCHES_RATIO 
     * DriveTrainConstants.WHEEL_CIRCUMFERENCE;
   }
 

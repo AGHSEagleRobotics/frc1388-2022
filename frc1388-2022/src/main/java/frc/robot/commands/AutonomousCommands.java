@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.AutoMoveConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.ShooterFeederSubsystem;
 
@@ -21,16 +22,15 @@ public class AutonomousCommands extends SequentialCommandGroup {
     m_driveTrainSubsystem = driveTrainSubsystem;
     m_shooterFeederSubsystem = shooterFeederSubsystem;
 
-    Command AutoLeaveTarmac = new AutoMove(m_driveTrainSubsystem, 
-    m_driveTrainSubsystem.getLeftEncoderDistance(),            //Or would I use Encoder distance?//
+    Command autoMove = new AutoMove(m_driveTrainSubsystem, 
+    AutoMoveConstants.AUTO_TARMAC_DISTANCE,    
     AutoMoveConstants.AUTO_DRIVE_SPEED);
     //Set these commands up
-    Command AutoShoot = new AutoShoot(m_driveTrainSubsystem, m_shooterFeederSubsystem);
-    Command AutoShoot2 = new AutoShoot(m_driveTrainSubsystem, m_shooterFeederSubsystem);
-    Command AutoShoot4to3 = new AutoShoot4to3();
+    Command autoTurn = new AutoTurn(m_driveTrainSubsystem, 0); //TODO CHANGE
+    Command autoShoot = new AutoShoot(m_shooterFeederSubsystem, ShooterConstants.SHOOTER_RMP_LOWGOAL);
     
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(AutoLeaveTarmac, AutoShoot, AutoShoot2, AutoShoot4to3);
+    addCommands(autoShoot, autoMove);
   }
 }
