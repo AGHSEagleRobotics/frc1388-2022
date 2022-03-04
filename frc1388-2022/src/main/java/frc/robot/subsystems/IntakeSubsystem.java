@@ -5,20 +5,26 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 
 public class IntakeSubsystem extends SubsystemBase {
 
   private final CANSparkMax m_intakeArmMotor;
   private final CANSparkMax m_intakeWheelSpin;
+  private final RelativeEncoder m_intakeEncoder;
+  private final DigitalInput m_intakeLimitUp;
 
   /** Creates a new IntakeSubsystem. */
-  public IntakeSubsystem(CANSparkMax intakeArmMotor, CANSparkMax intakeWheelSpin) {
+  public IntakeSubsystem(CANSparkMax intakeArmMotor, CANSparkMax intakeWheelSpin, DigitalInput intakeLimitUp) {
     m_intakeArmMotor = intakeArmMotor;
     m_intakeWheelSpin = intakeWheelSpin;
+    m_intakeLimitUp = intakeLimitUp;
 
     m_intakeArmMotor.restoreFactoryDefaults();
     m_intakeArmMotor.setIdleMode(IdleMode.kCoast);
@@ -26,9 +32,8 @@ public class IntakeSubsystem extends SubsystemBase {
     m_intakeWheelSpin.restoreFactoryDefaults();
     m_intakeWheelSpin.setIdleMode(IdleMode.kCoast);
 
-    //TODO test
-    m_intakeArmMotor.getForwardLimitSwitch(Type.kNormallyClosed);
-    m_intakeArmMotor.getReverseLimitSwitch(Type.kNormallyClosed);  
+    m_intakeEncoder = m_intakeArmMotor.getEncoder();
+
    }
 
    public void setIntakeWheelSpin(double speed){
@@ -37,6 +42,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
    public void setIntakeArmMotor(double speed){
     m_intakeArmMotor.set(speed);
+   
    }
   
   @Override

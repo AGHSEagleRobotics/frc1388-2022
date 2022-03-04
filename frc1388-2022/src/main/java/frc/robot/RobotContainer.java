@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ClimberConstants;
@@ -20,6 +21,8 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.ShootHigh;
 import frc.robot.commands.ShootLow;
 import frc.robot.commands.RetractIntake;
+import frc.robot.commands.ReverseShootEject;
+import frc.robot.commands.ShootEject;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ClimberCommand; // climber command
 import frc.robot.subsystems.ClimberSubsystem; // climber subsystem
@@ -75,7 +78,8 @@ public class RobotContainer {
 
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(
       new CANSparkMax(IntakeConstants.CANID_ARM_MOTOR, MotorType.kBrushless),
-      new CANSparkMax(IntakeConstants.CANID_WHEEL_MOTOR, MotorType.kBrushless));
+      new CANSparkMax(IntakeConstants.CANID_WHEEL_MOTOR, MotorType.kBrushless),
+      new DigitalInput(0));
 
   private final TransitionSubsystem m_transitionSubsystem = new TransitionSubsystem(
       new CANSparkMax(TransitionConstants.CANID_TRANSITION_MOTOR, MotorType.kBrushless));
@@ -87,16 +91,14 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
-    // set default commands
-    //REVIEW CLIMBER DEFAULTS IN ROBOT CONTAINER
     m_climberSubsystem.setDefaultCommand(
         new ClimberCommand(
             m_climberSubsystem,
             () -> m_opController.getLeftY(), // extend
-            () -> m_opController.getRightY(), // articulate
-            () -> m_opController.getYButton(), // vertical (articulate)
-            () -> m_opController.getXButton() // reach (articulate)
-        ));
+        () -> m_opController.getRightY())    // articulate
+      );
+    // set default commands
+
 
     m_driveTrainSubsystem.setDefaultCommand(
         new Drive(
@@ -127,6 +129,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
 
+    new JoystickButton(m_driveController, XboxController.Button.kB.value)
+        .whenPressed(() -> m_driveTrainSubsystem.setForward(true));
 
     /*
      * dev mode
@@ -161,20 +165,27 @@ public class RobotContainer {
     new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value)
         .whenPressed(new RetractIntake(m_intakeSubsystem));
 
-    // SHOOT LOW AND HIGH GOAL
+    // SHOOT LOW HIGH GOAL and EJECT
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
         .whenHeld(new ShootHigh(m_shooterSubsystem, m_transitionSubsystem));
 
     new Button(RobotContainer::isRightDriverTriggerPressed)
         .whenHeld(new ShootLow(m_shooterSubsystem, m_transitionSubsystem));
 
+    //Eject commands
+    new JoystickButton(m_driveController, XboxController.Button.kBack.value)
+      .whenHeld(new ShootEject(m_shooterSubsystem, m_transitionSubsystem));
+
+    new Button (() -> isDriverDPadPressed()).whenHeld(new ReverseShootEject(
+      m_intakeSubsystem, m_transitionSubsystem, m_shooterSubsystem));
+
     // Lower priority
     new JoystickButton(m_opController, XboxController.Button.kX.value)
-        .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.REACH), m_climberSubsystem);
+      .whenPressed(() -> m_climberSubsystem.setArticulatorReach());
 
     new JoystickButton(m_opController, XboxController.Button.kY.value)
-        .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.VERTICAL),
-            m_climberSubsystem);
+      .whenPressed(() -> m_climberSubsystem.setArticulatorVertical());
+
 
     // Reverse
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
@@ -214,17 +225,20 @@ public class RobotContainer {
     }
   } 
 
-  //Change 0.9 to 0.5 in constants
   public static boolean isRightDriverTriggerPressed() {
-    return m_driveController.getRightTriggerAxis() > 0.5;
+    return m_driveController.getRightTriggerAxis() > ShooterConstants.SHOOT_LOW_RIGHT_DRIVE_TRIGGER;
   }
 
   public static boolean isLeftDriverTriggerPressed() {
-    return m_driveController.getLeftTriggerAxis() > 0.5;
+    return m_driveController.getLeftTriggerAxis() > IntakeConstants.INTAKE_DEPLOY_LEFT_TRIGGER;
   }
 
   public static boolean isLeftOpTriggerPressed() {
-    return m_opController.getLeftTriggerAxis() > 0.5;
+    return m_opController.getLeftTriggerAxis() > IntakeConstants.INTAKE_DEPLOY_LEFT_TRIGGER;
+  }
+
+  public static boolean isDriverDPadPressed() {
+    return m_driveController.getPOV() != -1 ;
   }
 
   /**
