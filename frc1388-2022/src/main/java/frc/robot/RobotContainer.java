@@ -4,7 +4,9 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -80,7 +82,7 @@ public class RobotContainer {
       new CANSparkMax(ShooterConstants.CANID_FEEDER_MOTOR, MotorType.kBrushless));
 
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(
-      new CANSparkMax(IntakeConstants.CANID_ARM_MOTOR, MotorType.kBrushless),
+      new WPI_TalonSRX(IntakeConstants.CANID_ARM_MOTOR),
       new CANSparkMax(IntakeConstants.CANID_WHEEL_MOTOR, MotorType.kBrushless),
       new DigitalInput(0));
 
