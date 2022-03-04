@@ -141,7 +141,7 @@ public final class Constants {
         public static final int CANID_ARM_MOTOR = 9; 
 
         public static final double ARM_SPEED_DEPLOY   = 0.5;
-        public static final double WHEEL_SPEED_INTAKE = 1.0;
+        public static final double WHEEL_SPEED_INTAKE = 0.5;
 
         public static final double INTAKE_DEPLOY_LEFT_TRIGGER = 0.5;
     }

@@ -50,6 +50,7 @@ public class ReverseShootEject extends CommandBase {
     //Turn off shooter motor
     m_shooterFeederSubsystem.setShooterEnabled(false);
     m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_SLOW);
+    m_intakeSubsystem.setIntakeWheelSpin(0);
   }
 
   // Returns true when the command should end.

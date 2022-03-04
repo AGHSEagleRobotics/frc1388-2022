@@ -7,7 +7,9 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveTrainConstants;
 
@@ -15,11 +17,12 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
   //define class fields
   private final DifferentialDrive m_differentialDrive;
+  private final ADIS16470_IMU m_gyro;
 
   private boolean m_isReverse = false;
 
   /** Creates a new DriveTrainSubsystem. */
-  public DriveTrainSubsystem(WPI_TalonFX leftFront, WPI_TalonFX leftBack, WPI_TalonFX rightFront, WPI_TalonFX rightBack) {
+  public DriveTrainSubsystem(WPI_TalonFX leftFront, WPI_TalonFX leftBack, WPI_TalonFX rightFront, WPI_TalonFX rightBack, ADIS16470_IMU gyro) {
 
     leftBack.follow(leftFront);
     rightBack.follow(rightFront);
@@ -45,6 +48,9 @@ public class DriveTrainSubsystem extends SubsystemBase {
     leftBack.setNeutralMode(NeutralMode.Brake);
     rightFront.setNeutralMode(NeutralMode.Brake);
     rightBack.setNeutralMode(NeutralMode.Brake);
+
+    m_gyro = gyro;
+    m_gyro.calibrate();
     
     //add to shuffle board
     addChild("DifferentialDrive", m_differentialDrive);
@@ -80,6 +86,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
   public void setForward(boolean isForewards) {
     m_isReverse = !isForewards;
+  }
+
+  public double getGyro() {
+    return m_gyro.getAngle();
   }
 
   @Override
