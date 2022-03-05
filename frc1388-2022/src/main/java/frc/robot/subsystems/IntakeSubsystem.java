@@ -53,11 +53,19 @@ public class IntakeSubsystem extends SubsystemBase {
      */
     //ARM DOWN ENCODER COUNT is the rotations of the intake times the encoder counts per rev
     //ARM DOWN ENCODER COUNT functions as a max value. 
-    if ( (m_intakeArmEncoder.get() < IntakeConstants.INTAKE_ARM_DOWN_ENCODER_COUNT && speed > 0) || (speed < 0 && !m_intakeLimitUp.get() || (speed == 0))) {
+    if (    (   m_intakeArmEncoder.get() < IntakeConstants.INTAKE_ARM_DOWN_ENCODER_COUNT 
+             && speed > 0 
+             && m_isEncoderReset) 
+        ||  (   speed < 0 
+             && !m_intakeLimitUp.get())
+        || speed == 0)
+    {
       m_intakeArmMotor.set(speed); 
-      } else {
-        m_intakeArmMotor.set(0);
-      } //else setmotor raise arm until hit limit switch
+    }
+    else
+    {
+      m_intakeArmMotor.set(0);
+    } //else setmotor raise arm until hit limit switch
    }
 
    //We need to allow the encoder to be reset when the limit switch is triggered - what's going to trigger the arm to move up? Teleop? Auto?
@@ -67,10 +75,19 @@ public class IntakeSubsystem extends SubsystemBase {
   //
   @Override
   public void periodic() {
-    System.out.println(m_intakeArmEncoder.get());
-    // if ((m_intakeArmEncoder.get() > IntakeConstants.INTAKE_ARM_DOWN_ENCODER_COUNT)) {
 
-    // }
+    System.out.println(m_intakeArmEncoder.get());
+
+    if (m_intakeLimitUp.get()) {
+      m_intakeArmEncoder.reset();
+      m_isEncoderReset = true;
+    }
+    if (m_intakeArmMotor.get() > 0 && m_intakeArmEncoder.get() > IntakeConstants.INTAKE_ARM_DOWN_ENCODER_COUNT) {
+      m_intakeArmMotor.set(0);
+    }
+    if (m_intakeArmMotor.get() < 0 && m_intakeLimitUp.get()) {
+      m_intakeArmMotor.set(0);
+    }
     // This method will be called once per scheduler run
 
   }
