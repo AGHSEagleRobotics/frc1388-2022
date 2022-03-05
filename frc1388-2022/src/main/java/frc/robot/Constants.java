@@ -157,8 +157,12 @@ public final class Constants {
 
     public static final class DashboardConstants {
         public static enum Cameras {
-            FORWARDS, REVERSE
+            FORWARDS, REVERSE, BALL
         }
+
+        public final static int FRONT_CAMERA_PORT = 0;
+        public final static int REVERSE_CAMERA_PORT = 1;
+        public final static int BALL_CAMERA_PORT = 2;
     }
  
     public final static class RumbleConstants {

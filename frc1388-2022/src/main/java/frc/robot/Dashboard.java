@@ -11,15 +11,18 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.robot.Constants.DashboardConstants;
 import frc.robot.Constants.DashboardConstants.Cameras;
 
 /** Add your docs here. */
 public class Dashboard {
 
-    private final UsbCamera m_frontCamera = CameraServer.startAutomaticCapture(0);
-    private final UsbCamera m_reverseCamera = CameraServer.startAutomaticCapture(1);
+    private final UsbCamera m_frontCamera = CameraServer.startAutomaticCapture(DashboardConstants.FRONT_CAMERA_PORT);
+    private final UsbCamera m_reverseCamera = CameraServer.startAutomaticCapture(DashboardConstants.REVERSE_CAMERA_PORT);
+    private final UsbCamera m_ballCamera = CameraServer.startAutomaticCapture(DashboardConstants.BALL_CAMERA_PORT);
     // private VideoSource[] m_testVideoSources;
     private final VideoSink m_videoSink = CameraServer.getServer();
+    private final VideoSink m_otherVideoSink = CameraServer.getServer();
 
     private final ShuffleboardTab m_shuffelboardTab = Shuffleboard.getTab("Cameras");
     private ComplexWidget m_complexWidgetCam;
@@ -35,6 +38,7 @@ public class Dashboard {
     private void setupShuffelboard() {
         m_complexWidgetCam = m_shuffelboardTab.add("cams", m_videoSink.getSource())
             .withWidget(BuiltInWidgets.kCameraStream);
+        m_otherVideoSink.setSource(m_ballCamera);
     }
 
     public void switchCamera() {
