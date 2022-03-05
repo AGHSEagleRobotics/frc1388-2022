@@ -79,6 +79,7 @@ public class RumbleSubsystem extends SubsystemBase {
       timer.reset();
       m_pulseOn = false;
       m_pulseOff = true;
+      //TODO get rid of this
       m_numberOfPulses--;
     }
 

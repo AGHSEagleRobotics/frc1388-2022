@@ -12,12 +12,12 @@ import frc.robot.subsystems.TransitionSubsystem;
 import frc.robot.subsystems.ShooterFeederSubsystem.FeederFunctions;
 
 //TODO can make high and low one command
-public class ShootHigh extends CommandBase {
-  private final ShooterFeederSubsystem m_shooterSubsystem;
+public class ShootEject extends CommandBase {
+  private final ShooterFeederSubsystem m_shooterFeederSubsystem;
   private final TransitionSubsystem m_transitionSubsystem;
   /** Creates a new ShooterCommands. */
-  public ShootHigh(ShooterFeederSubsystem shooterSubsystem, TransitionSubsystem transitionSubsystem) {
-    m_shooterSubsystem = shooterSubsystem;
+  public ShootEject(ShooterFeederSubsystem shooterSubsystem, TransitionSubsystem transitionSubsystem) {
+    m_shooterFeederSubsystem = shooterSubsystem;
     m_transitionSubsystem = transitionSubsystem;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -27,8 +27,8 @@ public class ShootHigh extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_shooterSubsystem.setShooterEnabled(true);
-    m_shooterSubsystem.setTargetRPM(ShooterConstants.SHOOTER_RPM_HIGHGOAL);
+    m_shooterFeederSubsystem.setShooterEnabled(true);
+    m_shooterFeederSubsystem.setTargetRPM(ShooterConstants.SHOOTER_RPM_EJECT);
 
   }
 
@@ -38,12 +38,12 @@ public class ShootHigh extends CommandBase {
   @Override
   public void execute() {
     // check with subystem to see if shooter ready
-    if (m_shooterSubsystem.shooterSpeedIsReady()) {
+    if (m_shooterFeederSubsystem.shooterSpeedIsReady()) {
       //run feeder motor
-      m_shooterSubsystem.setFeederFunction(FeederFunctions.FORWARD);
+      m_shooterFeederSubsystem.setFeederFunction(FeederFunctions.FORWARD);
       m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_FAST);
     } else {
-      m_shooterSubsystem.setFeederFunction(FeederFunctions.OFF);
+      m_shooterFeederSubsystem.setFeederFunction(FeederFunctions.OFF);
       m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_SLOW);
     }
   }
@@ -52,9 +52,9 @@ public class ShootHigh extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     //Turn off feeder motor
-    m_shooterSubsystem.setFeederFunction(FeederFunctions.OFF);
+    m_shooterFeederSubsystem.setFeederFunction(FeederFunctions.OFF);
     //Turn off shooter motor
-    m_shooterSubsystem.setShooterEnabled(false);
+    m_shooterFeederSubsystem.setShooterEnabled(false);
     m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_SLOW);
   }
 

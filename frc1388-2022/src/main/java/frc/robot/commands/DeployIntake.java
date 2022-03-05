@@ -34,6 +34,7 @@ public class DeployIntake extends CommandBase {
   @Override
   public void initialize() {}
 
+  //TODO change so that wheel can always run
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
@@ -48,6 +49,7 @@ public class DeployIntake extends CommandBase {
     // m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SPEED_DEPLOY);
     m_intakeSubsystem.setIntakeWheelSpin(0);
     m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_SLOW);
+    m_intakeSubsystem.setIntakeArmMotor(0);
   }
 
   // Returns true when the command should end.

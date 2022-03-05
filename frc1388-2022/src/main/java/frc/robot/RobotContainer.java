@@ -4,9 +4,12 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.ADIS16470_IMU;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ClimberConstants;
@@ -17,11 +20,12 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.USBConstants; // USB
 import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
 import frc.robot.Constants.DashboardConstants.Cameras;
-import frc.robot.Constants.RumbleConstants.RumbleSide;
 import frc.robot.commands.Drive;
 import frc.robot.commands.ShootHigh;
 import frc.robot.commands.ShootLow;
 import frc.robot.commands.RetractIntake;
+import frc.robot.commands.ReverseShootEject;
+import frc.robot.commands.ShootEject;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ClimberCommand; // climber command
 import frc.robot.subsystems.ClimberSubsystem; // climber subsystem
@@ -31,9 +35,7 @@ import frc.robot.subsystems.RumbleSubsystem;
 import frc.robot.subsystems.ShooterFeederSubsystem;
 import frc.robot.subsystems.TransitionSubsystem;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -67,7 +69,9 @@ public class RobotContainer {
       new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_FRONT),
       new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_BACK),
       new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_FRONT),
-      new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_BACK));
+      new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_BACK),
+      new ADIS16470_IMU()
+      );
 
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
       new WPI_TalonFX(ClimberConstants.CANID_WINCH),
@@ -78,8 +82,9 @@ public class RobotContainer {
       new CANSparkMax(ShooterConstants.CANID_FEEDER_MOTOR, MotorType.kBrushless));
 
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(
+      new WPI_TalonSRX(IntakeConstants.CANID_ARM_MOTOR),
       new CANSparkMax(IntakeConstants.CANID_WHEEL_MOTOR, MotorType.kBrushless),
-      new CANSparkMax(IntakeConstants.CANID_ARM_MOTOR, MotorType.kBrushless));
+      new DigitalInput(0));
 
   private final TransitionSubsystem m_transitionSubsystem = new TransitionSubsystem(
       new CANSparkMax(TransitionConstants.CANID_TRANSITION_MOTOR, MotorType.kBrushless));
@@ -92,20 +97,21 @@ public class RobotContainer {
   public RobotContainer() {
 
     m_climberSubsystem.setDefaultCommand(
-        new ClimberCommand(
-            m_climberSubsystem,
-            () -> m_opController.getLeftY(), // extend
-            () -> m_opController.getRightY(), // articulate
-            () -> m_opController.getAButton(), // vertical (articulate)
-            () -> m_opController.getBButton() // reach (articulate)
-        ));
+      new ClimberCommand(
+        m_climberSubsystem, 
+        () -> m_opController.getLeftY(),    // extend
+        () -> m_opController.getRightY())    // articulate
+      );
     // set default commands
+
+
     m_driveTrainSubsystem.setDefaultCommand(
         new Drive(
             m_driveTrainSubsystem, m_rumbleSubsystem,
             () -> m_driveController.getLeftY(),
             () -> m_driveController.getRightY(),
             () -> m_driveController.getRightX(),
+            //rumble for precision mode
             () -> m_driveController.getRightStickButtonPressed()));
 
     m_transitionSubsystem.setDefaultCommand(
@@ -127,14 +133,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    // Reverse
-
 
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
-      .whenPressed(() -> setForeward(true));
-
-    new JoystickButton(m_driveController, XboxController.Button.kA.value)
-      .whenPressed(() -> setForeward(false));
+        .whenPressed(() -> m_driveTrainSubsystem.setForward(true));
 
     /*
      * dev mode
@@ -149,12 +150,19 @@ public class RobotContainer {
      * 
      * new JoystickButton(m_driveController, XboxController.Button.kB.value)
      * .whenPressed(() -> m_shooterSubsystem.shooterEnabled(false));
+     * 
+     * new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
+      .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
+            TransitionConstants.TRANSITION_SPEED_REVERSE_SLOW),
+            m_transitionSubsystem);
      */
 
-    // INTAKE DRIVE
+
+    // INTAKE DEPLOY LEFT TRIGGER
     new Button(() -> isLeftDriverTriggerPressed() || isLeftOpTriggerPressed())
         .whenHeld(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
 
+    //INTAKE DRIVE UP
     new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
         .whenHeld(new RetractIntake(m_intakeSubsystem));
 
@@ -162,34 +170,36 @@ public class RobotContainer {
     new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value)
         .whenHeld(new RetractIntake(m_intakeSubsystem));
 
-    // SHOOT LOW AND HIGH GOAL
+    // SHOOT LOW HIGH GOAL and EJECT
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
         .whenHeld(new ShootHigh(m_shooterSubsystem, m_transitionSubsystem));
 
     new Button(RobotContainer::isRightDriverTriggerPressed)
         .whenHeld(new ShootLow(m_shooterSubsystem, m_transitionSubsystem));
 
+    //Eject commands
+    new JoystickButton(m_driveController, XboxController.Button.kBack.value)
+      .whenHeld(new ShootEject(m_shooterSubsystem, m_transitionSubsystem));
+
+    new Button (() -> isDriverDPadPressed()).whenHeld(new ReverseShootEject(
+      m_intakeSubsystem, m_transitionSubsystem, m_shooterSubsystem));
 
     // Lower priority
     new JoystickButton(m_opController, XboxController.Button.kX.value)
-        .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.REACH), m_climberSubsystem);
+      .whenPressed(() -> m_climberSubsystem.setArticulatorReach());
 
-    new JoystickButton(m_opController, XboxController.Button.kY.value)
-        .whenPressed(() -> m_climberSubsystem.setArticulatorPosition(ArticulatorPositions.VERTICAL),
-            m_climberSubsystem);
+      new JoystickButton(m_opController, XboxController.Button.kY.value)
+      .whenPressed(() -> m_climberSubsystem.setArticulatorVertical());
 
-    // Button for transition on op stick - to run transition if ball stuck?
-    new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value)
-        .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
-            TransitionConstants.TRANSITION_SPEED_REVERSE_SLOW),
-            m_transitionSubsystem);
 
-    // Button for transition fast without prompting
-    new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
-        .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
-            TransitionConstants.TRANSITION_SPEED_FORWARD_FAST),
-            m_transitionSubsystem);
+    // Reverse
+    new JoystickButton(m_driveController, XboxController.Button.kB.value)
+      .whenPressed(() -> setForward(true));
 
+    new JoystickButton(m_driveController, XboxController.Button.kA.value)
+      .whenPressed(() -> setForward(false));
+
+    //Clean up?
     new JoystickButton(m_driveController, XboxController.Button.kStart.value)
         .whenPressed(
             new InstantCommand(() -> m_dashboard.switchCamera()) {
@@ -198,30 +208,42 @@ public class RobotContainer {
                 return true;
               }
             });
+
+    new JoystickButton(m_opController, XboxController.Button.kStart.value)
+        .whenPressed(
+            new InstantCommand(() -> m_dashboard.switchCamera()) {
+              @Override
+              public boolean runsWhenDisabled() {
+                return true;
+              }
+            });
     // .whenPressed(() -> m_dashboard.switchCamera());
-
   }
 
-  public static boolean isRightDriverTriggerPressed() {
-    return m_driveController.getRightTriggerAxis() > 0.9;
-  }
-
-  private void setForeward(boolean isForeward) {
-    if (isForeward) {
-      m_driveTrainSubsystem.setForeward(true);
-      m_dashboard.setCamView(Cameras.FOREWARDS);
+  private void setForward(boolean isForward) {
+    if (isForward) {
+      m_driveTrainSubsystem.setForward(true);
+      m_dashboard.setCamView(Cameras.FORWARDS);
     } else {
-      m_driveTrainSubsystem.setForeward(false);
+      m_driveTrainSubsystem.setForward(false);
       m_dashboard.setCamView(Cameras.REVERSE);
     }
   } 
 
+  public static boolean isRightDriverTriggerPressed() {
+    return m_driveController.getRightTriggerAxis() > ShooterConstants.SHOOT_LOW_RIGHT_DRIVE_TRIGGER;
+  }
+
   public static boolean isLeftDriverTriggerPressed() {
-    return m_driveController.getLeftTriggerAxis() > 0.9;
+    return m_driveController.getLeftTriggerAxis() > IntakeConstants.INTAKE_DEPLOY_LEFT_TRIGGER;
   }
 
   public static boolean isLeftOpTriggerPressed() {
-    return m_opController.getLeftTriggerAxis() > 0.9;
+    return m_opController.getLeftTriggerAxis() > IntakeConstants.INTAKE_DEPLOY_LEFT_TRIGGER;
+  }
+
+  public static boolean isDriverDPadPressed() {
+    return m_driveController.getPOV() != -1 ;
   }
 
   /**
