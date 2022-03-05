@@ -38,6 +38,7 @@ public class ReverseShootEject extends CommandBase {
   @Override
   public void execute() {
     m_intakeSubsystem.setIntakeWheelSpin(-IntakeConstants.WHEEL_SPEED_INTAKE);
+    //or m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SPEED_DEPLOY);
     m_shooterFeederSubsystem.setFeederFunction(FeederFunctions.REVERSE);
     m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_REVERSE_MEDIUM);
   }
