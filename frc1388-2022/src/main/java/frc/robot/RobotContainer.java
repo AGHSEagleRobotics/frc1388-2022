@@ -25,7 +25,7 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.ShootHigh;
 import frc.robot.commands.ShootLow;
 import frc.robot.commands.RetractIntake;
-import frc.robot.commands.ReverseShootEject;
+import frc.robot.commands.REject;
 import frc.robot.commands.ShootEject;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ClimberCommand; // climber command
@@ -183,7 +183,7 @@ public class RobotContainer {
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
       .whenHeld(new ShootEject(m_shooterSubsystem, m_transitionSubsystem));
 
-    new Button (() -> isDriverDPadPressed()).whenHeld(new ReverseShootEject(
+    new Button (() -> isDriverDPadPressed()).whenHeld(new REject(
       m_intakeSubsystem, m_transitionSubsystem, m_shooterSubsystem));
 
     // Lower priority

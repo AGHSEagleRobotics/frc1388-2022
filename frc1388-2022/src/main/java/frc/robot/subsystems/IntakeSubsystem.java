@@ -37,9 +37,7 @@ public class IntakeSubsystem extends SubsystemBase {
     m_intakeWheelSpin.setIdleMode(IdleMode.kCoast);
     m_intakeWheelSpin.setInverted(true);
 
-    m_intakeArmEncoder.getDistancePerPulse();
-    m_intakeArmEncoder.getDistance();
-
+    m_intakeArmEncoder.reset();
    }
 
    public void setIntakeWheelSpin(double speed){
@@ -53,11 +51,12 @@ public class IntakeSubsystem extends SubsystemBase {
      */
     //ARM DOWN ENCODER COUNT is the rotations of the intake times the encoder counts per rev
     //ARM DOWN ENCODER COUNT functions as a max value. 
+    boolean intakeLimitUp = m_intakeLimitUp.get();
     if (    (   m_intakeArmEncoder.get() < IntakeConstants.INTAKE_ARM_DOWN_ENCODER_COUNT 
              && speed > 0 
              && m_isEncoderReset) 
         ||  (   speed < 0 
-             && !m_intakeLimitUp.get())
+             && !intakeLimitUp)
         || speed == 0)
     {
       m_intakeArmMotor.set(speed); 
@@ -75,20 +74,34 @@ public class IntakeSubsystem extends SubsystemBase {
   //
   @Override
   public void periodic() {
+    boolean intakeLimitUp = m_intakeLimitUp.get();
+    int intakeArmEncoder = m_intakeArmEncoder.get();
+    double intakeArmMotorSpeed = m_intakeArmMotor.get();
 
-    System.out.println(m_intakeArmEncoder.get());
+    System.out.println(intakeArmEncoder);
 
-    if (m_intakeLimitUp.get()) {
+    //reset encoder when limit switch pressed
+    if (intakeLimitUp) {
       m_intakeArmEncoder.reset();
       m_isEncoderReset = true;
     }
-    if (m_intakeArmMotor.get() > 0 && m_intakeArmEncoder.get() > IntakeConstants.INTAKE_ARM_DOWN_ENCODER_COUNT) {
+    // stop arm motor when arm down encoder count constant is reached
+    if ( (intakeArmMotorSpeed > 0) && (intakeArmEncoder > IntakeConstants.INTAKE_ARM_DOWN_ENCODER_COUNT) ) {
       m_intakeArmMotor.set(0);
     }
-    if (m_intakeArmMotor.get() < 0 && m_intakeLimitUp.get()) {
+    // stop arm motor when retracting limit switch is reached
+    if (intakeArmMotorSpeed < 0 && intakeLimitUp) {
       m_intakeArmMotor.set(0);
     }
     // This method will be called once per scheduler run
 
+  }
+
+  public boolean isLimitUpReached() {
+    return ( (m_intakeLimitUp.get()) );
+  }
+
+  public boolean isLimitDownReached() {
+    return ( (m_intakeArmEncoder.get() > IntakeConstants.INTAKE_ARM_DOWN_ENCODER_COUNT) );
   }
 }
