@@ -64,7 +64,7 @@ public final class Constants {
         */
         public static final double TARGET_RPM_TOLERANCE = 200;             // EX. 30 = +/-30 rpm
         //ITERATIONS is subject to change if shooting is sloppy
-        public static final double ITERATIONS_AT_TARGET_RPM = 0;    // the amount of times rpm needs to be between +/- RPM_RANGE for shooterSpeedIsReady() to return true
+        public static final double ITERATIONS_AT_TARGET_RPM = 3;    // the amount of times rpm needs to be between +/- RPM_RANGE for shooterSpeedIsReady() to return true
 
         public static final double SHOOTER_COOLDOWN_TIME = 2.5; // time in seconds to wait before shooter is turned off (NOTE: feeder turns off instantly)
         
@@ -77,6 +77,9 @@ public final class Constants {
         //High and Low goal RPM 
         public static final double SHOOTER_RPM_HIGHGOAL    = 4500;
         public static final double SHOOTER_RMP_LOWGOAL     = 2000;
+        public static final double SHOOTER_RPM_EJECT       = 1200;
+
+        public static final double SHOOT_LOW_RIGHT_DRIVE_TRIGGER = 0.5;
 
         //Feeder speed
         public static final double FORWARD_FEEDER_SPEED = 1.0;
@@ -93,6 +96,7 @@ public final class Constants {
         public static final double CLIMBER_MAX_POWER_REVERSE       = -0.3;
         public static final double ARTICULATOR_MAX_POWER_FORWARDS  = 0.2;
         public static final double ARTICULATOR_MAX_POWER_REVERSE   = -1.0;
+        public static final int    ARTICULATOR_MAX_SMART_CURRENT_LIMIT = 40; // AMPS
 
         public static final double WINCH_GAINS_VELOCITY_F = 0;
         public static final double WINCH_GAINS_VELOCITY_P = 0.1; // using motor for testing
@@ -154,14 +158,29 @@ public final class Constants {
         public static final int CANID_ARM_MOTOR = 9; 
 
         public static final double ARM_SPEED_DEPLOY = 0.5;
-        public static final double WHEEL_SPEED_INTAKE = 1.0;
+        public static final double WHEEL_SPEED_INTAKE = 0.5;
+
+        public static final double INTAKE_DEPLOY_LEFT_TRIGGER = 0.5;
+
+        //DIO ports for sensors
+        public static final int DIGITAL_INPUT_LIMIT_SWITCH_PORT = 0;
+        public static final int DIGITAL_INPUT_ENCODER_CHANNEL_A = 1;
+        public static final int DIGITAL_INPUT_ENCODER_CHANNEL_B = 2;
+
+        //Encoder constants
+        public static final int INTAKE_ARM_ENCODER_COUNTS_PER_REV = 2048;
+        public static final double INTAKE_ARM_ENCODER_ROTATIONS = 1.75;
+        public static final int INTAKE_ARM_DOWN_ENCODER_COUNT = 
+        (int) (INTAKE_ARM_ENCODER_ROTATIONS * INTAKE_ARM_ENCODER_COUNTS_PER_REV);
     }
 
     public final class TransitionConstants {
         public static final int CANID_TRANSITION_MOTOR = 11;
         public static final double TRANSITION_SPEED_FORWARD_FAST = 0.75; 
+        public static final double TRANSITION_SPEED_FORWARD_MEDIUM = 0.5;
         public static final double TRANSITION_SPEED_FORWARD_SLOW = 0.2; 
         public static final double TRANSITION_SPEED_REVERSE_SLOW = -0.2;
+        public static final double TRANSITION_SPEED_REVERSE_MEDIUM = -0.5;
 
     }
 
