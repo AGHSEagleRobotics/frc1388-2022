@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
 
@@ -45,8 +46,11 @@ public class IntakeSubsystem extends SubsystemBase {
    }
 
    public void setIntakeArmMotor(double speed){
-     //
-    if ( (m_isEncoderReset && speed > 0) || (speed < 0)) {
+     /* If the speed is positive and the encoder is less than max (deploying) or
+     * If the speed is negative and limit is not tripped (retracting)
+     * then set the speed for the intake  (allow intake to run)
+     */
+    if ( (m_intakeArmEncoder.get() < IntakeConstants.ENCODER_MAX_VALUE && speed > 0) || (speed < 0 && !m_intakeLimitUp.get())) {
       m_intakeArmMotor.set(speed); 
       }  //else setmotor raise arm until hit limit switch
    }
@@ -54,7 +58,7 @@ public class IntakeSubsystem extends SubsystemBase {
    //Turn off the motor and reset encoder when limit switch is hit (periodic)
    //Turn off motor when INTAKE_ARM_DOWN_ENCODER_COUNT has been reached
 
-  
+  //
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
