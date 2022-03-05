@@ -40,14 +40,15 @@ public class DeployIntake extends CommandBase {
   public void execute() {
     m_intakeSubsystem.setIntakeArmMotor(IntakeConstants.ARM_SPEED_DEPLOY);
     m_intakeSubsystem.setIntakeWheelSpin(IntakeConstants.WHEEL_SPEED_INTAKE);
-    m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_FAST);
+    m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_MEDIUM);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     // m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SPEED_DEPLOY);
-    m_intakeSubsystem.setIntakeWheelSpin(0);
+    m_intakeSubsystem.setIntakeArmMotor(0);
+   // m_intakeSubsystem.setIntakeWheelSpin(0);
     m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_SLOW);
     m_intakeSubsystem.setIntakeArmMotor(0);
   }
@@ -55,6 +56,6 @@ public class DeployIntake extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_intakeSubsystem.isLimitDownReached();
   }
 }

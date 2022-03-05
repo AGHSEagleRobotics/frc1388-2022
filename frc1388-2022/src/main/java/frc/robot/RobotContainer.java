@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ClimberConstants;
@@ -24,7 +25,7 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.ShootHigh;
 import frc.robot.commands.ShootLow;
 import frc.robot.commands.RetractIntake;
-import frc.robot.commands.ReverseShootEject;
+import frc.robot.commands.REject;
 import frc.robot.commands.ShootEject;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ClimberCommand; // climber command
@@ -84,7 +85,8 @@ public class RobotContainer {
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(
       new WPI_TalonSRX(IntakeConstants.CANID_ARM_MOTOR),
       new CANSparkMax(IntakeConstants.CANID_WHEEL_MOTOR, MotorType.kBrushless),
-      new DigitalInput(0));
+      new DigitalInput(IntakeConstants.DIGITAL_INPUT_LIMIT_SWITCH_PORT),
+      new Encoder(IntakeConstants.DIGITAL_INPUT_ENCODER_CHANNEL_A, IntakeConstants.DIGITAL_INPUT_ENCODER_CHANNEL_B));
 
   private final TransitionSubsystem m_transitionSubsystem = new TransitionSubsystem(
       new CANSparkMax(TransitionConstants.CANID_TRANSITION_MOTOR, MotorType.kBrushless));
@@ -97,9 +99,9 @@ public class RobotContainer {
   public RobotContainer() {
 
     m_climberSubsystem.setDefaultCommand(
-      new ClimberCommand(
-        m_climberSubsystem, 
-        () -> m_opController.getLeftY(),    // extend
+        new ClimberCommand(
+            m_climberSubsystem,
+            () -> m_opController.getLeftY(), // extend
         () -> m_opController.getRightY())    // articulate
       );
     // set default commands
@@ -160,15 +162,15 @@ public class RobotContainer {
 
     // INTAKE DEPLOY LEFT TRIGGER
     new Button(() -> isLeftDriverTriggerPressed() || isLeftOpTriggerPressed())
-        .whenHeld(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
+        .whenPressed(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
 
     //INTAKE DRIVE UP
     new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
-        .whenHeld(new RetractIntake(m_intakeSubsystem));
+        .whenPressed(new RetractIntake(m_intakeSubsystem));
 
     // INTAKE OP UP
     new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value)
-        .whenHeld(new RetractIntake(m_intakeSubsystem));
+        .whenPressed(new RetractIntake(m_intakeSubsystem));
 
     // SHOOT LOW HIGH GOAL and EJECT
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
@@ -181,14 +183,14 @@ public class RobotContainer {
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
       .whenHeld(new ShootEject(m_shooterSubsystem, m_transitionSubsystem));
 
-    new Button (() -> isDriverDPadPressed()).whenHeld(new ReverseShootEject(
+    new Button (() -> isDriverDPadPressed()).whenHeld(new REject(
       m_intakeSubsystem, m_transitionSubsystem, m_shooterSubsystem));
 
     // Lower priority
     new JoystickButton(m_opController, XboxController.Button.kX.value)
       .whenPressed(() -> m_climberSubsystem.setArticulatorReach());
 
-      new JoystickButton(m_opController, XboxController.Button.kY.value)
+    new JoystickButton(m_opController, XboxController.Button.kY.value)
       .whenPressed(() -> m_climberSubsystem.setArticulatorVertical());
 
 
