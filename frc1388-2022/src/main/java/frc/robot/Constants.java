@@ -151,11 +151,10 @@ public final class Constants {
         public static final int DIGITAL_INPUT_ENCODER_CHANNEL_B = 2;
 
         //Encoder constants
-        public static final int INTAKE_ARM_ENCODER_COUNTS_PER_REV = 8192;
+        public static final int INTAKE_ARM_ENCODER_COUNTS_PER_REV = 2048;
         public static final double INTAKE_ARM_ENCODER_ROTATIONS = 1.75;
         public static final int INTAKE_ARM_DOWN_ENCODER_COUNT = 
-            (int) INTAKE_ARM_ENCODER_ROTATIONS * INTAKE_ARM_ENCODER_COUNTS_PER_REV;
-        public static final double ENCODER_MAX_VALUE = 10000; //UNITS?
+        (int) (INTAKE_ARM_ENCODER_ROTATIONS * INTAKE_ARM_ENCODER_COUNTS_PER_REV);
     }
 
     public final class TransitionConstants {

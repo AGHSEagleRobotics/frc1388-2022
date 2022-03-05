@@ -39,6 +39,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     m_intakeArmEncoder.getDistancePerPulse();
     m_intakeArmEncoder.getDistance();
+
    }
 
    public void setIntakeWheelSpin(double speed){
@@ -50,10 +51,15 @@ public class IntakeSubsystem extends SubsystemBase {
      * If the speed is negative and limit is not tripped (retracting)
      * then set the speed for the intake  (allow intake to run)
      */
-    if ( (m_intakeArmEncoder.get() < IntakeConstants.ENCODER_MAX_VALUE && speed > 0) || (speed < 0 && !m_intakeLimitUp.get())) {
+    //ARM DOWN ENCODER COUNT is the rotations of the intake times the encoder counts per rev
+    //ARM DOWN ENCODER COUNT functions as a max value. 
+    if ( (m_intakeArmEncoder.get() < IntakeConstants.INTAKE_ARM_DOWN_ENCODER_COUNT && speed > 0) || (speed < 0 && !m_intakeLimitUp.get() || (speed == 0))) {
       m_intakeArmMotor.set(speed); 
-      }  //else setmotor raise arm until hit limit switch
+      } else {
+        m_intakeArmMotor.set(0);
+      } //else setmotor raise arm until hit limit switch
    }
+
    //We need to allow the encoder to be reset when the limit switch is triggered - what's going to trigger the arm to move up? Teleop? Auto?
    //Turn off the motor and reset encoder when limit switch is hit (periodic)
    //Turn off motor when INTAKE_ARM_DOWN_ENCODER_COUNT has been reached
@@ -61,6 +67,10 @@ public class IntakeSubsystem extends SubsystemBase {
   //
   @Override
   public void periodic() {
+    System.out.println(m_intakeArmEncoder.get());
+    // if ((m_intakeArmEncoder.get() > IntakeConstants.INTAKE_ARM_DOWN_ENCODER_COUNT)) {
+
+    // }
     // This method will be called once per scheduler run
 
   }
