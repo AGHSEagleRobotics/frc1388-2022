@@ -259,40 +259,47 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    Objective objective = m_Dashboard.getObjective();
-    switch (m_Dashboard.getPosition()) {
-      case POSITION1:
+    //Objective objective = m_Dashboard.getObjective();
+    m_Dashboard.getObjective();
+    switch (m_Dashboard.getObjective()) {
+      case LEAVETARMAC:
+      default:
       return new AutoMove(m_driveTrainSubsystem, 
-      objective.getDistance(),            //Or would I use Encoder distance?//
+      AutoMoveConstants.AUTO_TARMAC_DISTANCE,    
       AutoMoveConstants.AUTO_DRIVE_SPEED); 
 
+      case SHOOTBALL1:
+      return new AutoShoot(m_shooterFeederSubsystem, ShooterConstants.SHOOTER_RMP_LOWGOAL)
+                .withTimeout(AutoMoveConstants.SHOOTER_TIMER)
+            .andThen( new AutoMove(m_driveTrainSubsystem, 
+                AutoMoveConstants.AUTO_TARMAC_DISTANCE,    
+                AutoMoveConstants.AUTO_DRIVE_SPEED) )
+            .andThen( new AutoMove(m_driveTrainSubsystem, 
+            AutoMoveConstants.AUTO_TARMAC_DISTANCE,    
+            AutoMoveConstants.AUTO_DRIVE_SPEED) );
+
+      case PICKUPSHOOT2:
+        break;
+
+      case DONOTHING:
+        break;
+    }
+
+
+    //Position Position = m_Dashboard.getPosition();
+    m_Dashboard.getPosition();
+    switch (m_Dashboard.getPosition()) {
+      case POSITION1:
+      //return new (Command Group)
+
       case POSITION2:
-      return new AutoMove(m_driveTrainSubsystem, 
-      objective.getDistance(),            //Or would I use Encoder distance?//
-      AutoMoveConstants.AUTO_DRIVE_SPEED); 
+      
       case POSITION3:
 
       case POSITION4:
-        break;
-      default:
-        break;
+
     }
-    Objective Objective = m_Dashboard.getObjective();
-    switch (m_Dashboard.getObjective()) {
-      case LEAVETARMAC:
-      //return new (Command Group)
-
-      case SHOOTBALL1:
-      
-      case PICKUPSHOOT2:
-
-      case AUTOSHOOT3FROM4:
-
-      case DONOTHING:
-
-  }
-    return null;
-
+      return null;
     }
   
 

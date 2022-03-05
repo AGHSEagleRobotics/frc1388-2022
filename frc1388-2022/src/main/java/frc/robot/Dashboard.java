@@ -59,11 +59,11 @@ public class Dashboard {
     }
 
     public enum Objective {
-        LEAVETARMAC ("Just leave tarmac", 1), //FIXME change distances to fit
-        SHOOTBALL1 ("Shoots first ball", 2),
-        PICKUPSHOOT2 ("Pick up 2nd ball, shoot both", 3),
-        AUTOSHOOT3FROM4 ("Shoot 2 from 4, shoot 3rd from 3", 4),
-        DONOTHING ("Does nothing (POSITION 2)", 0);
+
+        LEAVETARMAC ("Leave Tarmac", 1), 
+        SHOOTBALL1 ("Shoot Starter Ball", 2),
+        PICKUPSHOOT2 ("Pick Up To Left, Shoot", 3),
+        DONOTHING ("Does nothing", 0);
 
         public static final Objective Default = LEAVETARMAC;
 

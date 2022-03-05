@@ -5,29 +5,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrainSubsystem;
-import frc.robot.subsystems.ShooterFeederSubsystem;
 
-public class AutoShoot2 extends CommandBase {
-
-  private final DriveTrainSubsystem m_driveTrainSubsystem;
-  private final ShooterFeederSubsystem m_shooterFeederSubsystem;
-
-  /** Creates a new AutoShoot2. */
-  public AutoShoot2(DriveTrainSubsystem driveTrainSubsystem, ShooterFeederSubsystem shooterFeederSubsystem) {
-    m_shooterFeederSubsystem = shooterFeederSubsystem;
-    m_driveTrainSubsystem = driveTrainSubsystem;
-
-    addRequirements(shooterFeederSubsystem, driveTrainSubsystem);
-    
-    /*
-    GOALS:
-    Leave
-    shoot
-    pick up second (sensor?)
-
-
-    */
+public class AutoIntake extends CommandBase {
+  /** Creates a new AutoIntake. */
+  public AutoIntake() {
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

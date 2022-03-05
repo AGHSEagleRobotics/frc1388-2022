@@ -11,18 +11,22 @@ public class AutoTurn extends CommandBase {
 
   private DriveTrainSubsystem m_driveTrainSubsystem;
   private final double m_rotation;
+  private final double m_turnAngle;
 
   /** Creates a new AutoTurn. */
-  public AutoTurn(DriveTrainSubsystem driveTrainSubsystem, double rotation) {
+  public AutoTurn(DriveTrainSubsystem driveTrainSubsystem, double rotation, double turnAngle) {
     m_driveTrainSubsystem = driveTrainSubsystem;
     m_rotation = rotation;
+    m_turnAngle = turnAngle;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrainSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_driveTrainSubsystem.getGyro();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
