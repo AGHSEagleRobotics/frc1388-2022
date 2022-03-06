@@ -24,7 +24,7 @@ public class Dashboard {
     private final VideoSink m_videoSink = CameraServer.getServer();
     private final VideoSink m_otherVideoSink = CameraServer.getServer();
 
-    private final ShuffleboardTab m_shuffelboardTab = Shuffleboard.getTab("Cameras");
+    private final ShuffleboardTab m_shuffleboardTab = Shuffleboard.getTab("Cameras");
     private ComplexWidget m_complexWidgetCam;
 
     //TODO put enum back in here (enum's existance subject to debate)
@@ -32,11 +32,11 @@ public class Dashboard {
 
     public Dashboard() { // constructer
         setCamView(Cameras.FORWARDS);
-        setupShuffelboard();
+        setupShuffleboard();
     } // end constructer
 
-    private void setupShuffelboard() {
-        m_complexWidgetCam = m_shuffelboardTab.add("cams", m_videoSink.getSource())
+    private void setupShuffleboard() {
+        m_complexWidgetCam = m_shuffleboardTab.add("cams", m_videoSink.getSource())
             .withWidget(BuiltInWidgets.kCameraStream);
         m_otherVideoSink.setSource(m_ballCamera);
     }
@@ -57,11 +57,17 @@ public class Dashboard {
     //This is sort of duplicated code
     public void setCamView(Cameras camera) {
         switch (camera) {
-            case FORWARDS: m_videoSink.setSource(m_frontCamera);
+            case FORWARDS:
+                m_videoSink.setSource(m_frontCamera);
                 m_currentCam = Cameras.FORWARDS;
                 break;
-            case REVERSE: m_videoSink.setSource(m_reverseCamera);
+            case REVERSE:
+                m_videoSink.setSource(m_reverseCamera);
                 m_currentCam = Cameras.REVERSE;
+                break;
+            case BALL:
+                m_videoSink.setSource(m_ballCamera);
+                m_currentCam = Cameras.BALL;
                 break;
             default: m_videoSink.setSource(m_frontCamera);
                 m_currentCam = Cameras.FORWARDS;

@@ -179,7 +179,7 @@ public class RobotContainer {
     new Button(RobotContainer::isRightDriverTriggerPressed)
         .whenHeld(new ShootLow(m_shooterSubsystem, m_transitionSubsystem));
 
-    //Eject commands
+    //EJECT AND REJECT commands
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
       .whenHeld(new ShootEject(m_shooterSubsystem, m_transitionSubsystem));
 
@@ -211,6 +211,7 @@ public class RobotContainer {
               }
             });
 
+    //OP
     new JoystickButton(m_opController, XboxController.Button.kStart.value)
         .whenPressed(
             new InstantCommand(() -> m_dashboard.switchCamera()) {
