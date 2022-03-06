@@ -21,10 +21,8 @@ import frc.robot.Constants.DashboardConstants.Cameras;
 public class Dashboard {
     private ShuffleboardTab m_shuffleboardTab;
 
-
-    private static SendableChooser<Position> m_autoPosition = new SendableChooser<>();
+   // private static SendableChooser<Position> m_autoPosition = new SendableChooser<>();
     private static SendableChooser<Objective> m_autoObjective = new SendableChooser<>();
-    // private UsbCamera m_cameraColor;
 
     //FIXME CHANGE THESE to constants? 
     private ComplexWidget m_complexWidgetAuton;
@@ -39,11 +37,9 @@ public class Dashboard {
     private final UsbCamera m_reverseCamera = CameraServer.startAutomaticCapture(DashboardConstants.REVERSE_CAMERA_PORT);
     private final UsbCamera m_ballCamera = CameraServer.startAutomaticCapture(DashboardConstants.BALL_CAMERA_PORT);
 
-    // private VideoSource[] m_testVideoSources;
     private final VideoSink m_driveVideoSink = CameraServer.getServer();
     private final VideoSink m_ballVideoSink  = CameraServer.getServer();
 
-    //private final ShuffleboardTab m_shuffleboardTab = Shuffleboard.getTab("Cameras");
     private ComplexWidget m_complexWidgetCam;
 
     //TODO put enum back in here (enum's existance subject to debate)
@@ -51,8 +47,6 @@ public class Dashboard {
 
     public Dashboard() { // constructer
         setCamView(Cameras.FORWARDS);
-        // setupShuffleboard();
-        // colorcamera();
         shuffleboardSetUp();
     } // end constructer
 
@@ -81,7 +75,7 @@ public class Dashboard {
         PICKUPSHOOT2 ("Pick Up To Left, Shoot"),
         DONOTHING ("Does nothing");
 
-        public static final Objective Default = LEAVETARMAC;
+        public static final Objective Default = PICKUPSHOOT2;
 
         private String name;
 
@@ -94,30 +88,23 @@ public class Dashboard {
 
     }
 
-    public Position getPosition() {
-        return m_autoPosition.getSelected();
-    }
+    // public Position getPosition() {
+    //     return m_autoPosition.getSelected();
+    // }
 
     public Objective getObjective() {
         return m_autoObjective.getSelected();
     }
-
-    // private void colorcamera() {
-    //     m_cameraColor = CameraServer.startAutomaticCapture(AutoConstants.USB_CAMERACOLOR);
-    // }
 
     public void shuffleboardSetUp() {
         m_shuffleboardTab =  Shuffleboard.getTab("Competition");
         Shuffleboard.selectTab("Competition");
 
         // setup camera widgets
-        m_complexWidgetCam = m_shuffleboardTab.add("cams", m_driveVideoSink.getSource())
+        m_complexWidgetCam = m_shuffleboardTab.add("Cams", m_driveVideoSink.getSource())
         .withWidget(BuiltInWidgets.kCameraStream);
         m_ballVideoSink.setSource(m_ballCamera);
 
-    // private void setupShuffelboard() {
-    //     m_complexWidgetCam = m_shuffelboardTab.add("cams", m_testVideoSink.getSource())
-    //         .withWidget(BuiltInWidgets.kCameraStream);
         // setup objective chooser
         for (Dashboard.Objective o: Objective.values()) {
             m_autoObjective.addOption(o.getName(), o);
@@ -128,21 +115,14 @@ public class Dashboard {
             .withSize(autonChooserWidth, autonChooserHeight)
             .withPosition(autonChooserColumnIndex, autonChooserRowIndex);
 
-        for (Position ep: Position.values()) {
-            m_autoPosition.addOption(ep.getName(), ep);
-        }
+    //     for (Position ep: Position.values()) {
+    //         m_autoPosition.addOption(ep.getName(), ep);
+    //     }
 
-        m_complexWidgetPosition = Shuffleboard.getTab("Competition").add("AutoPosition", m_autoPosition)
-        .withWidget(BuiltInWidgets.kSplitButtonChooser);
+    //     m_complexWidgetPosition = Shuffleboard.getTab("Competition").add("AutoPosition", m_autoPosition)
+    //     .withWidget(BuiltInWidgets.kSplitButtonChooser);
+    
     }
-
-    // private void setupShuffleboard() {
-    //     m_complexWidgetCam = m_shuffelboardTab.add("cams", m_testVideoSink.getSource())
-    // private void setupShuffleboard() {
-    //     m_complexWidgetCam = m_shuffleboardTab.add("cams", m_videoSink.getSource())
-    //         .withWidget(BuiltInWidgets.kCameraStream);
-    //     m_otherVideoSink.setSource(m_ballCamera);
-    // }
 
     public void switchCamera() {
         System.out.println("swich camera method");
@@ -157,7 +137,6 @@ public class Dashboard {
         }
     }
 
-    //This is sort of duplicated code
     public void setCamView(Cameras camera) {
         switch (camera) {
             case FORWARDS:

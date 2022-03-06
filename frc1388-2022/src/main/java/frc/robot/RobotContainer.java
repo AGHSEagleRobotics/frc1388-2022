@@ -105,12 +105,12 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
-    m_climberSubsystem.setDefaultCommand(
-      new ClimberCommand(
-        m_climberSubsystem, 
-            () -> m_opController.getLeftY(), // extend
-        () -> m_opController.getRightY())    // articulate
-      );
+    // m_climberSubsystem.setDefaultCommand(
+    //   new ClimberCommand(
+    //     m_climberSubsystem, 
+    //         () -> m_opController.getLeftY(), // extend
+    //     () -> m_opController.getRightY())    // articulate
+    //   );
     // set default commands
 
 
@@ -273,11 +273,27 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+
+
+    // Position position = m_dashboard.getPosition();
+    // // m_dashboard.getPosition();
+    // switch (position) {
+    //   case POSITION1:
+    //   //return new (Command Group)
+
+    //   case POSITION2:
+      
+    //   case POSITION3:
+
+    //   case POSITION4:
+
+    // }
+
     Objective objective = m_dashboard.getObjective();
-    objective = Objective.LEAVETARMAC;
+    objective = Objective.PICKUPSHOOT2;
     switch (objective) {
       case LEAVETARMAC:
-      default:
+      // default:
       return new AutoMove(m_driveTrainSubsystem, 
           AutoConstants.AUTO_TARMAC_DISTANCE,    
           AutoConstants.AUTO_DRIVE_SPEED); 
@@ -285,7 +301,7 @@ public class RobotContainer {
       case SHOOTBALL1:
       return new AutoMove(m_driveTrainSubsystem, AutoConstants.AUTO_TARMAC_DISTANCE, AutoConstants.AUTO_DRIVE_SPEED)
         .alongWith(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem))
-        .andThen(new AutoShoot(m_shooterFeederSubsystem, ShooterConstants.SHOOTER_RPM_HIGHGOAL)
+        .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, ShooterConstants.SHOOTER_RPM_HIGHGOAL)
           .withTimeout(AutoConstants.SHOOTER_TIMER))
         .andThen( new AutoMove(m_driveTrainSubsystem, 
           AutoConstants.AUTO_TARMAC_DISTANCE,    
@@ -295,25 +311,11 @@ public class RobotContainer {
           AutoConstants.AUTO_TURN_ANGLE_MAX));
 
       case PICKUPSHOOT2:
-        break;
+      new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, ShooterConstants.SHOOTER_RPM_HIGHGOAL)
+      .withTimeout(AutoConstants.SHOOTER_TIMER);
 
       case DONOTHING:
         break;
-    }
-
-
-    //Position Position = m_dashboard.getPosition();
-    m_dashboard.getPosition();
-    switch (m_dashboard.getPosition()) {
-      case POSITION1:
-      //return new (Command Group)
-
-      case POSITION2:
-      
-      case POSITION3:
-
-      case POSITION4:
-
     }
       return null;
     }
