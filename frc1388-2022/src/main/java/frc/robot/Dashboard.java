@@ -25,7 +25,7 @@ public class Dashboard {
 
     private static SendableChooser<Position> m_autoPosition = new SendableChooser<>();
     private static SendableChooser<Objective> m_autoObjective = new SendableChooser<>();
-    private UsbCamera m_cameraColor;
+    // private UsbCamera m_cameraColor;
 
     //FIXME CHANGE THESE to constants? 
     private ComplexWidget m_complexWidgetAuton;
@@ -34,13 +34,14 @@ public class Dashboard {
     private final int autonChooserColumnIndex = 0;
     private final int autonChooserRowIndex = 0;
 
-
-    private final UsbCamera m_frontCamera = CameraServer.startAutomaticCapture(DashboardConstants.FRONT_CAMERA_PORT);
+    // front reverse & ball cams
+    private final UsbCamera m_frontCamera =   CameraServer.startAutomaticCapture(DashboardConstants.FRONT_CAMERA_PORT);
     private final UsbCamera m_reverseCamera = CameraServer.startAutomaticCapture(DashboardConstants.REVERSE_CAMERA_PORT);
-    private final UsbCamera m_ballCamera = CameraServer.startAutomaticCapture(DashboardConstants.BALL_CAMERA_PORT);
+    private final UsbCamera m_ballCamera =    CameraServer.startAutomaticCapture(DashboardConstants.BALL_CAMERA_PORT);
+
     // private VideoSource[] m_testVideoSources;
-    private final VideoSink m_videoSink = CameraServer.getServer();
-    private final VideoSink m_otherVideoSink = CameraServer.getServer();
+    private final VideoSink m_driveVideoSink = CameraServer.getServer();
+    private final VideoSink m_ballVideoSink  = CameraServer.getServer();
 
 
     private ComplexWidget m_complexWidgetCam;
@@ -50,7 +51,7 @@ public class Dashboard {
 
     public Dashboard() { // constructer
         setCamView(Cameras.FORWARDS);
-        colorcamera();
+        // colorcamera();
         shuffleboardSetUp();
     } // end constructer
 
@@ -107,9 +108,9 @@ public class Dashboard {
     //     setupShuffelboard();
     // }
 
-    private void colorcamera() {
-        m_cameraColor = CameraServer.startAutomaticCapture(AutoConstants.USB_CAMERACOLOR);
-    }
+    // private void colorcamera() {
+    //     m_cameraColor = CameraServer.startAutomaticCapture(AutoConstants.USB_CAMERACOLOR);
+    // }
     // private final UsbCamera m_frontCamera = CameraServer.startAutomaticCapture(0);
     // private final UsbCamera m_reverseCamera = CameraServer.startAutomaticCapture(1);
     // // private VideoSource[] m_testVideoSources;
@@ -119,9 +120,9 @@ public class Dashboard {
         Shuffleboard.selectTab("Competition");
 
         // setup camera widgets
-        m_complexWidgetCam = m_shuffleboardTab.add("cams", m_videoSink.getSource())
+        m_complexWidgetCam = m_shuffleboardTab.add("cams", m_driveVideoSink.getSource())
         .withWidget(BuiltInWidgets.kCameraStream);
-        m_otherVideoSink.setSource(m_ballCamera);
+        m_ballVideoSink.setSource(m_ballCamera);
 
     // private void setupShuffelboard() {
     //     m_complexWidgetCam = m_shuffelboardTab.add("cams", m_testVideoSink.getSource())
@@ -141,13 +142,13 @@ public class Dashboard {
     public void switchCamera() {
         System.out.println("swich camera method");
         switch (m_currentCam) {
-            case FORWARDS: m_videoSink.setSource(m_reverseCamera);
+            case FORWARDS: m_driveVideoSink.setSource(m_reverseCamera);
                 m_currentCam = Cameras.REVERSE;
                 break;
-            case REVERSE: m_videoSink.setSource(m_frontCamera);
+            case REVERSE: m_driveVideoSink.setSource(m_frontCamera);
                 m_currentCam = Cameras.FORWARDS;
                 break;
-            default: m_videoSink.setSource(m_reverseCamera);
+            default: m_driveVideoSink.setSource(m_reverseCamera);
         }
     }
 
@@ -155,18 +156,18 @@ public class Dashboard {
     public void setCamView(Cameras camera) {
         switch (camera) {
             case FORWARDS:
-                m_videoSink.setSource(m_frontCamera);
+                m_driveVideoSink.setSource(m_frontCamera);
                 m_currentCam = Cameras.FORWARDS;
                 break;
             case REVERSE:
-                m_videoSink.setSource(m_reverseCamera);
+                m_driveVideoSink.setSource(m_reverseCamera);
                 m_currentCam = Cameras.REVERSE;
                 break;
             case BALL:
-                m_videoSink.setSource(m_ballCamera);
+                m_driveVideoSink.setSource(m_ballCamera);
                 m_currentCam = Cameras.BALL;
                 break;
-            default: m_videoSink.setSource(m_frontCamera);
+            default: m_driveVideoSink.setSource(m_frontCamera);
                 m_currentCam = Cameras.FORWARDS;
         }
     }
