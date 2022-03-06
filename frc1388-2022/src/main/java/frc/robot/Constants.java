@@ -21,6 +21,10 @@ public final class Constants {
         public static final int OP_CONTROLLER = 1;
     }
 
+    public final class XBoxControllerConstants {
+        public static final double TRIGGER_THRESHOLD = 0.5;
+    }
+
     public final class DriveTrainConstants {
         public static final double EXPIRATION = 0.1;
         public static final double MAX_OUTPUT = 1.0;
@@ -142,8 +146,6 @@ public final class Constants {
 
         public static final double ARM_SPEED_DEPLOY   = 1;
         public static final double WHEEL_SPEED_INTAKE = 0.5;
-
-        public static final double INTAKE_DEPLOY_LEFT_TRIGGER = 0.5;
 
         //DIO ports for sensors
         public static final int DIGITAL_INPUT_LIMIT_SWITCH_PORT = 0;

@@ -19,6 +19,7 @@ import frc.robot.Constants.TransitionConstants;
 import frc.robot.Constants.DriveTrainConstants; // climber constats
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.USBConstants; // USB
+import frc.robot.Constants.XBoxControllerConstants;
 import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
 import frc.robot.Constants.DashboardConstants.Cameras;
 import frc.robot.commands.Drive;
@@ -179,12 +180,18 @@ public class RobotContainer {
     new Button(RobotContainer::isRightDriverTriggerPressed)
         .whenHeld(new ShootLow(m_shooterSubsystem, m_transitionSubsystem));
 
-    //EJECT AND REJECT commands
+    //EJECT AND REJECT commands DRIVER 
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
       .whenHeld(new ShootEject(m_shooterSubsystem, m_transitionSubsystem));
 
     new Button (() -> isDriverDPadPressed()).whenHeld(new REject(
       m_intakeSubsystem, m_transitionSubsystem, m_shooterSubsystem));
+
+    //EJECT AND REJECT commands OPERATOR
+    new Button (() -> isRightOpTriggerPressed()).whenHeld(new ShootEject(m_shooterSubsystem, m_transitionSubsystem));
+
+    new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
+    .whenHeld(new REject(m_intakeSubsystem, m_transitionSubsystem, m_shooterSubsystem));
 
     // Lower priority
     new JoystickButton(m_opController, XboxController.Button.kX.value)
@@ -234,19 +241,24 @@ public class RobotContainer {
   } 
 
   public static boolean isRightDriverTriggerPressed() {
-    return m_driveController.getRightTriggerAxis() > ShooterConstants.SHOOT_LOW_RIGHT_DRIVE_TRIGGER;
+    return m_driveController.getRightTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
 
   public static boolean isLeftDriverTriggerPressed() {
-    return m_driveController.getLeftTriggerAxis() > IntakeConstants.INTAKE_DEPLOY_LEFT_TRIGGER;
+    return m_driveController.getLeftTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
 
   public static boolean isLeftOpTriggerPressed() {
-    return m_opController.getLeftTriggerAxis() > IntakeConstants.INTAKE_DEPLOY_LEFT_TRIGGER;
+    return m_opController.getLeftTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
 
   public static boolean isDriverDPadPressed() {
     return m_driveController.getPOV() != -1 ;
+  }
+
+  //EJECT REJECT FOR OP
+  public static boolean isRightOpTriggerPressed() {
+    return m_opController.getRightTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
 
   /**
