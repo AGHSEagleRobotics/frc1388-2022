@@ -20,13 +20,6 @@ import frc.robot.Constants.TransitionConstants;
 import frc.robot.Constants.DriveTrainConstants;     // climber constats
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.USBConstants;            // USB
-import frc.robot.Dashboard.Objective;
-import frc.robot.Dashboard.Position;
-import frc.robot.Constants.USBConstants; // USB
-import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
-import frc.robot.Constants.DashboardConstants.Cameras;
-import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
-import frc.robot.Constants.DashboardConstants.Cameras;
 import frc.robot.Constants.XBoxControllerConstants;
 import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
 import frc.robot.Constants.DashboardConstants.Cameras;
@@ -39,8 +32,6 @@ import frc.robot.commands.RetractIntake;
 import frc.robot.commands.REject;
 import frc.robot.commands.ShootEject;
 import frc.robot.commands.DeployIntake;
-import frc.robot.commands.SetShooterTargetRPM;
-// import frc.robot.commands.AutoLeave;
 import frc.robot.commands.AutoIntake;
 import frc.robot.commands.AutoMove;
 import frc.robot.commands.AutoShoot;
@@ -48,9 +39,6 @@ import frc.robot.commands.AutoTurn;
 import frc.robot.commands.ClimberCommand;           // climber command
 import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
-import frc.robot.commands.ClimberCommand; // climber command
-import frc.robot.subsystems.ClimberSubsystem; // climber subsystem
-import frc.robot.subsystems.DriveTrainSubsystem; // drive train subsystem
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.RumbleSubsystem;
 import frc.robot.subsystems.ShooterFeederSubsystem;
@@ -82,9 +70,6 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
 
-
-  //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final RumbleSubsystem m_rumbleSubsystem = new RumbleSubsystem(m_driveController);
@@ -114,13 +99,7 @@ public class RobotContainer {
   private final TransitionSubsystem m_transitionSubsystem = new TransitionSubsystem(
       new CANSparkMax(TransitionConstants.CANID_TRANSITION_MOTOR, MotorType.kBrushless));
 
-
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   private final Dashboard m_dashboard = new Dashboard();
-  // private final ShooterFeederSubsystem m_shooterFeederSubsystem = new ShooterFeederSubsystem(
-  //   new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR), 
-  //   new CANSparkMax(ShooterConstants.CANID_FEEDER_MOTOR, MotorType.kBrushless));
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -164,11 +143,6 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    // FIXME change 4500??
-    new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
-      .whenPressed(new AutoShoot(m_shooterFeederSubsystem, 4500));
-
-    //Reverse
 
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
         .whenPressed(() -> m_driveTrainSubsystem.setForward(true));
@@ -209,7 +183,6 @@ public class RobotContainer {
     // SHOOT LOW HIGH GOAL and EJECT
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
         .whenHeld(new ShootHigh(m_shooterFeederSubsystem, m_transitionSubsystem));
-
     
     new Button(RobotContainer::isRightDriverTriggerPressed)
         .whenHeld(new ShootLow(m_shooterFeederSubsystem, m_transitionSubsystem));
@@ -222,10 +195,10 @@ public class RobotContainer {
       m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
 
     //EJECT AND REJECT commands OPERATOR
-    new Button (() -> isRightOpTriggerPressed()).whenHeld(new ShootEject(m_shooterFeederSubsystem, m_transitionSubsystem));
+    new Button (() -> isRightOpTriggerPressed()).whenHeld(new ShootEject(m_shooterSubsystem, m_transitionSubsystem));
 
     new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
-    .whenHeld(new REject(m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
+    .whenHeld(new REject(m_intakeSubsystem, m_transitionSubsystem, m_shooterSubsystem));
 
     // Lower priority
     new JoystickButton(m_opController, XboxController.Button.kX.value)
@@ -235,35 +208,6 @@ public class RobotContainer {
       .whenPressed(() -> m_climberSubsystem.setArticulatorVertical());
 
 
-    // Reverse
-    new JoystickButton(m_driveController, XboxController.Button.kB.value)
-      .whenPressed(() -> m_shooterFeederSubsystem.setShooterEnabled(false));
-
-    // new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
-    //   .whenHeld( new Shoot(m_shooterFeederSubsystem, m_transitionSubsystem));  
-    
-    new JoystickButton(m_opController, XboxController.Button.kA.value)
-      .whenPressed(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
-
-    new JoystickButton(m_opController, XboxController.Button.kB.value)
-      .whenPressed(new RetractIntake(m_intakeSubsystem));
-      
-      //Button for transition on op stick - to run transition if ball stuck?
-   new JoystickButton(m_opController, XboxController.Button.kY.value)
-      .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
-        TransitionConstants.TRANSITION_SPEED_REVERSE_SLOW),
-        m_transitionSubsystem);
-
-      //Button for transition fast without prompting
-   new JoystickButton(m_opController, XboxController.Button.kX.value)
-     .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
-        TransitionConstants.TRANSITION_SPEED_FORWARD_FAST),
-        m_transitionSubsystem);
-    
-    new Button(RobotContainer::isRightDriverTriggerPressed)
-        .whenHeld(new ShootLow(m_shooterFeederSubsystem, m_transitionSubsystem));
-
-    // Lower priority
     // Reverse
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
       .whenPressed(() -> setForward(true));
@@ -330,10 +274,9 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    Objective objective = m_Dashboard.getObjective();
-    // FIXME just set the objective to something we want to test
-    objective = Objective.LEAVETARMAC;
-    switch (objective) {
+    //Objective objective = m_Dashboard.getObjective();
+    m_Dashboard.getObjective();
+    switch (m_Dashboard.getObjective()) {
       case LEAVETARMAC:
       default:
       return new AutoMove(m_driveTrainSubsystem, 
