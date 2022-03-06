@@ -34,7 +34,6 @@ public class RetractIntake extends CommandBase {
   @Override
   public void execute() {
     m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SPEED_DEPLOY);
-    m_intakeSubsystem.setIntakeWheelSpin(0);
   }
 
   // Called once the command ends or is interrupted.
