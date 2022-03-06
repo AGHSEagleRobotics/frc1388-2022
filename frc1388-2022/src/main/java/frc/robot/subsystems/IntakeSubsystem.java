@@ -78,7 +78,7 @@ public class IntakeSubsystem extends SubsystemBase {
     int intakeArmEncoder = m_intakeArmEncoder.get();
     double intakeArmMotorSpeed = m_intakeArmMotor.get();
 
-    System.out.println(intakeArmEncoder);
+    // System.out.println(intakeArmEncoder);
 
     //reset encoder when limit switch pressed
     if (intakeLimitUp) {

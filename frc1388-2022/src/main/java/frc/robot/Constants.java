@@ -25,6 +25,10 @@ public final class Constants {
         //}
     }
 
+    public final class XBoxControllerConstants {
+        public static final double TRIGGER_THRESHOLD = 0.5;
+    }
+
     public final class DriveTrainConstants {
         public static final double EXPIRATION = 0.1;
         public static final double MAX_OUTPUT = 1.0;
@@ -157,10 +161,8 @@ public final class Constants {
         public static final int CANID_WHEEL_MOTOR = 10; 
         public static final int CANID_ARM_MOTOR = 9; 
 
-        public static final double ARM_SPEED_DEPLOY = 0.5;
+        public static final double ARM_SPEED_DEPLOY   = 1;
         public static final double WHEEL_SPEED_INTAKE = 0.5;
-
-        public static final double INTAKE_DEPLOY_LEFT_TRIGGER = 0.5;
 
         //DIO ports for sensors
         public static final int DIGITAL_INPUT_LIMIT_SWITCH_PORT = 0;
@@ -210,8 +212,12 @@ public final class Constants {
 
     public static final class DashboardConstants {
         public static enum Cameras {
-            FORWARDS, REVERSE
+            FORWARDS, REVERSE, BALL
         }
+
+        public final static int FRONT_CAMERA_PORT = 2;
+        public final static int REVERSE_CAMERA_PORT = 1;
+        public final static int BALL_CAMERA_PORT = 0;
     }
  
     public final static class RumbleConstants {

@@ -14,30 +14,34 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.robot.Constants.DashboardConstants;
+import frc.robot.Constants.DashboardConstants.Cameras;
 
 /** Add your docs here. */
 public class Dashboard {
-    private ShuffleboardTab m_shuffleboardTab;
 
+    private ShuffleboardTab m_shuffleboardTab = Shuffleboard.getTab("Competition");
 
     private static SendableChooser<Position> m_autoPosition = new SendableChooser<>();
     private static SendableChooser<Objective> m_autoObjective = new SendableChooser<>();
     private UsbCamera m_cameraColor;
 
     //FIXME CHANGE THESE to constants? 
-    private ComplexWidget complexWidgetAuton;
+    private ComplexWidget m_complexWidgetAuton;
     private final int autonChooserWidth = 8;
     private final int autonChooserHeight = 2;
     private final int autonChooserColumnIndex = 0;
     private final int autonChooserRowIndex = 0;
 
 
- private final UsbCamera m_frontCamera = CameraServer.startAutomaticCapture(0);
-    private final UsbCamera m_reverseCamera = CameraServer.startAutomaticCapture(1);
+    private final UsbCamera m_frontCamera = CameraServer.startAutomaticCapture(DashboardConstants.FRONT_CAMERA_PORT);
+    private final UsbCamera m_reverseCamera = CameraServer.startAutomaticCapture(DashboardConstants.REVERSE_CAMERA_PORT);
+    private final UsbCamera m_ballCamera = CameraServer.startAutomaticCapture(DashboardConstants.BALL_CAMERA_PORT);
     // private VideoSource[] m_testVideoSources;
-    private final VideoSink m_testVideoSink = CameraServer.getServer();
+    private final VideoSink m_videoSink = CameraServer.getServer();
+    private final VideoSink m_otherVideoSink = CameraServer.getServer();
 
-    private final ShuffleboardTab m_shuffelboardTab = Shuffleboard.getTab("Cameras");
+
     private ComplexWidget m_complexWidgetCam;
 
     //TODO put enum back in here (enum's existance subject to debate)
@@ -45,7 +49,6 @@ public class Dashboard {
 
     public Dashboard() { // constructer
         setCamView(Cameras.FORWARDS);
-        setupShuffleboard();
         colorcamera();
         shuffleboardSetUp();
     } // end constructer
@@ -101,46 +104,54 @@ public class Dashboard {
     }
 
     public void shuffleboardSetUp() {
-        m_shuffleboardTab =  Shuffleboard.getTab("Competition");
         Shuffleboard.selectTab("Competition");
+
+        // setup camera widgets
+        m_complexWidgetCam = m_shuffleboardTab.add("cams", m_videoSink.getSource())
+        .withWidget(BuiltInWidgets.kCameraStream);
+        m_otherVideoSink.setSource(m_ballCamera);
+
+        // setup objective chooser
         for ( Objective o: Objective.values()) {
             m_autoObjective.addOption(o.getName(), o);
         }
-
-        complexWidgetAuton = Shuffleboard.getTab("Competition").add( "AutonChooser", m_autoObjective)
+        m_autoObjective.setDefaultOption(Objective.LEAVETARMAC.getName(), Objective.LEAVETARMAC);
+        m_complexWidgetAuton = m_shuffleboardTab.add( "AutoChooser", m_autoObjective)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withSize(autonChooserWidth, autonChooserHeight)
-            .withPosition(autonChooserColumnIndex, autonChooserRowIndex);
-    }
-
-    private void setupShuffleboard() {
-        m_complexWidgetCam = m_shuffelboardTab.add("cams", m_testVideoSink.getSource())
-            .withWidget(BuiltInWidgets.kCameraStream);
+            //.withSize(autonChooserWidth, autonChooserHeight)
+            //.withPosition(autonChooserColumnIndex, autonChooserRowIndex)
+            ;
     }
 
     public void switchCamera() {
         System.out.println("swich camera method");
         switch (m_currentCam) {
-            case FORWARDS: m_testVideoSink.setSource(m_reverseCamera);
+            case FORWARDS: m_videoSink.setSource(m_reverseCamera);
                 m_currentCam = Cameras.REVERSE;
                 break;
-            case REVERSE: m_testVideoSink.setSource(m_frontCamera);
+            case REVERSE: m_videoSink.setSource(m_frontCamera);
                 m_currentCam = Cameras.FORWARDS;
                 break;
-            default: m_testVideoSink.setSource(m_reverseCamera);
+            default: m_videoSink.setSource(m_reverseCamera);
         }
     }
 
     //This is sort of duplicated code
     public void setCamView(Cameras camera) {
         switch (camera) {
-            case FORWARDS: m_testVideoSink.setSource(m_frontCamera);
+            case FORWARDS:
+                m_videoSink.setSource(m_frontCamera);
                 m_currentCam = Cameras.FORWARDS;
                 break;
-            case REVERSE: m_testVideoSink.setSource(m_reverseCamera);
+            case REVERSE:
+                m_videoSink.setSource(m_reverseCamera);
                 m_currentCam = Cameras.REVERSE;
                 break;
-            default: m_testVideoSink.setSource(m_frontCamera);
+            case BALL:
+                m_videoSink.setSource(m_ballCamera);
+                m_currentCam = Cameras.BALL;
+                break;
+            default: m_videoSink.setSource(m_frontCamera);
                 m_currentCam = Cameras.FORWARDS;
         }
     }

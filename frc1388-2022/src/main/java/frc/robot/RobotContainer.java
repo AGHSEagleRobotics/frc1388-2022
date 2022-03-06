@@ -20,6 +20,7 @@ import frc.robot.Constants.TransitionConstants;
 import frc.robot.Constants.DriveTrainConstants;     // climber constats
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.USBConstants;            // USB
+import frc.robot.Constants.XBoxControllerConstants;
 import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
 import frc.robot.Constants.DashboardConstants.Cameras;
 import frc.robot.Dashboard.Objective;
@@ -186,12 +187,18 @@ public class RobotContainer {
     new Button(RobotContainer::isRightDriverTriggerPressed)
         .whenHeld(new ShootLow(m_shooterFeederSubsystem, m_transitionSubsystem));
 
-    //Eject commands
+    //EJECT AND REJECT commands DRIVER 
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
       .whenHeld(new ShootEject(m_shooterFeederSubsystem, m_transitionSubsystem));
 
     new Button (() -> isDriverDPadPressed()).whenHeld(new REject(
       m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
+
+    //EJECT AND REJECT commands OPERATOR
+    new Button (() -> isRightOpTriggerPressed()).whenHeld(new ShootEject(m_shooterFeederSubsystem, m_transitionSubsystem));
+
+    new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
+    .whenHeld(new REject(m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
 
     // Lower priority
     new JoystickButton(m_opController, XboxController.Button.kX.value)
@@ -218,6 +225,7 @@ public class RobotContainer {
   }
             });
 
+    //OP
     new JoystickButton(m_opController, XboxController.Button.kStart.value)
         .whenPressed(
             new InstantCommand(() -> m_dashboard.switchCamera()) {
@@ -240,19 +248,24 @@ public class RobotContainer {
   } 
 
   public static boolean isRightDriverTriggerPressed() {
-    return m_driveController.getRightTriggerAxis() > ShooterConstants.SHOOT_LOW_RIGHT_DRIVE_TRIGGER;
+    return m_driveController.getRightTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
 
   public static boolean isLeftDriverTriggerPressed() {
-    return m_driveController.getLeftTriggerAxis() > IntakeConstants.INTAKE_DEPLOY_LEFT_TRIGGER;
+    return m_driveController.getLeftTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
 
   public static boolean isLeftOpTriggerPressed() {
-    return m_opController.getLeftTriggerAxis() > IntakeConstants.INTAKE_DEPLOY_LEFT_TRIGGER;
+    return m_opController.getLeftTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
 
   public static boolean isDriverDPadPressed() {
     return m_driveController.getPOV() != -1 ;
+  }
+
+  //EJECT REJECT FOR OP
+  public static boolean isRightOpTriggerPressed() {
+    return m_opController.getRightTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
 
   /**
@@ -261,9 +274,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    //Objective objective = m_Dashboard.getObjective();
-    m_Dashboard.getObjective();
-    switch (m_Dashboard.getObjective()) {
+    Objective objective = m_Dashboard.getObjective();
+    // FIXME just set the objective to something we want to test
+    objective = Objective.LEAVETARMAC;
+    switch (objective) {
       case LEAVETARMAC:
       default:
       return new AutoMove(m_driveTrainSubsystem, 
