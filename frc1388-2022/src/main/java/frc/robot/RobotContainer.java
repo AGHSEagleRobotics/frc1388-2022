@@ -63,7 +63,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  private Dashboard m_Dashboard;
   // components
   public static XboxController m_driveController = new XboxController(USBConstants.DRIVE_CONTROLLER);
   public static XboxController m_opController = new XboxController(USBConstants.OP_CONTROLLER);
@@ -274,9 +273,9 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    //Objective objective = m_Dashboard.getObjective();
-    m_Dashboard.getObjective();
-    switch (m_Dashboard.getObjective()) {
+    Objective objective = m_dashboard.getObjective();
+    objective = Objective.LEAVETARMAC;
+    switch (objective) {
       case LEAVETARMAC:
       default:
       return new AutoMove(m_driveTrainSubsystem, 
@@ -293,8 +292,7 @@ public class RobotContainer {
           AutoConstants.AUTO_DRIVE_SPEED) )
         .andThen( new AutoTurn(m_driveTrainSubsystem,
           AutoConstants.AUTO_TURN_SPEED,
-          AutoConstants.AUTO_TURN_ANGLE_MAX) )
-        .andThen(new AutoIntake());
+          AutoConstants.AUTO_TURN_ANGLE_MAX));
 
       case PICKUPSHOOT2:
         break;
@@ -304,9 +302,9 @@ public class RobotContainer {
     }
 
 
-    //Position Position = m_Dashboard.getPosition();
-    m_Dashboard.getPosition();
-    switch (m_Dashboard.getPosition()) {
+    //Position Position = m_dashboard.getPosition();
+    m_dashboard.getPosition();
+    switch (m_dashboard.getPosition()) {
       case POSITION1:
       //return new (Command Group)
 
