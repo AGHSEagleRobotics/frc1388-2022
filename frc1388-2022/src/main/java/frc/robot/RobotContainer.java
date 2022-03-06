@@ -195,10 +195,10 @@ public class RobotContainer {
       m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
 
     //EJECT AND REJECT commands OPERATOR
-    new Button (() -> isRightOpTriggerPressed()).whenHeld(new ShootEject(m_shooterSubsystem, m_transitionSubsystem));
+    new Button (() -> isRightOpTriggerPressed()).whenHeld(new ShootEject(m_shooterFeederSubsystem, m_transitionSubsystem));
 
     new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
-    .whenHeld(new REject(m_intakeSubsystem, m_transitionSubsystem, m_shooterSubsystem));
+    .whenHeld(new REject(m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
 
     // Lower priority
     new JoystickButton(m_opController, XboxController.Button.kX.value)
