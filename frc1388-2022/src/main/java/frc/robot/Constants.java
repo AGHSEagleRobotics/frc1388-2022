@@ -184,10 +184,14 @@ public final class Constants {
 
     }
 
-    public final class AutoMoveConstants {
+    public final class AutoConstants {
         //TEST P VALUE LATER
-        public static final double P_VALUE = 0.03;
-        public static final double P_TOLERANCE = 0.5;
+        
+        public static final double TURN_P_VALUE = 0.03;
+        public static final double TURN_P_TOLERANCE = 0.5;
+        public static final double MOVE_P_VALUE = 0.03;
+        public static final double MOVE_P_TOLERANCE = 0.5;
+     
 
         public static final int USB_CAMERACOLOR = 0; //FIXME Not confirmed
 
@@ -196,8 +200,11 @@ public final class Constants {
         public static final double ENCODER_DISTANCE_CUTOFF = 1.0; //TODO change - is this cutoff??
         public static final double AUTO_DRIVE_SPEED = 0.5;
 
-        public static final double AUTO_TIME = 15.0;
+        public static final double AUTO_TIME = 15.0; //seconds
         public static final double AUTO_TARMAC_DISTANCE = 90; //inches
+
+        public static final double AUTO_TURN_SPEED = 0.5;
+        public static final double AUTO_TURN_ANGLE_MAX = 100; //degrees
     }
  
 

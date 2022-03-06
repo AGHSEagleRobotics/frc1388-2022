@@ -7,7 +7,7 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.Constants.AutoMoveConstants;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DashboardConstants.Cameras;
 import edu.wpi.first.cscore.VideoSink;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -17,10 +17,20 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 /** Add your docs here. */
 public class Dashboard {
+    private ShuffleboardTab m_shuffleboardTab;
+
 
     private static SendableChooser<Position> m_autoPosition = new SendableChooser<>();
     private static SendableChooser<Objective> m_autoObjective = new SendableChooser<>();
     private UsbCamera m_cameraColor;
+
+    //FIXME CHANGE THESE to constants? 
+    private ComplexWidget complexWidgetAuton;
+    private final int autonChooserWidth = 8;
+    private final int autonChooserHeight = 2;
+    private final int autonChooserColumnIndex = 0;
+    private final int autonChooserRowIndex = 0;
+
 
  private final UsbCamera m_frontCamera = CameraServer.startAutomaticCapture(0);
     private final UsbCamera m_reverseCamera = CameraServer.startAutomaticCapture(1);
@@ -35,7 +45,7 @@ public class Dashboard {
 
     public Dashboard() { // constructer
         setCamView(Cameras.FORWARDS);
-        setupShuffelboard();
+        setupShuffleboard();
         colorcamera();
         shuffleboardSetUp();
     } // end constructer
@@ -60,25 +70,20 @@ public class Dashboard {
 
     public enum Objective {
 
-        LEAVETARMAC ("Leave Tarmac", 1), 
-        SHOOTBALL1 ("Shoot Starter Ball", 2),
-        PICKUPSHOOT2 ("Pick Up To Left, Shoot", 3),
-        DONOTHING ("Does nothing", 0);
+        LEAVETARMAC ("Leave Tarmac"), //FIXME change these distances (or delete)
+        SHOOTBALL1 ("Shoot Starter Ball"),
+        PICKUPSHOOT2 ("Pick Up To Left, Shoot"),
+        DONOTHING ("Does nothing");
 
         public static final Objective Default = LEAVETARMAC;
 
         private String name;
-        private double distance;
 
-        private Objective (String m_name, double m_distance) {
+        private Objective (String m_name) {
             m_name = name;
-            m_distance = distance;
         }
         public String getName(){
             return name;
-        }
-        public double getDistance(){
-            return distance;
         }
 
     }
@@ -92,13 +97,23 @@ public class Dashboard {
     }
 
     private void colorcamera() {
-        m_cameraColor = CameraServer.startAutomaticCapture(AutoMoveConstants.USB_CAMERACOLOR);
+        m_cameraColor = CameraServer.startAutomaticCapture(AutoConstants.USB_CAMERACOLOR);
     }
 
-    public void shuffleboardSetUp(){
+    public void shuffleboardSetUp() {
+        m_shuffleboardTab =  Shuffleboard.getTab("Competition");
+        Shuffleboard.selectTab("Competition");
+        for ( Objective o: Objective.values()) {
+            m_autoObjective.addOption(o.getName(), o);
+        }
+
+        complexWidgetAuton = Shuffleboard.getTab("Competition").add( "AutonChooser", m_autoObjective)
+            .withWidget(BuiltInWidgets.kSplitButtonChooser)
+            .withSize(autonChooserWidth, autonChooserHeight)
+            .withPosition(autonChooserColumnIndex, autonChooserRowIndex);
     }
 
-    private void setupShuffelboard() {
+    private void setupShuffleboard() {
         m_complexWidgetCam = m_shuffelboardTab.add("cams", m_testVideoSink.getSource())
             .withWidget(BuiltInWidgets.kCameraStream);
     }

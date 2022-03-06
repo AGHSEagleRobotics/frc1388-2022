@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.Constants.AutoMoveConstants;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.TransitionConstants;
@@ -31,8 +31,10 @@ import frc.robot.commands.RetractIntake;
 import frc.robot.commands.REject;
 import frc.robot.commands.ShootEject;
 import frc.robot.commands.DeployIntake;
+import frc.robot.commands.AutoIntake;
 import frc.robot.commands.AutoMove;
 import frc.robot.commands.AutoShoot;
+import frc.robot.commands.AutoTurn;
 import frc.robot.commands.ClimberCommand;           // climber command
 import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
@@ -265,18 +267,21 @@ public class RobotContainer {
       case LEAVETARMAC:
       default:
       return new AutoMove(m_driveTrainSubsystem, 
-      AutoMoveConstants.AUTO_TARMAC_DISTANCE,    
-      AutoMoveConstants.AUTO_DRIVE_SPEED); 
+          AutoConstants.AUTO_TARMAC_DISTANCE,    
+          AutoConstants.AUTO_DRIVE_SPEED); 
 
       case SHOOTBALL1:
-      return new AutoShoot(m_shooterFeederSubsystem, ShooterConstants.SHOOTER_RMP_LOWGOAL)
-                .withTimeout(AutoMoveConstants.SHOOTER_TIMER)
-            .andThen( new AutoMove(m_driveTrainSubsystem, 
-                AutoMoveConstants.AUTO_TARMAC_DISTANCE,    
-                AutoMoveConstants.AUTO_DRIVE_SPEED) )
-            .andThen( new AutoMove(m_driveTrainSubsystem, 
-            AutoMoveConstants.AUTO_TARMAC_DISTANCE,    
-            AutoMoveConstants.AUTO_DRIVE_SPEED) );
+      return new AutoMove(m_driveTrainSubsystem, AutoConstants.AUTO_TARMAC_DISTANCE, AutoConstants.AUTO_DRIVE_SPEED)
+        .alongWith(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem))
+        .andThen(new AutoShoot(m_shooterFeederSubsystem, ShooterConstants.SHOOTER_RPM_HIGHGOAL)
+          .withTimeout(AutoConstants.SHOOTER_TIMER))
+        .andThen( new AutoMove(m_driveTrainSubsystem, 
+          AutoConstants.AUTO_TARMAC_DISTANCE,    
+          AutoConstants.AUTO_DRIVE_SPEED) )
+        .andThen( new AutoTurn(m_driveTrainSubsystem,
+          AutoConstants.AUTO_TURN_SPEED,
+          AutoConstants.AUTO_TURN_ANGLE_MAX) )
+        .andThen(new AutoIntake());
 
       case PICKUPSHOOT2:
         break;

@@ -105,7 +105,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_isReverse = !isForewards;
   }
 
-  public double getGyro() {
+  public void resetGyro() {
+    m_gyro.reset();
+  }
+
+  public double getGyroAngle() {
     return m_gyro.getAngle();
   }
 

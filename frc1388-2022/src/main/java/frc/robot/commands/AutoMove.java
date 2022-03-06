@@ -11,7 +11,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.AutoMoveConstants;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class AutoMove extends CommandBase {
@@ -21,14 +21,8 @@ public class AutoMove extends CommandBase {
   private DriveTrainSubsystem m_driveTrainSubsystem;
   private final double m_setPoint;
   private final double m_speed;
-  private final Timer m_timer = new Timer();
-  //tried added static to timer, didn't work
 
-  private final PIDController m_pidController = new PIDController(AutoMoveConstants.P_VALUE, 0, 0);
-
-  /*int Timer() {
-    return 2;
-  } */
+  private final PIDController m_pidController = new PIDController(AutoConstants.MOVE_P_VALUE, 0, 0);
 
   /** Creates a new AutoMove. */
   public AutoMove(DriveTrainSubsystem driveTrainSubsystem, double setPoint, double speed) {
@@ -40,13 +34,12 @@ public class AutoMove extends CommandBase {
     addRequirements(driveTrainSubsystem);
 
     //Setting PID control tolerance
-    m_pidController.setTolerance(AutoMoveConstants.P_TOLERANCE); //change P tolerance?
+    m_pidController.setTolerance(AutoConstants.MOVE_P_TOLERANCE); //change P tolerance?
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_timer.start();
     m_driveTrainSubsystem.resetLeftEncoder();
   }
 
@@ -68,8 +61,6 @@ public class AutoMove extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_timer.stop();
-    m_timer.reset();
     m_pidController.reset();
     m_driveTrainSubsystem.curvatureDrive(0, 0, false);
   }
@@ -77,7 +68,7 @@ public class AutoMove extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    boolean finished = (m_pidController.atSetpoint() || (Timer.getMatchTime() > AutoMoveConstants.AUTO_TIME) );
+    boolean finished = (m_pidController.atSetpoint() || (Timer.getMatchTime() > AutoConstants.AUTO_TIME) );
     return finished;
   }
 }

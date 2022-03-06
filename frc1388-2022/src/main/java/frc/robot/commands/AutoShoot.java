@@ -7,7 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.AutoMoveConstants;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.ShooterFeederSubsystem;
 
@@ -17,7 +17,7 @@ public class AutoShoot extends CommandBase {
   private final Timer m_timer = new Timer();
   private final double m_speed;
 
-  private final PIDController m_PidController = new PIDController(AutoMoveConstants.P_VALUE, 0, 0);
+  private final PIDController m_PidController = new PIDController(AutoConstants.MOVE_P_VALUE, 0, 0);
 
   /** Creates a new AutoShoot. */
   public AutoShoot(ShooterFeederSubsystem shooterFeederSubsystem, double speed) {
@@ -27,7 +27,7 @@ public class AutoShoot extends CommandBase {
 
     addRequirements(shooterFeederSubsystem);
 
-    m_PidController.setTolerance(AutoMoveConstants.P_TOLERANCE);
+    m_PidController.setTolerance(AutoConstants.MOVE_P_TOLERANCE);
   }
   /*
   GOALS:
