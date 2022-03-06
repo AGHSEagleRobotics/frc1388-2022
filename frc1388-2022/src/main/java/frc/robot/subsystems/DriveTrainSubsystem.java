@@ -105,18 +105,22 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_isReverse = !isForewards;
   }
 
-  public double getGyro() {
+  public void resetGyro() {
+    m_gyro.reset();
+  }
+
+  public double getGyroAngle() {
     return m_gyro.getAngle();
   }
 
   public double getRightEncoderDistance(){
     return m_rightFront.getSelectedSensorPosition() 
-    / DriveTrainConstants.ENCODER_DISTANCE_RATIO 
+    / DriveTrainConstants.ENCODER_SENSOR_UNITS_TO_INCHES_RATIO 
     * DriveTrainConstants.WHEEL_CIRCUMFERENCE;
   }
   public double getLeftEncoderDistance(){
     return m_leftFront.getSelectedSensorPosition() 
-    / DriveTrainConstants.ENCODER_DISTANCE_RATIO 
+    / DriveTrainConstants.ENCODER_SENSOR_UNITS_TO_INCHES_RATIO 
     * DriveTrainConstants.WHEEL_CIRCUMFERENCE;
   }
 

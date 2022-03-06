@@ -10,9 +10,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.Constants.AutoMoveConstants;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.TransitionConstants;
@@ -26,19 +27,24 @@ import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
 import frc.robot.Constants.DashboardConstants.Cameras;
 import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
 import frc.robot.Constants.DashboardConstants.Cameras;
+import frc.robot.Constants.XBoxControllerConstants;
+import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
+import frc.robot.Constants.DashboardConstants.Cameras;
 import frc.robot.Dashboard.Objective;
 import frc.robot.Dashboard.Position;
 import frc.robot.commands.Drive;
 import frc.robot.commands.ShootHigh;
 import frc.robot.commands.ShootLow;
 import frc.robot.commands.RetractIntake;
-import frc.robot.commands.ReverseShootEject;
+import frc.robot.commands.REject;
 import frc.robot.commands.ShootEject;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.SetShooterTargetRPM;
-import frc.robot.commands.AutoLeave;
+// import frc.robot.commands.AutoLeave;
+import frc.robot.commands.AutoIntake;
 import frc.robot.commands.AutoMove;
 import frc.robot.commands.AutoShoot;
+import frc.robot.commands.AutoTurn;
 import frc.robot.commands.ClimberCommand;           // climber command
 import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
@@ -87,9 +93,9 @@ public class RobotContainer {
     new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_FRONT), 
     new WPI_TalonFX(DriveTrainConstants.CANID_LEFT_BACK), 
     new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_FRONT), 
-    new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_BACK),
-    new ADIS16470_IMU()
-    );
+      new WPI_TalonFX(DriveTrainConstants.CANID_RIGHT_BACK),
+      new ADIS16470_IMU()
+      );
 
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
     new WPI_TalonFX(ClimberConstants.CANID_WINCH),
@@ -102,7 +108,8 @@ public class RobotContainer {
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(
       new WPI_TalonSRX(IntakeConstants.CANID_ARM_MOTOR),
     new CANSparkMax(IntakeConstants.CANID_WHEEL_MOTOR, MotorType.kBrushless), 
-      new DigitalInput(0));
+      new DigitalInput(IntakeConstants.DIGITAL_INPUT_LIMIT_SWITCH_PORT),
+      new Encoder(IntakeConstants.DIGITAL_INPUT_ENCODER_CHANNEL_A, IntakeConstants.DIGITAL_INPUT_ENCODER_CHANNEL_B));
 
   private final TransitionSubsystem m_transitionSubsystem = new TransitionSubsystem(
       new CANSparkMax(TransitionConstants.CANID_TRANSITION_MOTOR, MotorType.kBrushless));
@@ -123,7 +130,7 @@ public class RobotContainer {
     m_climberSubsystem.setDefaultCommand(
       new ClimberCommand(
         m_climberSubsystem, 
-        () -> m_opController.getLeftY(),    // extend
+            () -> m_opController.getLeftY(), // extend
         () -> m_opController.getRightY())    // articulate
       );
     // set default commands
@@ -157,8 +164,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
+    // FIXME change 4500??
     new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
-      .whenPressed(new AutoShoot(m_shooterFeederSubsystem));
+      .whenPressed(new AutoShoot(m_shooterFeederSubsystem, 4500));
 
     //Reverse
 
@@ -188,43 +196,42 @@ public class RobotContainer {
 
     // INTAKE DEPLOY LEFT TRIGGER
     new Button(() -> isLeftDriverTriggerPressed() || isLeftOpTriggerPressed())
-        .whenHeld(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
+        .whenPressed(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
 
     //INTAKE DRIVE UP
     new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
-        .whenHeld(new RetractIntake(m_intakeSubsystem));
+        .whenPressed(new RetractIntake(m_intakeSubsystem));
 
     // INTAKE OP UP
     new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value)
-        .whenHeld(new RetractIntake(m_intakeSubsystem));
+        .whenPressed(new RetractIntake(m_intakeSubsystem));
 
     // SHOOT LOW HIGH GOAL and EJECT
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
         .whenHeld(new ShootHigh(m_shooterFeederSubsystem, m_transitionSubsystem));
 
+    
     new Button(RobotContainer::isRightDriverTriggerPressed)
         .whenHeld(new ShootLow(m_shooterFeederSubsystem, m_transitionSubsystem));
 
-    //Eject commands
+    //EJECT AND REJECT commands DRIVER 
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
       .whenHeld(new ShootEject(m_shooterFeederSubsystem, m_transitionSubsystem));
 
-    new JoystickButton(m_driveController, XboxController.Button.kX.value)
-      .whenPressed(() -> m_shooterFeederSubsystem.shooterRpmStepIncrease());
-
-    new JoystickButton(m_driveController, XboxController.Button.kY.value)
-      .whenPressed(() -> m_shooterFeederSubsystem.shooterRpmStepDecrease());
-
-    new JoystickButton(m_driveController, XboxController.Button.kA.value)
-      .whenPressed(() -> m_shooterFeederSubsystem.setShooterEnabled(true));
-    new Button (() -> isDriverDPadPressed()).whenHeld(new ReverseShootEject(
+    new Button (() -> isDriverDPadPressed()).whenHeld(new REject(
       m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
+
+    //EJECT AND REJECT commands OPERATOR
+    new Button (() -> isRightOpTriggerPressed()).whenHeld(new ShootEject(m_shooterFeederSubsystem, m_transitionSubsystem));
+
+    new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
+    .whenHeld(new REject(m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
 
     // Lower priority
     new JoystickButton(m_opController, XboxController.Button.kX.value)
       .whenPressed(() -> m_climberSubsystem.setArticulatorReach());
-
-      new JoystickButton(m_opController, XboxController.Button.kY.value)
+      
+   new JoystickButton(m_opController, XboxController.Button.kY.value)
       .whenPressed(() -> m_climberSubsystem.setArticulatorVertical());
 
 
@@ -274,6 +281,7 @@ public class RobotContainer {
   }
             });
 
+    //OP
     new JoystickButton(m_opController, XboxController.Button.kStart.value)
         .whenPressed(
             new InstantCommand(() -> m_dashboard.switchCamera()) {
@@ -296,19 +304,24 @@ public class RobotContainer {
   } 
 
   public static boolean isRightDriverTriggerPressed() {
-    return m_driveController.getRightTriggerAxis() > ShooterConstants.SHOOT_LOW_RIGHT_DRIVE_TRIGGER;
+    return m_driveController.getRightTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
 
   public static boolean isLeftDriverTriggerPressed() {
-    return m_driveController.getLeftTriggerAxis() > IntakeConstants.INTAKE_DEPLOY_LEFT_TRIGGER;
+    return m_driveController.getLeftTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
 
   public static boolean isLeftOpTriggerPressed() {
-    return m_opController.getLeftTriggerAxis() > IntakeConstants.INTAKE_DEPLOY_LEFT_TRIGGER;
+    return m_opController.getLeftTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
 
   public static boolean isDriverDPadPressed() {
     return m_driveController.getPOV() != -1 ;
+  }
+
+  //EJECT REJECT FOR OP
+  public static boolean isRightOpTriggerPressed() {
+    return m_opController.getRightTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
 
   /**
@@ -318,39 +331,50 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     Objective objective = m_Dashboard.getObjective();
+    // FIXME just set the objective to something we want to test
+    objective = Objective.LEAVETARMAC;
+    switch (objective) {
+      case LEAVETARMAC:
+      default:
+      return new AutoMove(m_driveTrainSubsystem, 
+          AutoConstants.AUTO_TARMAC_DISTANCE,    
+          AutoConstants.AUTO_DRIVE_SPEED); 
+
+      case SHOOTBALL1:
+      return new AutoMove(m_driveTrainSubsystem, AutoConstants.AUTO_TARMAC_DISTANCE, AutoConstants.AUTO_DRIVE_SPEED)
+        .alongWith(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem))
+        .andThen(new AutoShoot(m_shooterFeederSubsystem, ShooterConstants.SHOOTER_RPM_HIGHGOAL)
+          .withTimeout(AutoConstants.SHOOTER_TIMER))
+        .andThen( new AutoMove(m_driveTrainSubsystem, 
+          AutoConstants.AUTO_TARMAC_DISTANCE,    
+          AutoConstants.AUTO_DRIVE_SPEED) )
+        .andThen( new AutoTurn(m_driveTrainSubsystem,
+          AutoConstants.AUTO_TURN_SPEED,
+          AutoConstants.AUTO_TURN_ANGLE_MAX) )
+        .andThen(new AutoIntake());
+
+      case PICKUPSHOOT2:
+        break;
+
+      case DONOTHING:
+        break;
+    }
+
+
+    //Position Position = m_Dashboard.getPosition();
+    m_Dashboard.getPosition();
     switch (m_Dashboard.getPosition()) {
       case POSITION1:
-      return new AutoMove(m_driveTrainSubsystem, 
-      objective.getDistance(),            //Or would I use Encoder distance?//
-      AutoMoveConstants.AUTO_DRIVE_SPEED); 
+      //return new (Command Group)
 
       case POSITION2:
-      return new AutoMove(m_driveTrainSubsystem, 
-      objective.getDistance(),            //Or would I use Encoder distance?//
-      AutoMoveConstants.AUTO_DRIVE_SPEED); 
+      
       case POSITION3:
 
       case POSITION4:
-        break;
-      default:
-        break;
+
     }
-    Objective Objective = m_Dashboard.getObjective();
-    switch (m_Dashboard.getObjective()) {
-      case LEAVETARMAC:
-      //return new (Command Group)
-
-      case SHOOTBALL1:
-      
-      case PICKUPSHOOT2:
-
-      case AUTOSHOOT3FROM4:
-
-      case DONOTHING:
-
-  }
-    return null;
-
+      return null;
     }
   
 

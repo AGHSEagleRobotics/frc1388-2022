@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Encoder;
+
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 /**
@@ -24,10 +25,14 @@ public final class Constants {
         //}
     }
 
+    public final class XBoxControllerConstants {
+        public static final double TRIGGER_THRESHOLD = 0.5;
+    }
+
     public final class DriveTrainConstants {
         public static final double EXPIRATION = 0.1;
         public static final double MAX_OUTPUT = 1.0;
-        public static final double DEADBAND   = 0.2;
+        public static final double DEADBAND = 0.2;
 
         public static final int CANID_LEFT_FRONT    = 1;
         public static final int CANID_LEFT_BACK     = 2;
@@ -37,11 +42,11 @@ public final class Constants {
         //Encoder stuff
         private final static double COUNTS_PER_REV = 2048;
         private final static double COUNTS_PER_ROTATION_RATIO = 1/COUNTS_PER_REV;
-        private final static double WHEEL_DIAMETER = 6.0; //FIXME make range value?
+        private final static double WHEEL_DIAMETER_INCHES = 6.0; // make range value?
         private final static double FALCON_TO_SIMPLE_BOX_GEAR_RATIO = 1/4.67;
-        private final static double SIMPLE_BOX_TO_WHEELS_RATIO = 12/30; //12 sprockets simple box to 30 sprockets wheel
-        public final static double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
-        public final static double ENCODER_DISTANCE_RATIO = 
+        private final static double SIMPLE_BOX_TO_WHEELS_RATIO = 12.0/30.0; //12 sprockets simple box to 30 sprockets wheel
+        public final static double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER_INCHES;
+        public final static double ENCODER_SENSOR_UNITS_TO_INCHES_RATIO = 
            COUNTS_PER_ROTATION_RATIO *
            FALCON_TO_SIMPLE_BOX_GEAR_RATIO *
            SIMPLE_BOX_TO_WHEELS_RATIO *
@@ -51,7 +56,7 @@ public final class Constants {
 
     public final class ShooterConstants {
         public static final int CANID_SHOOTER_MOTOR = 5;
-        public static final int CANID_FEEDER_MOTOR  = 6;
+        public static final int CANID_FEEDER_MOTOR  = 6;   
 
         public static final double GAINS_VELOCITY_F = 0.047;
         public static final double GAINS_VELOCITY_P = 0.25; // using motor for testing
@@ -70,8 +75,8 @@ public final class Constants {
 
         //DEV Mode things
         public static final double SHOOTER_RPM_STEP_CHANGE = 50;
-        public static final double MAX_SHOOTER_RPM         = 6000;
-        public static final double MIN_SHOOTER_RPM         = 0;
+        public static final double MAX_SHOOTER_RPM = 6000;
+        public static final double MIN_SHOOTER_RPM = 0;
 
         //High and Low goal RPM 
         public static final double SHOOTER_RPM_HIGHGOAL    = 4500;
@@ -83,14 +88,14 @@ public final class Constants {
         //Feeder speed
         public static final double FORWARD_FEEDER_SPEED = 1.0;
         public static final double REVERSE_FEEDER_SPEED = -1.0;
-        public static final double FEEDER_SPEED_OFF     = 0.0;
+        public static final double FEEDER_SPEED_OFF = 0.0;
 
     }
 
     public final static class ClimberConstants {
         public static final int CANID_WINCH       = 8;
         public static final int CANID_ARTICULATOR = 7;
-        
+
         public static final double CLIMBER_MAX_POWER_FORWARDS      = 0.3;
         public static final double CLIMBER_MAX_POWER_REVERSE       = -0.3;
         public static final double ARTICULATOR_MAX_POWER_FORWARDS  = 0.2;
@@ -127,7 +132,7 @@ public final class Constants {
 
             ArticulatorPositions(int position) {
                 m_position = position;
-            }
+    }
 
             public int getPosition() {
                 return m_position;
@@ -156,25 +161,39 @@ public final class Constants {
         public static final int CANID_WHEEL_MOTOR = 10; 
         public static final int CANID_ARM_MOTOR = 9; 
 
-        public static final double ARM_SPEED_DEPLOY   = 0.5;
+        public static final double ARM_SPEED_DEPLOY   = 1;
         public static final double WHEEL_SPEED_INTAKE = 0.5;
 
-        public static final double INTAKE_DEPLOY_LEFT_TRIGGER = 0.5;
+        //DIO ports for sensors
+        public static final int DIGITAL_INPUT_LIMIT_SWITCH_PORT = 0;
+        public static final int DIGITAL_INPUT_ENCODER_CHANNEL_A = 1;
+        public static final int DIGITAL_INPUT_ENCODER_CHANNEL_B = 2;
+
+        //Encoder constants
+        public static final int INTAKE_ARM_ENCODER_COUNTS_PER_REV = 2048;
+        public static final double INTAKE_ARM_ENCODER_ROTATIONS = 1.75;
+        public static final int INTAKE_ARM_DOWN_ENCODER_COUNT = 
+        (int) (INTAKE_ARM_ENCODER_ROTATIONS * INTAKE_ARM_ENCODER_COUNTS_PER_REV);
     }
 
     public final class TransitionConstants {
         public static final int CANID_TRANSITION_MOTOR = 11;
         public static final double TRANSITION_SPEED_FORWARD_FAST = 0.75; 
+        public static final double TRANSITION_SPEED_FORWARD_MEDIUM = 0.5;
         public static final double TRANSITION_SPEED_FORWARD_SLOW = 0.2; 
         public static final double TRANSITION_SPEED_REVERSE_SLOW = -0.2;
         public static final double TRANSITION_SPEED_REVERSE_MEDIUM = -0.5;
 
     }
 
-    public final class AutoMoveConstants {
+    public final class AutoConstants {
         //TEST P VALUE LATER
-        public static final double P_VALUE = 0.03;
-        public static final double P_TOLERANCE = 0.5;
+        
+        public static final double TURN_P_VALUE = 0.03;
+        public static final double TURN_P_TOLERANCE = 0.5;
+        public static final double MOVE_P_VALUE = 0.03;
+        public static final double MOVE_P_TOLERANCE = 0.5;
+     
 
         public static final int USB_CAMERACOLOR = 0; //FIXME Not confirmed
 
@@ -183,14 +202,22 @@ public final class Constants {
         public static final double ENCODER_DISTANCE_CUTOFF = 1.0; //TODO change - is this cutoff??
         public static final double AUTO_DRIVE_SPEED = 0.5;
 
-        public static final double AUTO_TIME = 15.0;
+        public static final double AUTO_TIME = 15.0; //seconds
+        public static final double AUTO_TARMAC_DISTANCE = 90; //inches
 
+        public static final double AUTO_TURN_SPEED = 0.5;
+        public static final double AUTO_TURN_ANGLE_MAX = 100; //degrees
     }
+ 
 
     public static final class DashboardConstants {
         public static enum Cameras {
-            FORWARDS, REVERSE
+            FORWARDS, REVERSE, BALL
         }
+
+        public final static int FRONT_CAMERA_PORT = 2;
+        public final static int REVERSE_CAMERA_PORT = 1;
+        public final static int BALL_CAMERA_PORT = 0;
     }
  
     public final static class RumbleConstants {
