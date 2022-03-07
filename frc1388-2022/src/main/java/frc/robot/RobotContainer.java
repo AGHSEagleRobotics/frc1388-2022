@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -49,6 +50,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -274,6 +276,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
 
+    new PrintCommand("************************\n************************\n getAutonomousCommand() \n\n");
 
     // Position position = m_dashboard.getPosition();
     // // m_dashboard.getPosition();
@@ -290,7 +293,7 @@ public class RobotContainer {
     // }
 
     Objective objective = m_dashboard.getObjective();
-    objective = Objective.PICKUPSHOOT2;
+    objective = Objective.SHOOTBALL1;
     switch (objective) {
       case LEAVETARMAC:
       // default:
@@ -299,20 +302,26 @@ public class RobotContainer {
           AutoConstants.AUTO_DRIVE_SPEED); 
 
       case SHOOTBALL1:
-      return new AutoMove(m_driveTrainSubsystem, AutoConstants.AUTO_TARMAC_DISTANCE, AutoConstants.AUTO_DRIVE_SPEED)
-        .alongWith(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem))
-        .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, ShooterConstants.SHOOTER_RPM_HIGHGOAL)
-          .withTimeout(AutoConstants.SHOOTER_TIMER))
-        .andThen( new AutoMove(m_driveTrainSubsystem, 
-          AutoConstants.AUTO_TARMAC_DISTANCE,    
-          AutoConstants.AUTO_DRIVE_SPEED) )
-        .andThen( new AutoTurn(m_driveTrainSubsystem,
-          AutoConstants.AUTO_TURN_SPEED,
-          AutoConstants.AUTO_TURN_ANGLE_MAX));
+      return new DeployIntake(m_intakeSubsystem, m_transitionSubsystem)
+        .withTimeout(1)
+      .andThen(new AutoMove(m_driveTrainSubsystem, AutoConstants.AUTO_TARMAC_DISTANCE, AutoConstants.AUTO_DRIVE_SPEED)
+        .withTimeout(3))
+      .andThen(new AutoMove(m_driveTrainSubsystem, -50, AutoConstants.AUTO_DRIVE_SPEED)
+        .withTimeout(1))
+        //If intake works properly, 1.8 or less works
+      .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, ShooterConstants.SHOOTER_RPM_HIGHGOAL)
+        .withTimeout(AutoConstants.SHOOTER_TIMER))
+      .andThen(new RetractIntake(m_intakeSubsystem)
+        .withTimeout(2));
 
       case PICKUPSHOOT2:
-      new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, ShooterConstants.SHOOTER_RPM_HIGHGOAL)
-      .withTimeout(AutoConstants.SHOOTER_TIMER);
+      return new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, ShooterConstants.SHOOTER_RPM_HIGHGOAL)
+        .withTimeout(AutoConstants.SHOOTER_TIMER)
+      .andThen( new AutoTurn(m_driveTrainSubsystem,
+      AutoConstants.AUTO_TURN_SPEED,
+      AutoConstants.AUTO_TURN_ANGLE_MAX)
+        .withTimeout(0.15));
+     // .andThen(toRun, requirements)
 
       case DONOTHING:
         break;
@@ -323,5 +332,9 @@ public class RobotContainer {
 
   public void simulationInit() {
     m_transitionSubsystem.simulationInit();
+  }
+
+  public void setNeutralMode(NeutralMode mode) {
+    m_driveTrainSubsystem.setNeutralMode(mode);
   }
 }

@@ -68,7 +68,9 @@ public class AutoMove extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    boolean finished = (m_pidController.atSetpoint() || (Timer.getMatchTime() > AutoConstants.AUTO_TIME) );
+    // boolean finished = (m_pidController.atSetpoint() || (Timer.getMatchTime() > AutoConstants.AUTO_TIME) );
+    // return finished;
+    boolean finished = (m_pidController.atSetpoint());
     return finished;
   }
 }

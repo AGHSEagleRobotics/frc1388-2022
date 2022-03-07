@@ -122,6 +122,14 @@ public class DriveTrainSubsystem extends SubsystemBase {
     return m_leftFront.getSelectedSensorPosition() 
     * DriveTrainConstants.INCHES_PER_ENCODER_UNITS;
   }
+  
+  public void setNeutralMode(NeutralMode mode) {
+    m_leftFront.setNeutralMode(mode);
+    m_leftBack.setNeutralMode(mode);
+    m_rightFront.setNeutralMode(mode);
+    m_rightBack.setNeutralMode(mode);
+
+  }
 
   @Override
   public void periodic() {

@@ -198,7 +198,7 @@ public final class Constants {
         public static final int USB_CAMERACOLOR = 0; //FIXME Not confirmed
 
         public static final double AUTO_SHOOT_RPM = 5400;
-        public static final double SHOOTER_TIMER = 3;
+        public static final double SHOOTER_TIMER = 1.8;
         public static final double ENCODER_DISTANCE_CUTOFF = 1.0; //TODO change - is this cutoff??
         public static final double AUTO_DRIVE_SPEED = 0.5;
 
