@@ -113,10 +113,10 @@ public class Dashboard {
             .withWidget(BuiltInWidgets.kCameraStream)
             .withSize(12, 10)
             .withPosition(0, 0);
-        m_complexWidgetBallCam  = m_shuffleboardTab.add("Ball Color", m_ballVideoSink.getSource())
-            .withWidget(BuiltInWidgets.kCameraStream)
-            .withSize(9, 7)
-            .withPosition(12, 3);
+        // m_complexWidgetBallCam  = m_shuffleboardTab.add("Ball Color", m_ballVideoSink.getSource())
+        //     .withWidget(BuiltInWidgets.kCameraStream)
+        //     .withSize(9, 7)
+        //     .withPosition(12, 3);
 
        
 

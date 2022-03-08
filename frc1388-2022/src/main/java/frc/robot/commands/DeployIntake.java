@@ -21,7 +21,7 @@ public class DeployIntake extends CommandBase {
     m_transitionSubsystem = transitionSubsystem;
     
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intakeSubsystem, transitionSubsystem); 
+    addRequirements(intakeSubsystem); 
   }
 
   /*

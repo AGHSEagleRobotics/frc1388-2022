@@ -21,7 +21,7 @@ public class ShootHigh extends CommandBase {
     m_transitionSubsystem = transitionSubsystem;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooterSubsystem, transitionSubsystem);
+    addRequirements(shooterSubsystem);
   }
 
   // Called when the command is initially scheduled.
