@@ -4,12 +4,15 @@
 
 package frc.robot;
 
+import com.fasterxml.jackson.core.type.ResolvedType;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DashboardConstants.Cameras;
 import edu.wpi.first.cscore.VideoSink;
+import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -29,7 +32,7 @@ public class Dashboard {
     private ComplexWidget m_complexWidgetPosition;
     private final int autonChooserWidth = 8;
     private final int autonChooserHeight = 2;
-    private final int autonChooserColumnIndex = 0;
+    private final int autonChooserColumnIndex = 12;
     private final int autonChooserRowIndex = 0;
 
     // front reverse & ball cams
@@ -40,13 +43,15 @@ public class Dashboard {
     private final VideoSink m_driveVideoSink = CameraServer.getServer();
     private final VideoSink m_ballVideoSink  = CameraServer.getServer();
 
-    private ComplexWidget m_complexWidgetCam;
+    private ComplexWidget m_complexWidgetDriveCam;
+    private ComplexWidget m_complexWidgetBallCam;
 
     //TODO put enum back in here (enum's existance subject to debate)
     private Cameras m_currentCam = Cameras.FORWARDS;
 
     public Dashboard() { // constructer
         setCamView(Cameras.FORWARDS);
+        // setCamView(Cameras.BALL);
         shuffleboardSetUp();
     } // end constructer
 
@@ -99,11 +104,25 @@ public class Dashboard {
     public void shuffleboardSetUp() {
         m_shuffleboardTab =  Shuffleboard.getTab("Competition");
         Shuffleboard.selectTab("Competition");
-
+        
         // setup camera widgets
-        m_complexWidgetCam = m_shuffleboardTab.add("Cams", m_driveVideoSink.getSource())
-        .withWidget(BuiltInWidgets.kCameraStream);
-        m_ballVideoSink.setSource(m_ballCamera);
+        // m_ballVideoSink.setSource(m_ballCamera);
+        // m_driveVideoSink.setSource(m_frontCamera);
+        
+        m_complexWidgetDriveCam = m_shuffleboardTab.add("Drive", m_driveVideoSink.getSource())
+            .withWidget(BuiltInWidgets.kCameraStream)
+            .withSize(12, 10)
+            .withPosition(0, 0);
+        m_complexWidgetBallCam  = m_shuffleboardTab.add("Ball Color", m_ballVideoSink.getSource())
+            .withWidget(BuiltInWidgets.kCameraStream)
+            .withSize(9, 7)
+            .withPosition(12, 3);
+
+       
+
+        // m_complexWidgetDriveCam = m_shuffleboardTab.add("Cams", m_driveVideoSink.getSource())
+        // .withWidget(BuiltInWidgets.kCameraStream);
+        // m_ballVideoSink.setSource(m_ballCamera);
 
         // setup objective chooser
         for (Dashboard.Objective o: Objective.values()) {
@@ -148,7 +167,7 @@ public class Dashboard {
                 m_currentCam = Cameras.REVERSE;
                 break;
             case BALL:
-                m_driveVideoSink.setSource(m_ballCamera);
+                m_ballVideoSink.setSource(m_ballCamera);
                 m_currentCam = Cameras.BALL;
                 break;
             default: m_driveVideoSink.setSource(m_frontCamera);

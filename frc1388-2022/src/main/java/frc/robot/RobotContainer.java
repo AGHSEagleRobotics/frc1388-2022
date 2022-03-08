@@ -15,14 +15,14 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.ClimberConstants;
+// import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.TransitionConstants;
 import frc.robot.Constants.DriveTrainConstants;     // climber constats
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.USBConstants;            // USB
 import frc.robot.Constants.XBoxControllerConstants;
-import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
+// import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
 import frc.robot.Constants.DashboardConstants.Cameras;
 import frc.robot.Dashboard.Objective;
 import frc.robot.Dashboard.Position;
@@ -37,8 +37,8 @@ import frc.robot.commands.AutoIntake;
 import frc.robot.commands.AutoMove;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.AutoTurn;
-import frc.robot.commands.ClimberCommand;           // climber command
-import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
+// import frc.robot.commands.ClimberCommand;           // climber command
+// import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.RumbleSubsystem;
@@ -83,10 +83,12 @@ public class RobotContainer {
       new ADIS16470_IMU()
       );
 
+  /*
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
     new WPI_TalonFX(ClimberConstants.CANID_WINCH),
       new CANSparkMax(ClimberConstants.CANID_ARTICULATOR, MotorType.kBrushless));
-
+  */
+  
   private final ShooterFeederSubsystem m_shooterFeederSubsystem = new ShooterFeederSubsystem(
     new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR),
       new CANSparkMax(ShooterConstants.CANID_FEEDER_MOTOR, MotorType.kBrushless));
@@ -202,12 +204,13 @@ public class RobotContainer {
     .whenHeld(new REject(m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
 
     // Lower priority
+    /*
     new JoystickButton(m_opController, XboxController.Button.kX.value)
       .whenPressed(() -> m_climberSubsystem.setArticulatorReach());
       
    new JoystickButton(m_opController, XboxController.Button.kY.value)
       .whenPressed(() -> m_climberSubsystem.setArticulatorVertical());
-
+    */
 
     // Reverse
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
