@@ -83,9 +83,9 @@ public class RobotContainer {
       new ADIS16470_IMU()
       );
 
-  private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
-    new WPI_TalonFX(ClimberConstants.CANID_WINCH),
-      new CANSparkMax(ClimberConstants.CANID_ARTICULATOR, MotorType.kBrushless));
+  // private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
+  //   new WPI_TalonFX(ClimberConstants.CANID_WINCH),
+  //     new CANSparkMax(ClimberConstants.CANID_ARTICULATOR, MotorType.kBrushless));
 
   private final ShooterFeederSubsystem m_shooterFeederSubsystem = new ShooterFeederSubsystem(
     new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR),
@@ -201,12 +201,12 @@ public class RobotContainer {
     new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
     .whenHeld(new REject(m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
 
-    // Lower priority
-    new JoystickButton(m_opController, XboxController.Button.kX.value)
-      .whenPressed(() -> m_climberSubsystem.setArticulatorReach());
+  //    Lower priority
+  //   new JoystickButton(m_opController, XboxController.Button.kX.value)
+  //     .whenPressed(() -> m_climberSubsystem.setArticulatorReach());
       
-   new JoystickButton(m_opController, XboxController.Button.kY.value)
-      .whenPressed(() -> m_climberSubsystem.setArticulatorVertical());
+  //  new JoystickButton(m_opController, XboxController.Button.kY.value)
+  //     .whenPressed(() -> m_climberSubsystem.setArticulatorVertical());
 
 
     // Reverse
@@ -293,15 +293,16 @@ public class RobotContainer {
     // }
 
     Objective objective = m_dashboard.getObjective();
-    objective = Objective.SHOOTBALL1;
+    m_dashboard.getObjective();
+    //objective = Objective.MOVEPICKUPSHOOT2;
     switch (objective) {
       case LEAVETARMAC:
       // default:
       return new AutoMove(m_driveTrainSubsystem, 
           AutoConstants.AUTO_TARMAC_DISTANCE,    
-          AutoConstants.AUTO_DRIVE_SPEED); 
+          AutoConstants.AUTO_DRIVE_SPEED).withTimeout(4); 
 
-      case SHOOTBALL1:
+      case MOVEPICKUPSHOOT2:
       return new DeployIntake(m_intakeSubsystem, m_transitionSubsystem)
         .withTimeout(1)
       .andThen(new AutoMove(m_driveTrainSubsystem, AutoConstants.AUTO_TARMAC_DISTANCE, AutoConstants.AUTO_DRIVE_SPEED)
@@ -314,17 +315,28 @@ public class RobotContainer {
       .andThen(new RetractIntake(m_intakeSubsystem)
         .withTimeout(2));
 
-      case PICKUPSHOOT2:
-      return new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, ShooterConstants.SHOOTER_RPM_HIGHGOAL)
-        .withTimeout(AutoConstants.SHOOTER_TIMER)
+      case MOVESHOOT1:
+      return new AutoMove(m_driveTrainSubsystem, AutoConstants.AUTO_TARMAC_DISTANCE, AutoConstants.AUTO_DRIVE_SPEED)
+      .withTimeout(3)
+      .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, ShooterConstants.SHOOTER_RPM_HIGHGOAL)
+        .withTimeout(AutoConstants.SHOOTER_TIMER))
       .andThen( new AutoTurn(m_driveTrainSubsystem,
       AutoConstants.AUTO_TURN_SPEED,
       AutoConstants.AUTO_TURN_ANGLE_MAX)
-        .withTimeout(0.15));
-     // .andThen(toRun, requirements)
+        .withTimeout(0.15))
+        .andThen(new RetractIntake(m_intakeSubsystem)
+        .withTimeout(2));
+      
+      case LOWSHOOTMOVE:
+      return new AutoMove(m_driveTrainSubsystem, -1, AutoConstants.AUTO_DRIVE_SPEED)
+      .withTimeout(0.5)
+      .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, ShooterConstants.SHOOTER_RMP_LOWGOAL)
+      .withTimeout(1.2))
+      .andThen(new RetractIntake(m_intakeSubsystem)
+      .withTimeout(2));
 
       case DONOTHING:
-        break;
+      return null;
     }
       return null;
     }

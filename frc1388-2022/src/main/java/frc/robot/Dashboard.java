@@ -7,7 +7,6 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DashboardConstants.Cameras;
 import edu.wpi.first.cscore.VideoSink;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -15,7 +14,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.DashboardConstants;
-import frc.robot.Constants.DashboardConstants.Cameras;
 
 /** Add your docs here. */
 public class Dashboard {
@@ -25,8 +23,8 @@ public class Dashboard {
     private static SendableChooser<Objective> m_autoObjective = new SendableChooser<>();
 
     //FIXME CHANGE THESE to constants? 
-    private ComplexWidget m_complexWidgetAuton;
-    private ComplexWidget m_complexWidgetPosition;
+    public ComplexWidget m_complexWidgetAuton;
+    public ComplexWidget m_complexWidgetPosition;
     private final int autonChooserWidth = 8;
     private final int autonChooserHeight = 2;
     private final int autonChooserColumnIndex = 0;
@@ -40,7 +38,7 @@ public class Dashboard {
     private final VideoSink m_driveVideoSink = CameraServer.getServer();
     private final VideoSink m_ballVideoSink  = CameraServer.getServer();
 
-    private ComplexWidget m_complexWidgetCam;
+    public ComplexWidget m_complexWidgetCam;
 
     //TODO put enum back in here (enum's existance subject to debate)
     private Cameras m_currentCam = Cameras.FORWARDS;
@@ -71,11 +69,12 @@ public class Dashboard {
     public enum Objective {
 
         LEAVETARMAC ("Leave Tarmac"), //FIXME change these distances (or delete)
-        SHOOTBALL1 ("Shoot Starter Ball"),
-        PICKUPSHOOT2 ("Pick Up To Left, Shoot"),
+        MOVEPICKUPSHOOT2 ("MOVESHOOT2"),
+        MOVESHOOT1 ("MOVESHOOT1"),
+        LOWSHOOTMOVE ("LOWSHOOTMOVE"),
         DONOTHING ("Does nothing");
 
-        public static final Objective Default = PICKUPSHOOT2;
+        public static final Objective Default = MOVESHOOT1;
 
         private String name;
 
@@ -106,11 +105,11 @@ public class Dashboard {
         m_ballVideoSink.setSource(m_ballCamera);
 
         // setup objective chooser
-        for (Dashboard.Objective o: Objective.values()) {
-            m_autoObjective.addOption(o.getName(), o);
+        for (Dashboard.Objective ep: Objective.values()) {
+            m_autoObjective.addOption(ep.getName(), ep);
         }
 
-        m_complexWidgetAuton = Shuffleboard.getTab("Competition").add( "AutonChooser", m_autoObjective)
+        m_complexWidgetAuton = Shuffleboard.getTab("Competition").add( "AutoObjective", m_autoObjective)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
             .withSize(autonChooserWidth, autonChooserHeight)
             .withPosition(autonChooserColumnIndex, autonChooserRowIndex);
