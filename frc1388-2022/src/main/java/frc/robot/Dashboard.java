@@ -9,7 +9,6 @@ import com.fasterxml.jackson.core.type.ResolvedType;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DashboardConstants.Cameras;
 import edu.wpi.first.cscore.VideoSink;
 import edu.wpi.first.cscore.VideoSource;
@@ -19,7 +18,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.DashboardConstants;
-import frc.robot.Constants.DashboardConstants.Cameras;
 
 /** Add your docs here. */
 public class Dashboard {
@@ -28,9 +26,9 @@ public class Dashboard {
    // private static SendableChooser<Position> m_autoPosition = new SendableChooser<>();
     private static SendableChooser<Objective> m_autoObjective = new SendableChooser<>();
 
-    //FIXME CHANGE THESE to constants? 
-    private ComplexWidget m_complexWidgetAuton;
-    private ComplexWidget m_complexWidgetPosition;
+    //Change these to constants?
+    public ComplexWidget m_complexWidgetObjective;
+    public ComplexWidget m_complexWidgetPosition;
     private final int autonChooserWidth = 8;
     private final int autonChooserHeight = 2;
     private final int autonChooserColumnIndex = 12;
@@ -64,32 +62,33 @@ public class Dashboard {
 
         public static final Position Default = POSITION1;
 
-        private String name;
+        private String m_name;
 
-        private Position (String m_name) {
-            name = m_name; 
+        private Position (String name) {
+            m_name = name; 
         }
         public String getName(){
-            return name;
+            return m_name;
         }
     }
 
     public enum Objective {
 
-        LEAVETARMAC ("Leave Tarmac"), //FIXME change these distances (or delete)
-        SHOOTBALL1 ("Shoot Starter Ball"),
-        PICKUPSHOOT2 ("Pick Up To Left, Shoot"),
-        DONOTHING ("Does nothing");
+        LEAVETARMAC ("LeaveTarmac"),
+        MOVEPICKUPSHOOT2 ("PickUpShoot2"),
+        MOVESHOOT1 ("Shoot1Turn"),
+        LOWSHOOTMOVE ("LowShoot"),
+        DONOTHING ("Nothing");
 
-        public static final Objective Default = PICKUPSHOOT2;
+        public static final Objective Default = MOVESHOOT1;
 
-        private String name;
+        private String m_name;
 
-        private Objective (String m_name) {
+        private Objective (String name) {
             m_name = name;
         }
         public String getName(){
-            return name;
+            return m_name;
         }
 
     }
@@ -97,10 +96,6 @@ public class Dashboard {
     // public Position getPosition() {
     //     return m_autoPosition.getSelected();
     // }
-
-    public Objective getObjective() {
-        return m_autoObjective.getSelected();
-    }
 
     public void shuffleboardSetUp() {
         m_shuffleboardTab =  Shuffleboard.getTab("Competition");
@@ -147,8 +142,9 @@ public class Dashboard {
         for (Dashboard.Objective o: Objective.values()) {
             m_autoObjective.addOption(o.getName(), o);
         }
+        m_autoObjective.setDefaultOption(Objective.Default.getName(), Objective.Default);
 
-        m_complexWidgetAuton = Shuffleboard.getTab("Competition").add( "AutonChooser", m_autoObjective)
+        m_complexWidgetObjective = Shuffleboard.getTab("Competition").add( "AutoObjective", m_autoObjective)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
             .withSize(autonChooserWidth, autonChooserHeight)
             .withPosition(autonChooserColumnIndex, autonChooserRowIndex);
@@ -162,6 +158,9 @@ public class Dashboard {
     
     }
 
+    public Objective getObjective() {
+        return m_autoObjective.getSelected();
+    }
     public void switchCamera() {
         System.out.println("swich camera method");
         switch (m_currentDriveCam) {

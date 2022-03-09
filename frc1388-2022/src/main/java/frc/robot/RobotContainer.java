@@ -296,17 +296,22 @@ public class RobotContainer {
     // }
 
     Objective objective = m_dashboard.getObjective();
-    objective = Objective.SHOOTBALL1;
+    m_dashboard.getObjective();
+    objective = Objective.MOVESHOOT1;
     switch (objective) {
       case LEAVETARMAC:
       // default:
-      return new AutoMove(m_driveTrainSubsystem, 
+      return new RetractIntake(m_intakeSubsystem)
+        .withTimeout(2)
+      .andThen(new AutoMove(m_driveTrainSubsystem, 
           AutoConstants.AUTO_TARMAC_DISTANCE,    
-          AutoConstants.AUTO_DRIVE_SPEED); 
+          AutoConstants.AUTO_DRIVE_SPEED)
+        .withTimeout(4)); 
 
-      case SHOOTBALL1:
-      return new DeployIntake(m_intakeSubsystem, m_transitionSubsystem)
-        .withTimeout(1)
+      case MOVEPICKUPSHOOT2:
+      return new RetractIntake(m_intakeSubsystem).withTimeout(2)
+      .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem)
+        .withTimeout(1))
       .andThen(new AutoMove(m_driveTrainSubsystem, AutoConstants.AUTO_TARMAC_DISTANCE, AutoConstants.AUTO_DRIVE_SPEED)
         .withTimeout(3))
       .andThen(new AutoMove(m_driveTrainSubsystem, -50, AutoConstants.AUTO_DRIVE_SPEED)
@@ -317,17 +322,30 @@ public class RobotContainer {
       .andThen(new RetractIntake(m_intakeSubsystem)
         .withTimeout(2));
 
-      case PICKUPSHOOT2:
-      return new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, ShooterConstants.SHOOTER_RPM_HIGHGOAL)
-        .withTimeout(AutoConstants.SHOOTER_TIMER)
+      case MOVESHOOT1:
+      return new RetractIntake(m_intakeSubsystem).withTimeout(2)
+      .andThen(new AutoMove(m_driveTrainSubsystem, AutoConstants.AUTO_TARMAC_DISTANCE, AutoConstants.AUTO_DRIVE_SPEED)
+        .withTimeout(3))
+      .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, ShooterConstants.SHOOTER_RPM_HIGHGOAL)
+        .withTimeout(AutoConstants.SHOOTER_TIMER))
       .andThen( new AutoTurn(m_driveTrainSubsystem,
-      AutoConstants.AUTO_TURN_SPEED,
-      AutoConstants.AUTO_TURN_ANGLE_MAX)
-        .withTimeout(0.15));
-     // .andThen(toRun, requirements)
+          AutoConstants.AUTO_TURN_SPEED,
+          AutoConstants.AUTO_TURN_ANGLE_MAX)
+        .withTimeout(0.15))
+      .andThen(new RetractIntake(m_intakeSubsystem)
+        .withTimeout(2));
+      
+      case LOWSHOOTMOVE:
+      return new RetractIntake(m_intakeSubsystem).withTimeout(2)
+      .andThen(new AutoMove(m_driveTrainSubsystem, -1, AutoConstants.AUTO_DRIVE_SPEED)
+      .withTimeout(0.5))
+      .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, ShooterConstants.SHOOTER_RMP_LOWGOAL)
+      .withTimeout(1.2))
+      .andThen(new RetractIntake(m_intakeSubsystem)
+      .withTimeout(2));
 
       case DONOTHING:
-        break;
+      return null;
     }
       return null;
     }

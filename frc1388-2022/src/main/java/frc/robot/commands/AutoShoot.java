@@ -4,16 +4,9 @@
 
 package frc.robot.commands;
 
-import org.yaml.snakeyaml.scanner.Constant;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 // import frc.robot.Constants.AutoMoveConstants;
-import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.TransitionConstants;
-import frc.robot.Constants.AutoConstants;
-import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.ShooterFeederSubsystem;
 import frc.robot.subsystems.TransitionSubsystem;
 import frc.robot.subsystems.ShooterFeederSubsystem.FeederFunctions;
