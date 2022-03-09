@@ -39,7 +39,7 @@ public class REject extends CommandBase {
     m_intakeSubsystem.setIntakeWheelSpin(-IntakeConstants.WHEEL_SPEED_INTAKE);
     //or m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SPEED_DEPLOY);
     m_shooterFeederSubsystem.setFeederFunction(FeederFunctions.REVERSE);
-    m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_REVERSE_MEDIUM);
+    m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_REVERSE_FAST);
   }
 
   // Called once the command ends or is interrupted.

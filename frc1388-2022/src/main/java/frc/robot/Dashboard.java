@@ -13,6 +13,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DashboardConstants.Cameras;
 import edu.wpi.first.cscore.VideoSink;
 import edu.wpi.first.cscore.VideoSource;
+import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -36,9 +37,9 @@ public class Dashboard {
     private final int autonChooserRowIndex = 0;
 
     // front reverse & ball cams
-    private final UsbCamera m_frontCamera = CameraServer.startAutomaticCapture(DashboardConstants.FRONT_CAMERA_PORT);
-    private final UsbCamera m_reverseCamera = CameraServer.startAutomaticCapture(DashboardConstants.REVERSE_CAMERA_PORT);
-    private final UsbCamera m_ballCamera = CameraServer.startAutomaticCapture(DashboardConstants.BALL_CAMERA_PORT);
+    private UsbCamera m_frontCamera = CameraServer.startAutomaticCapture(DashboardConstants.FRONT_CAMERA_PORT);
+    private UsbCamera m_reverseCamera = CameraServer.startAutomaticCapture(DashboardConstants.REVERSE_CAMERA_PORT);
+    private UsbCamera m_ballCamera = CameraServer.startAutomaticCapture(DashboardConstants.BALL_CAMERA_PORT);
 
     private final VideoSink m_driveVideoSink = CameraServer.getServer();
     private final VideoSink m_ballVideoSink  = CameraServer.getServer();
@@ -47,10 +48,10 @@ public class Dashboard {
     private ComplexWidget m_complexWidgetBallCam;
 
     //TODO put enum back in here (enum's existance subject to debate)
-    private Cameras m_currentCam = Cameras.FORWARDS;
+    private Cameras m_currentDriveCam = Cameras.FORWARDS;
 
     public Dashboard() { // constructer
-        setCamView(Cameras.FORWARDS);
+        // setCamView(Cameras.FORWARDS);
         // setCamView(Cameras.BALL);
         shuffleboardSetUp();
     } // end constructer
@@ -104,19 +105,37 @@ public class Dashboard {
     public void shuffleboardSetUp() {
         m_shuffleboardTab =  Shuffleboard.getTab("Competition");
         Shuffleboard.selectTab("Competition");
+
         
         // setup camera widgets
-        // m_ballVideoSink.setSource(m_ballCamera);
-        // m_driveVideoSink.setSource(m_frontCamera);
+        m_ballVideoSink.setSource(m_ballCamera);
+        m_driveVideoSink.setSource(m_frontCamera);
+        
+        m_frontCamera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+        m_frontCamera.setFPS(20);
+        m_frontCamera.setResolution(320, 240);
+        m_reverseCamera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+        m_reverseCamera.setFPS(20);
+        m_reverseCamera.setResolution(320, 240);
+        m_ballCamera.setFPS(20);
+        m_ballCamera.setResolution(40, 30);
+
+
         
         m_complexWidgetDriveCam = m_shuffleboardTab.add("Drive", m_driveVideoSink.getSource())
             .withWidget(BuiltInWidgets.kCameraStream)
             .withSize(12, 10)
             .withPosition(0, 0);
-        // m_complexWidgetBallCam  = m_shuffleboardTab.add("Ball Color", m_ballVideoSink.getSource())
+        // m_complexWidgetBallCam  = m_shuffleboardTab.add("Ball Color", m_driveVideoSink.getSource())
         //     .withWidget(BuiltInWidgets.kCameraStream)
         //     .withSize(9, 7)
         //     .withPosition(12, 3);
+
+        m_shuffleboardTab.addCamera("Ball", "ballcam", "http://roboRIO-1388-FRC.local:1183/?action=stream")
+            .withWidget(BuiltInWidgets.kCameraStream)
+            .withSize(9, 7)
+            .withPosition(12, 3);
+
 
        
 
@@ -145,12 +164,12 @@ public class Dashboard {
 
     public void switchCamera() {
         System.out.println("swich camera method");
-        switch (m_currentCam) {
+        switch (m_currentDriveCam) {
             case FORWARDS: m_driveVideoSink.setSource(m_reverseCamera);
-                m_currentCam = Cameras.REVERSE;
+                m_currentDriveCam = Cameras.REVERSE;
                 break;
             case REVERSE: m_driveVideoSink.setSource(m_frontCamera);
-                m_currentCam = Cameras.FORWARDS;
+                m_currentDriveCam = Cameras.FORWARDS;
                 break;
             default: m_driveVideoSink.setSource(m_reverseCamera);
         }
@@ -160,18 +179,18 @@ public class Dashboard {
         switch (camera) {
             case FORWARDS:
                 m_driveVideoSink.setSource(m_frontCamera);
-                m_currentCam = Cameras.FORWARDS;
+                m_currentDriveCam = Cameras.FORWARDS;
                 break;
             case REVERSE:
                 m_driveVideoSink.setSource(m_reverseCamera);
-                m_currentCam = Cameras.REVERSE;
+                m_currentDriveCam = Cameras.REVERSE;
                 break;
-            case BALL:
-                m_ballVideoSink.setSource(m_ballCamera);
-                m_currentCam = Cameras.BALL;
-                break;
+            // case BALL:
+            //     m_ballVideoSink.setSource(m_ballCamera);
+            //     m_currentCam = Cameras.BALL;
+            //     break;
             default: m_driveVideoSink.setSource(m_frontCamera);
-                m_currentCam = Cameras.FORWARDS;
+                m_currentDriveCam = Cameras.FORWARDS;
         }
     }
 
