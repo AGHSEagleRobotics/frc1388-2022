@@ -22,8 +22,8 @@ public class Dashboard {
    // private static SendableChooser<Position> m_autoPosition = new SendableChooser<>();
     private static SendableChooser<Objective> m_autoObjective = new SendableChooser<>();
 
-    //FIXME CHANGE THESE to constants? 
-    public ComplexWidget m_complexWidgetAuton;
+    //Change these to constants?
+    public ComplexWidget m_complexWidgetObjective;
     public ComplexWidget m_complexWidgetPosition;
     private final int autonChooserWidth = 8;
     private final int autonChooserHeight = 2;
@@ -56,33 +56,33 @@ public class Dashboard {
 
         public static final Position Default = POSITION1;
 
-        private String name;
+        private String m_name;
 
-        private Position (String m_name) {
-            name = m_name; 
+        private Position (String name) {
+            m_name = name; 
         }
         public String getName(){
-            return name;
+            return m_name;
         }
     }
 
     public enum Objective {
 
-        LEAVETARMAC ("Leave Tarmac"), //FIXME change these distances (or delete)
-        MOVEPICKUPSHOOT2 ("MOVESHOOT2"),
-        MOVESHOOT1 ("MOVESHOOT1"),
-        LOWSHOOTMOVE ("LOWSHOOTMOVE"),
-        DONOTHING ("Does nothing");
+        LEAVETARMAC ("LeaveTarmac"),
+        MOVEPICKUPSHOOT2 ("PickUpShoot2"),
+        MOVESHOOT1 ("Shoot1Turn"),
+        LOWSHOOTMOVE ("LowShoot"),
+        DONOTHING ("Nothing");
 
         public static final Objective Default = MOVESHOOT1;
 
-        private String name;
+        private String m_name;
 
-        private Objective (String m_name) {
+        private Objective (String name) {
             m_name = name;
         }
         public String getName(){
-            return name;
+            return m_name;
         }
 
     }
@@ -90,10 +90,6 @@ public class Dashboard {
     // public Position getPosition() {
     //     return m_autoPosition.getSelected();
     // }
-
-    public Objective getObjective() {
-        return m_autoObjective.getSelected();
-    }
 
     public void shuffleboardSetUp() {
         m_shuffleboardTab =  Shuffleboard.getTab("Competition");
@@ -105,11 +101,12 @@ public class Dashboard {
         m_ballVideoSink.setSource(m_ballCamera);
 
         // setup objective chooser
-        for (Dashboard.Objective ep: Objective.values()) {
-            m_autoObjective.addOption(ep.getName(), ep);
+        for (Dashboard.Objective o: Objective.values()) {
+            m_autoObjective.addOption(o.getName(), o);
         }
+        m_autoObjective.setDefaultOption(Objective.Default.getName(), Objective.Default);
 
-        m_complexWidgetAuton = Shuffleboard.getTab("Competition").add( "AutoObjective", m_autoObjective)
+        m_complexWidgetObjective = Shuffleboard.getTab("Competition").add( "AutoObjective", m_autoObjective)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
             .withSize(autonChooserWidth, autonChooserHeight)
             .withPosition(autonChooserColumnIndex, autonChooserRowIndex);
@@ -123,6 +120,9 @@ public class Dashboard {
     
     }
 
+    public Objective getObjective() {
+        return m_autoObjective.getSelected();
+    }
     public void switchCamera() {
         System.out.println("swich camera method");
         switch (m_currentCam) {
