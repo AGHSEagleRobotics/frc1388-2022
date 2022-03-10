@@ -219,6 +219,8 @@ public final class Constants {
         public final static int FRONT_CAMERA_PORT = 2;
         public final static int REVERSE_CAMERA_PORT = 1;
         public final static int BALL_CAMERA_PORT = 0;
+
+        public final static String BALL_CAM_URL = "http://roboRIO-1388-FRC.local:1183/?action=stream";
     }
  
     public final static class RumbleConstants {

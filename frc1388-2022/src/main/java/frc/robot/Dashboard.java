@@ -4,14 +4,14 @@
 
 package frc.robot;
 
-import com.fasterxml.jackson.core.type.ResolvedType;
+//import com.fasterxml.jackson.core.type.ResolvedType;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Constants.DashboardConstants.Cameras;
 import edu.wpi.first.cscore.VideoSink;
-import edu.wpi.first.cscore.VideoSource;
+//import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
@@ -29,23 +29,22 @@ public class Dashboard {
     //Change these to constants?
     public ComplexWidget m_complexWidgetObjective;
     public ComplexWidget m_complexWidgetPosition;
-    private final int autonChooserWidth = 8;
+    private final int autonChooserWidth = 12;
     private final int autonChooserHeight = 2;
     private final int autonChooserColumnIndex = 12;
     private final int autonChooserRowIndex = 0;
 
     // front reverse & ball cams
-    private UsbCamera m_frontCamera = CameraServer.startAutomaticCapture(DashboardConstants.FRONT_CAMERA_PORT);
-    private UsbCamera m_reverseCamera = CameraServer.startAutomaticCapture(DashboardConstants.REVERSE_CAMERA_PORT);
-    private UsbCamera m_ballCamera = CameraServer.startAutomaticCapture(DashboardConstants.BALL_CAMERA_PORT);
+    public UsbCamera m_frontCamera = CameraServer.startAutomaticCapture(DashboardConstants.FRONT_CAMERA_PORT);
+    public UsbCamera m_reverseCamera = CameraServer.startAutomaticCapture(DashboardConstants.REVERSE_CAMERA_PORT);
+    public UsbCamera m_ballCamera = CameraServer.startAutomaticCapture(DashboardConstants.BALL_CAMERA_PORT);
 
-    private final VideoSink m_driveVideoSink = CameraServer.getServer();
-    private final VideoSink m_ballVideoSink  = CameraServer.getServer();
+    public VideoSink m_driveVideoSink = CameraServer.getServer();
+    public VideoSink m_ballVideoSink  = CameraServer.getServer();
 
-    private ComplexWidget m_complexWidgetDriveCam;
-    private ComplexWidget m_complexWidgetBallCam;
+    public ComplexWidget m_complexWidgetDriveCam;
+    public ComplexWidget m_complexWidgetBallCam;
 
-    //TODO put enum back in here (enum's existance subject to debate)
     private Cameras m_currentDriveCam = Cameras.FORWARDS;
 
     public Dashboard() { // constructer
@@ -107,13 +106,15 @@ public class Dashboard {
         m_driveVideoSink.setSource(m_frontCamera);
         
         m_frontCamera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
-        m_frontCamera.setFPS(20);
-        m_frontCamera.setResolution(320, 240);
+        m_frontCamera.setFPS(30);
+        m_frontCamera.setResolution(160, 120);
         m_reverseCamera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
-        m_reverseCamera.setFPS(20);
-        m_reverseCamera.setResolution(320, 240);
+        m_reverseCamera.setFPS(30);
+        m_reverseCamera.setResolution(160, 120);
         m_ballCamera.setFPS(20);
-        m_ballCamera.setResolution(40, 30);
+        // m_ballCamera.setResolution(40, 30);
+        m_ballCamera.setResolution(40, 20);
+        m_ballCamera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
 
 
         
@@ -126,7 +127,7 @@ public class Dashboard {
         //     .withSize(9, 7)
         //     .withPosition(12, 3);
 
-        m_shuffleboardTab.addCamera("Ball", "ballcam", "http://roboRIO-1388-FRC.local:1183/?action=stream")
+        m_shuffleboardTab.addCamera("Ball", "ballcam", DashboardConstants.BALL_CAM_URL)
             .withWidget(BuiltInWidgets.kCameraStream)
             .withSize(9, 7)
             .withPosition(12, 3);
