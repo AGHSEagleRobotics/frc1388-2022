@@ -81,7 +81,7 @@ public class IntakeSubsystem extends SubsystemBase {
     // System.out.println(intakeArmEncoder);
 
     //reset encoder when limit switch pressed
-    if (intakeLimitUp) {
+    if (intakeLimitUp && !m_isEncoderReset) {
       m_intakeArmEncoder.reset();
       m_isEncoderReset = true;
     }
