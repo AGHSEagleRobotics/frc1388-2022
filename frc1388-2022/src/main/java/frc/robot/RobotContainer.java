@@ -198,11 +198,21 @@ public class RobotContainer {
     new Button (() -> isDriverDPadPressed()).whenHeld(new REject(
       m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
 
+    new Button (() -> isDriverDPadPressed())
+    .whenReleased(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
+  
+
     //EJECT AND REJECT commands OPERATOR
-    new Button (() -> isRightOpTriggerPressed()).whenHeld(new ShootEject(m_shooterFeederSubsystem, m_transitionSubsystem));
+    new Button (() -> isRightOpTriggerPressed())
+    .whenHeld(new ShootEject(m_shooterFeederSubsystem, m_transitionSubsystem));
 
     new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
     .whenHeld(new REject(m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
+
+    new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
+    .whenReleased(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
+
+
 
     // Lower priority
     /*
