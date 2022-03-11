@@ -52,6 +52,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -297,7 +298,7 @@ public class RobotContainer {
 
     Objective objective = m_dashboard.getObjective();
     m_dashboard.getObjective();
-    objective = Objective.MOVESHOOT1;
+    //objective = Objective.MOVESHOOT1;
     switch (objective) {
       case LEAVETARMAC:
       // default:
@@ -309,16 +310,21 @@ public class RobotContainer {
         .withTimeout(4)); 
 
       case MOVEPICKUPSHOOT2:
-      return new RetractIntake(m_intakeSubsystem).withTimeout(2)
+      return new RetractIntake(m_intakeSubsystem)
+        .withTimeout(2)
       .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem)
-        .withTimeout(1))
+        .withTimeout(2))
       .andThen(new AutoMove(m_driveTrainSubsystem, AutoConstants.AUTO_TARMAC_DISTANCE, AutoConstants.AUTO_DRIVE_SPEED)
         .withTimeout(3))
-      .andThen(new AutoMove(m_driveTrainSubsystem, -50, AutoConstants.AUTO_DRIVE_SPEED)
-        .withTimeout(1))
-        //If intake works properly, 1.8 or less works
-      .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, ShooterConstants.SHOOTER_RPM_HIGHGOAL)
-        .withTimeout(AutoConstants.SHOOTER_TIMER))
+        //change distance going backwards on automove to Auto_Tarmac distance -40
+      .andThen(new AutoMove(m_driveTrainSubsystem, -20, AutoConstants.AUTO_DRIVE_SPEED)
+        .withTimeout(2))
+        //If intake works properly, 1.8 or less works for both
+      .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AutoConstants.AUTO_SHOOT_RPM)
+        .withTimeout(AutoConstants.SHOOTER_TIMER_1))
+      .andThen(new WaitCommand(1))
+      .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AutoConstants.AUTO_SHOOT_RPM)
+        .withTimeout(AutoConstants.SHOOTER_TIMER_2))
       .andThen(new RetractIntake(m_intakeSubsystem)
         .withTimeout(2));
 
@@ -326,8 +332,8 @@ public class RobotContainer {
       return new RetractIntake(m_intakeSubsystem).withTimeout(2)
       .andThen(new AutoMove(m_driveTrainSubsystem, AutoConstants.AUTO_TARMAC_DISTANCE, AutoConstants.AUTO_DRIVE_SPEED)
         .withTimeout(3))
-      .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, ShooterConstants.SHOOTER_RPM_HIGHGOAL)
-        .withTimeout(AutoConstants.SHOOTER_TIMER))
+      .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AutoConstants.AUTO_SHOOT_RPM)
+        .withTimeout(AutoConstants.SHOOTER_TIMER_1))
       .andThen( new AutoTurn(m_driveTrainSubsystem,
           AutoConstants.AUTO_TURN_SPEED,
           AutoConstants.AUTO_TURN_ANGLE_MAX)
@@ -337,7 +343,7 @@ public class RobotContainer {
       
       case LOWSHOOTMOVE:
       return new RetractIntake(m_intakeSubsystem).withTimeout(2)
-      .andThen(new AutoMove(m_driveTrainSubsystem, -1, AutoConstants.AUTO_DRIVE_SPEED)
+      .andThen(new AutoMove(m_driveTrainSubsystem, -15, AutoConstants.AUTO_DRIVE_SPEED)
       .withTimeout(0.5))
       .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, ShooterConstants.SHOOTER_RMP_LOWGOAL)
       .withTimeout(1.2))
@@ -346,6 +352,8 @@ public class RobotContainer {
 
       case DONOTHING:
       return null;
+
+      // case 
     }
       return null;
     }

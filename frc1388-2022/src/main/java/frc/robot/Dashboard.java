@@ -74,10 +74,12 @@ public class Dashboard {
     public enum Objective {
 
         LEAVETARMAC ("LeaveTarmac"),
-        MOVEPICKUPSHOOT2 ("PickUpShoot2"),
+        MOVEPICKUPSHOOT2 ("PickUp1Shoot2"),
         MOVESHOOT1 ("Shoot1Turn"),
         LOWSHOOTMOVE ("LowShoot"),
-        DONOTHING ("Nothing");
+        DONOTHING ("Nothing")
+        //, MOVESHOOT3 ("PickUp2Shoot3")
+        ;
 
         public static final Objective Default = MOVESHOOT1;
 
@@ -102,7 +104,6 @@ public class Dashboard {
 
         
         // setup camera widgets
-        m_ballVideoSink.setSource(m_ballCamera);
         m_driveVideoSink.setSource(m_frontCamera);
         
         m_frontCamera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
@@ -122,18 +123,11 @@ public class Dashboard {
             .withWidget(BuiltInWidgets.kCameraStream)
             .withSize(12, 10)
             .withPosition(0, 0);
-        // m_complexWidgetBallCam  = m_shuffleboardTab.add("Ball Color", m_driveVideoSink.getSource())
-        //     .withWidget(BuiltInWidgets.kCameraStream)
-        //     .withSize(9, 7)
-        //     .withPosition(12, 3);
 
-        m_shuffleboardTab.addCamera("Ball", "ballcam", DashboardConstants.BALL_CAM_URL)
+        m_complexWidgetBallCam  = m_shuffleboardTab.add("Ball", m_ballCamera)
             .withWidget(BuiltInWidgets.kCameraStream)
             .withSize(9, 7)
-            .withPosition(12, 3);
-
-
-       
+            .withPosition(12, 3);       
 
         // m_complexWidgetDriveCam = m_shuffleboardTab.add("Cams", m_driveVideoSink.getSource())
         // .withWidget(BuiltInWidgets.kCameraStream);

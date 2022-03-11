@@ -79,7 +79,7 @@ public final class Constants {
         public static final double MIN_SHOOTER_RPM = 0;
 
         //High and Low goal RPM 
-        public static final double SHOOTER_RPM_HIGHGOAL    = 4500;
+        public static final double SHOOTER_RPM_HIGHGOAL    = 4500; //FIXME lower??
         public static final double SHOOTER_RMP_LOWGOAL     = 2000;
         public static final double SHOOTER_RPM_EJECT       = 1200;
 
@@ -198,13 +198,15 @@ public final class Constants {
 
         public static final int USB_CAMERACOLOR = 0; //FIXME Not confirmed
 
-        public static final double AUTO_SHOOT_RPM = 5400;
-        public static final double SHOOTER_TIMER = 1.8;
+        public static final double AUTO_SHOOT_RPM = 4350; 
+        public static final double SHOOTER_TIMER_1 = 1;
+        public static final double SHOOTER_TIMER_2 = 1.2;
+
         public static final double ENCODER_DISTANCE_CUTOFF = 1.0; //TODO change - is this cutoff??
         public static final double AUTO_DRIVE_SPEED = 0.5;
 
         public static final double AUTO_TIME = 15.0; //seconds
-        public static final double AUTO_TARMAC_DISTANCE = 90; //inches
+        public static final double AUTO_TARMAC_DISTANCE = 70; //inches
 
         public static final double AUTO_TURN_SPEED = 0.5;
         public static final double AUTO_TURN_ANGLE_MAX = 100; //degrees
