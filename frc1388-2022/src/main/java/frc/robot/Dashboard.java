@@ -40,7 +40,7 @@ public class Dashboard {
     public UsbCamera m_ballCamera = CameraServer.startAutomaticCapture(DashboardConstants.BALL_CAMERA_PORT);
 
     public VideoSink m_driveVideoSink = CameraServer.getServer();
-    public VideoSink m_ballVideoSink  = CameraServer.getServer();
+    // public VideoSink m_ballVideoSink  = CameraServer.getServer();
 
     public ComplexWidget m_complexWidgetDriveCam;
     public ComplexWidget m_complexWidgetBallCam;

@@ -79,8 +79,8 @@ public final class Constants {
         public static final double MIN_SHOOTER_RPM = 0;
 
         //High and Low goal RPM 
-        public static final double SHOOTER_RPM_HIGHGOAL    = 4500; //FIXME lower??
-        public static final double SHOOTER_RMP_LOWGOAL     = 2000;
+        public static final double SHOOTER_RPM_HIGHGOAL    = 4300; //FIXME lower??
+        public static final double SHOOTER_RMP_LOWGOAL     = 2200;
         public static final double SHOOTER_RPM_EJECT       = 1200;
 
         public static final double SHOOT_LOW_RIGHT_DRIVE_TRIGGER = 0.5;
