@@ -107,14 +107,14 @@ public class Dashboard {
         m_driveVideoSink.setSource(m_frontCamera);
         
         m_frontCamera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
-        m_frontCamera.setFPS(30);
+        m_frontCamera.setFPS(20);
         m_frontCamera.setResolution(160, 120);
         m_reverseCamera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
-        m_reverseCamera.setFPS(30);
+        m_reverseCamera.setFPS(20);
         m_reverseCamera.setResolution(160, 120);
         m_ballCamera.setFPS(20);
         // m_ballCamera.setResolution(40, 30);
-        m_ballCamera.setResolution(40, 20);
+        m_ballCamera.setResolution(40, 30);
         m_ballCamera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
 
 

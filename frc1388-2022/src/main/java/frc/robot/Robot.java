@@ -48,6 +48,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     SmartDashboard.putData(CommandScheduler.getInstance());
+    m_robotContainer.setNeutralMode(NeutralMode.Coast);
   }
 
   /**
@@ -69,7 +70,6 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    m_robotContainer.setNeutralMode(NeutralMode.Coast);
   }
 
   @Override
