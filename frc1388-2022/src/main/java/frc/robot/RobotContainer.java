@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.Constants.AutoConstants;
+import static frc.robot.Constants.AutoConstants.*;
 // import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.TransitionConstants;
@@ -307,7 +307,7 @@ public class RobotContainer {
     // }
 
     Objective objective = m_dashboard.getObjective();
-    m_dashboard.getObjective();
+    Position position = m_dashboard.getPosition();
     //objective = Objective.MOVESHOOT1;
     switch (objective) {
       case LEAVETARMAC:
@@ -315,50 +315,77 @@ public class RobotContainer {
       return new RetractIntake(m_intakeSubsystem)
         .withTimeout(2)
       .andThen(new AutoMove(m_driveTrainSubsystem, 
-          AutoConstants.AUTO_TARMAC_DISTANCE,    
-          AutoConstants.AUTO_DRIVE_SPEED)
+          AUTO_TARMAC_DISTANCE,    
+          AUTO_DRIVE_SPEED)
         .withTimeout(4)); 
 
       case MOVEPICKUPSHOOT2:
-      return new RetractIntake(m_intakeSubsystem)
-        .withTimeout(2)
-      .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem)
-        .withTimeout(2))
-      .andThen(new AutoMove(m_driveTrainSubsystem, AutoConstants.AUTO_TARMAC_DISTANCE, AutoConstants.AUTO_DRIVE_SPEED)
-        .withTimeout(3))
-        //change distance going backwards on automove to Auto_Tarmac distance -40
-      .andThen(new AutoMove(m_driveTrainSubsystem, -20, AutoConstants.AUTO_DRIVE_SPEED)
-        .withTimeout(2))
-        //If intake works properly, 1.8 or less works for both
-      .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AutoConstants.AUTO_SHOOT_RPM)
-        .withTimeout(AutoConstants.SHOOTER_TIMER_1))
-      .andThen(new WaitCommand(1))
-      .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AutoConstants.AUTO_SHOOT_RPM)
-        .withTimeout(AutoConstants.SHOOTER_TIMER_2))
-      .andThen(new RetractIntake(m_intakeSubsystem)
-        .withTimeout(2));
+      if (position == Position.POSITION4) {
+        return new RetractIntake(m_intakeSubsystem)
+          .withTimeout(2)
+        .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem)
+          .withTimeout(2))
+        .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_1, AUTO_DRIVE_SPEED)
+          .withTimeout(3))
+          .andThen(new RetractIntake(m_intakeSubsystem)
+          .withTimeout(2))
+          //change distance going backwards on automove to Auto_Tarmac distance -40
+        .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_2, AUTO_DRIVE_SPEED)
+          .withTimeout(2))
+        .andThen(new AutoMove (m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_3, AUTO_DRIVE_SPEED)
+          .withTimeout(2))
+        .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
+          .withTimeout(SHOOTER_TIMER_1))
+        .andThen(new WaitCommand(1))
+        .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
+          .withTimeout(SHOOTER_TIMER_2))
+        .andThen(new RetractIntake(m_intakeSubsystem)
+          .withTimeout(2)
+        .andThen(new AutoTurn(m_driveTrainSubsystem,
+          AUTO_TURN_SPEED,
+          AUTO_TURN_ANGLE_MAX)
+          .withTimeout(0.4)));
+      } else {
+        return new RetractIntake(m_intakeSubsystem)
+          .withTimeout(2)
+        .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem)
+          .withTimeout(2))
+        .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_TARMAC_DISTANCE, AUTO_DRIVE_SPEED)
+          .withTimeout(3))
+          //change distance going backwards on automove to Auto_Tarmac distance -40
+        .andThen(new AutoMove(m_driveTrainSubsystem, -20, AUTO_DRIVE_SPEED)
+          .withTimeout(2))
+          //If intake works properly, 1.8 or less works for both
+        .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
+          .withTimeout(SHOOTER_TIMER_1))
+        .andThen(new WaitCommand(1))
+        .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
+          .withTimeout(SHOOTER_TIMER_2))
+        .andThen(new RetractIntake(m_intakeSubsystem)
+          .withTimeout(2));
+       }
 
       case MOVESHOOT1:
       return new RetractIntake(m_intakeSubsystem).withTimeout(2)
-      .andThen(new AutoMove(m_driveTrainSubsystem, AutoConstants.AUTO_TARMAC_DISTANCE, AutoConstants.AUTO_DRIVE_SPEED)
+      .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_TARMAC_DISTANCE, AUTO_DRIVE_SPEED)
         .withTimeout(3))
-      .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AutoConstants.AUTO_SHOOT_RPM)
-        .withTimeout(AutoConstants.SHOOTER_TIMER_1))
+      .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
+        .withTimeout(SHOOTER_TIMER_1))
       .andThen( new AutoTurn(m_driveTrainSubsystem,
-          AutoConstants.AUTO_TURN_SPEED,
-          AutoConstants.AUTO_TURN_ANGLE_MAX)
+          AUTO_TURN_SPEED,
+          AUTO_TURN_ANGLE_MAX)
         .withTimeout(0.15))
       .andThen(new RetractIntake(m_intakeSubsystem)
         .withTimeout(2));
       
-      case LOWSHOOTMOVE:
-      return new RetractIntake(m_intakeSubsystem).withTimeout(2)
-      .andThen(new AutoMove(m_driveTrainSubsystem, -15, AutoConstants.AUTO_DRIVE_SPEED)
-      .withTimeout(0.5))
-      .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, ShooterConstants.SHOOTER_RMP_LOWGOAL)
-      .withTimeout(1.2))
-      .andThen(new RetractIntake(m_intakeSubsystem)
-      .withTimeout(2));
+      // case LOWSHOOTMOVE:
+      // return new RetractIntake(m_intakeSubsystem).withTimeout(2)
+      // .andThen(new AutoMove(m_driveTrainSubsystem, -15, AUTO_DRIVE_SPEED)
+      // .withTimeout(0.5))
+      // .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, ShooterConstants.SHOOTER_RMP_LOWGOAL)
+      // .withTimeout(1.2))
+      // .andThen(new RetractIntake(m_intakeSubsystem)
+      // .withTimeout(2));
 
       case DONOTHING:
       return null;

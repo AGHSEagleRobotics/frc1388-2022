@@ -23,7 +23,7 @@ import frc.robot.Constants.DashboardConstants;
 public class Dashboard {
     private ShuffleboardTab m_shuffleboardTab;
 
-   // private static SendableChooser<Position> m_autoPosition = new SendableChooser<>();
+    private static SendableChooser<Position> m_autoPosition = new SendableChooser<>();
     private static SendableChooser<Objective> m_autoObjective = new SendableChooser<>();
 
     //Change these to constants?
@@ -33,6 +33,11 @@ public class Dashboard {
     private final int autonChooserHeight = 2;
     private final int autonChooserColumnIndex = 12;
     private final int autonChooserRowIndex = 0;
+
+    private final int autonPositionWidth = 12;
+    private final int autonPositionHeight = 2;
+    private final int autonPositionColumnIndex = 12;
+    private final int autonPositionRowIndex = 2;
 
     // front reverse & ball cams
     public UsbCamera m_frontCamera = CameraServer.startAutomaticCapture(DashboardConstants.FRONT_CAMERA_PORT);
@@ -54,10 +59,10 @@ public class Dashboard {
     } // end constructer
 
     public enum Position {
-        POSITION1 ("POSITION1"),
-        POSITION2 ("POSITION2"),
-        POSITION3 ("POSITION3"),
-        POSITION4 ("POSITION4");
+        POSITION1 ("1 (Far Left)"),
+        POSITION2 ("2 (Middle Left)"),
+        POSITION3 ("3 (Middle Right)"),
+        POSITION4 ("4 (Far Right)");
 
         public static final Position Default = POSITION1;
 
@@ -76,7 +81,7 @@ public class Dashboard {
         LEAVETARMAC ("LeaveTarmac"),
         MOVEPICKUPSHOOT2 ("PickUp1Shoot2"),
         MOVESHOOT1 ("Shoot1Turn"),
-        LOWSHOOTMOVE ("LowShoot"),
+        // LOWSHOOTMOVE ("LowShoot"),
         DONOTHING ("Nothing")
         //, MOVESHOOT3 ("PickUp2Shoot3")
         ;
@@ -94,9 +99,9 @@ public class Dashboard {
 
     }
 
-    // public Position getPosition() {
-    //     return m_autoPosition.getSelected();
-    // }
+    public Position getPosition() {
+        return m_autoPosition.getSelected();
+    }
 
     public void shuffleboardSetUp() {
         m_shuffleboardTab =  Shuffleboard.getTab("Competition");
@@ -126,8 +131,8 @@ public class Dashboard {
 
         m_complexWidgetBallCam  = m_shuffleboardTab.add("Ball", m_ballCamera)
             .withWidget(BuiltInWidgets.kCameraStream)
-            .withSize(9, 7)
-            .withPosition(12, 3);       
+            .withSize(9, 6)
+            .withPosition(12, 4);       
 
         // m_complexWidgetDriveCam = m_shuffleboardTab.add("Cams", m_driveVideoSink.getSource())
         // .withWidget(BuiltInWidgets.kCameraStream);
@@ -144,12 +149,14 @@ public class Dashboard {
             .withSize(autonChooserWidth, autonChooserHeight)
             .withPosition(autonChooserColumnIndex, autonChooserRowIndex);
 
-    //     for (Position ep: Position.values()) {
-    //         m_autoPosition.addOption(ep.getName(), ep);
-    //     }
+        for (Position ep: Position.values()) {
+            m_autoPosition.addOption(ep.getName(), ep);
+        }
 
-    //     m_complexWidgetPosition = Shuffleboard.getTab("Competition").add("AutoPosition", m_autoPosition)
-    //     .withWidget(BuiltInWidgets.kSplitButtonChooser);
+        m_complexWidgetPosition = Shuffleboard.getTab("Competition").add("AutoPosition", m_autoPosition)
+        .withWidget(BuiltInWidgets.kSplitButtonChooser)
+        .withSize(autonPositionWidth, autonPositionHeight)
+        .withPosition(autonPositionColumnIndex, autonPositionRowIndex);
     
     }
 

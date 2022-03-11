@@ -210,6 +210,10 @@ public final class Constants {
 
         public static final double AUTO_TURN_SPEED = 0.5;
         public static final double AUTO_TURN_ANGLE_MAX = 100; //degrees
+
+        public static final double AUTO_POSITION_4_DISTANCE_1 = 28;
+        public static final double AUTO_POSITION_4_DISTANCE_2 = 8;
+        public static final double AUTO_POSITION_4_DISTANCE_3 = -12;
     }
  
 
