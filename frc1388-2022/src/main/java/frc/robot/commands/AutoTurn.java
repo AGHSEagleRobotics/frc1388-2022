@@ -51,7 +51,8 @@ public class AutoTurn extends CommandBase {
     turnSpeed = m_pidController.calculate(angle, m_turnAngleSet);
     turnSpeed = MathUtil.clamp(turnSpeed, -m_turnSpeed, m_turnSpeed);
 
-    log.info("Distance: {} \tspeed: {} \tsetPoint: {}", angle, turnSpeed, m_turnAngleSet);
+    log.info("Angle: {} \tturnSpeed: {} \tTurnSetPoint: {}", angle, turnSpeed, m_turnAngleSet);
+    System.out.println("Angle: "+angle+"\tturnSpeed: "+turnSpeed+"\tTurnSetPoint"+m_turnAngleSet);
 
     m_driveTrainSubsystem.curvatureDrive(0, turnSpeed, true);
   }
