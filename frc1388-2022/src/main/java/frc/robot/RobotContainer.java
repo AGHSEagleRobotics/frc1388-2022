@@ -350,10 +350,10 @@ public class RobotContainer {
           .withTimeout(2)
         .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem)
           .withTimeout(2))
-        .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_TARMAC_DISTANCE, AUTO_DRIVE_SPEED)
+        .andThen(new AutoMove(m_driveTrainSubsystem, 64, AUTO_DRIVE_SPEED)
           .withTimeout(3))
           //change distance going backwards on automove to Auto_Tarmac distance -40
-        .andThen(new AutoMove(m_driveTrainSubsystem, -20, AUTO_DRIVE_SPEED)
+        .andThen(new AutoMove(m_driveTrainSubsystem, -27, AUTO_DRIVE_SPEED)
           .withTimeout(2))
           //If intake works properly, 1.8 or less works for both
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
@@ -386,6 +386,13 @@ public class RobotContainer {
       // .withTimeout(1.2))
       // .andThen(new RetractIntake(m_intakeSubsystem)
       // .withTimeout(2));
+
+      case TURN:
+      new AutoTurn(m_driveTrainSubsystem,
+          AUTO_TURN_SPEED,
+          AUTO_TURN_ANGLE_MAX)
+      .andThen(new RetractIntake(m_intakeSubsystem)
+        .withTimeout(2));
 
       case DONOTHING:
       return null;

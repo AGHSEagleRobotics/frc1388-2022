@@ -82,7 +82,8 @@ public class Dashboard {
         MOVEPICKUPSHOOT2 ("PickUp1Shoot2"),
         MOVESHOOT1 ("Shoot1Turn"),
         // LOWSHOOTMOVE ("LowShoot"),
-        DONOTHING ("Nothing")
+        DONOTHING ("Nothing"),
+        TURN ("Turn")
         //, MOVESHOOT3 ("PickUp2Shoot3")
         ;
 

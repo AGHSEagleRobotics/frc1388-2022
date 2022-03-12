@@ -190,17 +190,19 @@ public final class Constants {
     public final class AutoConstants {
         //TEST P VALUE LATER
         
-        public static final double TURN_P_VALUE = 0.03;
+        public static final double TURN_P_VALUE = 0.04;
         public static final double TURN_P_TOLERANCE = 0.5;
-        public static final double MOVE_P_VALUE = 0.03;
+        public static final double MOVE_P_VALUE = 0.04;
         public static final double MOVE_P_TOLERANCE = 0.5;
+
+        public static final double MOVE_F_VALUE = 0;
      
 
         public static final int USB_CAMERACOLOR = 0; //FIXME Not confirmed
 
         public static final double AUTO_SHOOT_RPM = 4350; 
         public static final double SHOOTER_TIMER_1 = 1;
-        public static final double SHOOTER_TIMER_2 = 1.2;
+        public static final double SHOOTER_TIMER_2 = 1.7;
 
         public static final double ENCODER_DISTANCE_CUTOFF = 1.0; //TODO change - is this cutoff??
         public static final double AUTO_DRIVE_SPEED = 0.5;

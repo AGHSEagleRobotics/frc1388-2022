@@ -51,7 +51,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_differentialDrive.setSafetyEnabled(true);
     m_differentialDrive.setExpiration(DriveTrainConstants.EXPIRATION);
     m_differentialDrive.setMaxOutput(DriveTrainConstants.MAX_OUTPUT);
-    m_differentialDrive.setDeadband(DriveTrainConstants.DEADBAND); 
 
     //set all motors to break
     leftFront.setNeutralMode(NeutralMode.Brake);
@@ -129,6 +128,14 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_rightFront.setNeutralMode(mode);
     m_rightBack.setNeutralMode(mode);
 
+  }
+
+  public void setDeadbandZero() {
+    m_differentialDrive.setDeadband(0); 
+  }
+
+  public void setDeadbandDefault() {
+    m_differentialDrive.setDeadband(DriveTrainConstants.DEADBAND);  
   }
 
   @Override
