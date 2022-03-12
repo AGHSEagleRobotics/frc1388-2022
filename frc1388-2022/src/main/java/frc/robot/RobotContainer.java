@@ -327,7 +327,7 @@ public class RobotContainer {
           .withTimeout(2))
         .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_1, AUTO_DRIVE_SPEED)
           .withTimeout(3))
-          .andThen(new RetractIntake(m_intakeSubsystem)
+        .andThen(new RetractIntake(m_intakeSubsystem)
           .withTimeout(2))
           //change distance going backwards on automove to Auto_Tarmac distance -40
         .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_2, AUTO_DRIVE_SPEED)

@@ -11,6 +11,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -40,6 +43,8 @@ public class ShooterFeederSubsystem extends SubsystemBase {
   private final int SENSOR_CYCLES_PER_SECOND = 10;   // sensor velocity period is 100 ms
   private final int SEC_PER_MIN = 60;
   private final int COUNTS_PER_REV = 2048;
+
+  private static final Logger log = LogManager.getLogger(ShooterFeederSubsystem.class);
 
   /** Creates a new ShooterSubsystem. */
   public ShooterFeederSubsystem(WPI_TalonFX shooterMotor, CANSparkMax feederMotor)  {
@@ -164,9 +169,9 @@ public class ShooterFeederSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("shooter target rpm", getTargetRPM());
     SmartDashboard.putNumber("shooter temperature F", (m_shooterMotor.getTemperature() * 9/5) + 32);
 
+    log.info("shooter real rpm {} shooter target rpm {} ", getRealRPM(), getTargetRPM());
     // System.out.println(m_shooterCooldownTimer.get());
     // System.out.println(m_shooterEnabled);
-
   }  // END periodic()
 
 
