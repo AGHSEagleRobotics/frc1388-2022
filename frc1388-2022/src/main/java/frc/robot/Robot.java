@@ -10,6 +10,7 @@ import com.revrobotics.REVPhysicsSim;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -90,6 +91,11 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    log.info("Match type:\t" + DriverStation.getMatchType());
+    log.info("Event name:\t" + DriverStation.getEventName());
+    log.info("Alliance:\t" + DriverStation.getAlliance());
+    log.info("Match number:\t" + DriverStation.getMatchNumber());
   }
 
   /** This function is called periodically during autonomous. */
