@@ -4,14 +4,14 @@
 
 package frc.robot;
 
-import com.fasterxml.jackson.core.type.ResolvedType;
+//import com.fasterxml.jackson.core.type.ResolvedType;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Constants.DashboardConstants.Cameras;
 import edu.wpi.first.cscore.VideoSink;
-import edu.wpi.first.cscore.VideoSource;
+//import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
@@ -23,29 +23,33 @@ import frc.robot.Constants.DashboardConstants;
 public class Dashboard {
     private ShuffleboardTab m_shuffleboardTab;
 
-   // private static SendableChooser<Position> m_autoPosition = new SendableChooser<>();
+    private static SendableChooser<Position> m_autoPosition = new SendableChooser<>();
     private static SendableChooser<Objective> m_autoObjective = new SendableChooser<>();
 
     //Change these to constants?
     public ComplexWidget m_complexWidgetObjective;
     public ComplexWidget m_complexWidgetPosition;
-    private final int autonChooserWidth = 9;
-    private final int autonChooserHeight = 3;
+    private final int autonChooserWidth = 12;
+    private final int autonChooserHeight = 2;
     private final int autonChooserColumnIndex = 12;
     private final int autonChooserRowIndex = 0;
 
+    private final int autonPositionWidth = 12;
+    private final int autonPositionHeight = 2;
+    private final int autonPositionColumnIndex = 12;
+    private final int autonPositionRowIndex = 2;
+
     // front reverse & ball cams
-    private UsbCamera m_frontCamera = CameraServer.startAutomaticCapture(DashboardConstants.FRONT_CAMERA_PORT);
-    private UsbCamera m_reverseCamera = CameraServer.startAutomaticCapture(DashboardConstants.REVERSE_CAMERA_PORT);
-    private UsbCamera m_ballCamera = CameraServer.startAutomaticCapture(DashboardConstants.BALL_CAMERA_PORT);
+    public UsbCamera m_frontCamera = CameraServer.startAutomaticCapture(DashboardConstants.FRONT_CAMERA_PORT);
+    public UsbCamera m_reverseCamera = CameraServer.startAutomaticCapture(DashboardConstants.REVERSE_CAMERA_PORT);
+    public UsbCamera m_ballCamera = CameraServer.startAutomaticCapture(DashboardConstants.BALL_CAMERA_PORT);
 
-    private final VideoSink m_driveVideoSink = CameraServer.getServer();
-    private final VideoSink m_ballVideoSink  = CameraServer.getServer();
+    public VideoSink m_driveVideoSink = CameraServer.getServer();
+    // public VideoSink m_ballVideoSink  = CameraServer.getServer();
 
-    private ComplexWidget m_complexWidgetDriveCam;
-    private ComplexWidget m_complexWidgetBallCam;
+    public ComplexWidget m_complexWidgetDriveCam;
+    public ComplexWidget m_complexWidgetBallCam;
 
-    //TODO put enum back in here (enum's existance subject to debate)
     private Cameras m_currentDriveCam = Cameras.FORWARDS;
 
     public Dashboard() { // constructer
@@ -55,10 +59,10 @@ public class Dashboard {
     } // end constructer
 
     public enum Position {
-        POSITION1 ("POSITION1"),
-        POSITION2 ("POSITION2"),
-        POSITION3 ("POSITION3"),
-        POSITION4 ("POSITION4");
+        POSITION1 ("1 (Far Left)"),
+        POSITION2 ("2 (Middle Left)"),
+        POSITION3 ("3 (Middle Right)"),
+        POSITION4 ("4 (Far Right)");
 
         public static final Position Default = POSITION1;
 
@@ -75,10 +79,13 @@ public class Dashboard {
     public enum Objective {
 
         LEAVETARMAC ("LeaveTarmac"),
-        MOVEPICKUPSHOOT2 ("PickUpShoot2"),
+        MOVEPICKUPSHOOT2 ("PickUp1Shoot2"),
         MOVESHOOT1 ("Shoot1Turn"),
-        LOWSHOOTMOVE ("LowShoot"),
-        DONOTHING ("Nothing");
+        // LOWSHOOTMOVE ("LowShoot"),
+        DONOTHING ("Nothing"),
+        TURN ("Turn")
+        //, MOVESHOOT3 ("PickUp2Shoot3")
+        ;
 
         public static final Objective Default = MOVESHOOT1;
 
@@ -93,9 +100,9 @@ public class Dashboard {
 
     }
 
-    // public Position getPosition() {
-    //     return m_autoPosition.getSelected();
-    // }
+    public Position getPosition() {
+        return m_autoPosition.getSelected();
+    }
 
     public void shuffleboardSetUp() {
         m_shuffleboardTab =  Shuffleboard.getTab("Competition");
@@ -103,17 +110,18 @@ public class Dashboard {
 
         
         // setup camera widgets
-        m_ballVideoSink.setSource(m_ballCamera);
         m_driveVideoSink.setSource(m_frontCamera);
         
         m_frontCamera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
         m_frontCamera.setFPS(20);
-        m_frontCamera.setResolution(320, 240);
+        m_frontCamera.setResolution(160, 120);
         m_reverseCamera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
         m_reverseCamera.setFPS(20);
-        m_reverseCamera.setResolution(320, 240);
+        m_reverseCamera.setResolution(160, 120);
         m_ballCamera.setFPS(20);
+        // m_ballCamera.setResolution(40, 30);
         m_ballCamera.setResolution(40, 30);
+        m_ballCamera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
 
 
         
@@ -121,18 +129,11 @@ public class Dashboard {
             .withWidget(BuiltInWidgets.kCameraStream)
             .withSize(12, 10)
             .withPosition(0, 0);
-        // m_complexWidgetBallCam  = m_shuffleboardTab.add("Ball Color", m_driveVideoSink.getSource())
-        //     .withWidget(BuiltInWidgets.kCameraStream)
-        //     .withSize(9, 7)
-        //     .withPosition(12, 3);
 
-        m_shuffleboardTab.addCamera("Ball", "ballcam", "http://roboRIO-1388-FRC.local:1183/?action=stream")
+        m_complexWidgetBallCam  = m_shuffleboardTab.add("Ball", m_ballCamera)
             .withWidget(BuiltInWidgets.kCameraStream)
-            .withSize(9, 7)
-            .withPosition(12, 3);
-
-
-       
+            .withSize(9, 6)
+            .withPosition(12, 4);       
 
         // m_complexWidgetDriveCam = m_shuffleboardTab.add("Cams", m_driveVideoSink.getSource())
         // .withWidget(BuiltInWidgets.kCameraStream);
@@ -149,12 +150,14 @@ public class Dashboard {
             .withSize(autonChooserWidth, autonChooserHeight)
             .withPosition(autonChooserColumnIndex, autonChooserRowIndex);
 
-    //     for (Position ep: Position.values()) {
-    //         m_autoPosition.addOption(ep.getName(), ep);
-    //     }
+        for (Position ep: Position.values()) {
+            m_autoPosition.addOption(ep.getName(), ep);
+        }
 
-    //     m_complexWidgetPosition = Shuffleboard.getTab("Competition").add("AutoPosition", m_autoPosition)
-    //     .withWidget(BuiltInWidgets.kSplitButtonChooser);
+        m_complexWidgetPosition = Shuffleboard.getTab("Competition").add("AutoPosition", m_autoPosition)
+        .withWidget(BuiltInWidgets.kSplitButtonChooser)
+        .withSize(autonPositionWidth, autonPositionHeight)
+        .withPosition(autonPositionColumnIndex, autonPositionRowIndex);
     
     }
 

@@ -4,6 +4,9 @@
 
 package frc.robot.commands;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
@@ -12,18 +15,19 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class AutoTurn extends CommandBase {
+  private static final Logger log = LogManager.getLogger(AutoMove.class);
 
   private DriveTrainSubsystem m_driveTrainSubsystem;
   private final double m_turnSpeed;
-  private final double m_turnAngle;
+  private final double m_turnAngleSet;
 
   private final PIDController m_pidController = new PIDController(AutoConstants.TURN_P_VALUE, 0, 0);
 
   /** Creates a new AutoTurn. */
-  public AutoTurn(DriveTrainSubsystem driveTrainSubsystem, double turnSpeed, double turnAngle) {
+  public AutoTurn(DriveTrainSubsystem driveTrainSubsystem, double turnSpeed, double turnAngleSet) {
     m_driveTrainSubsystem = driveTrainSubsystem;
     m_turnSpeed = turnSpeed;
-    m_turnAngle = turnAngle;
+    m_turnAngleSet = turnAngleSet;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrainSubsystem);
 
@@ -34,16 +38,21 @@ public class AutoTurn extends CommandBase {
   @Override
   public void initialize() {
     m_driveTrainSubsystem.resetGyro();
+    m_driveTrainSubsystem.setDeadbandZero();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     double turnSpeed;
-    double angle = m_driveTrainSubsystem.getGyroAngle();
+    double angle = -(m_driveTrainSubsystem.getGyroAngle());
 
-    turnSpeed = m_pidController.calculate(angle, m_turnAngle);
+
+    turnSpeed = m_pidController.calculate(angle, m_turnAngleSet);
     turnSpeed = MathUtil.clamp(turnSpeed, -m_turnSpeed, m_turnSpeed);
+
+    log.info("Angle: {} \tturnSpeed: {} \tTurnSetPoint: {}", angle, turnSpeed, m_turnAngleSet);
+    System.out.println("Angle: "+angle+"\tturnSpeed: "+turnSpeed+"\tTurnSetPoint"+m_turnAngleSet);
 
     m_driveTrainSubsystem.curvatureDrive(0, turnSpeed, true);
   }

@@ -50,6 +50,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     SmartDashboard.putData(CommandScheduler.getInstance());
+    m_robotContainer.setNeutralMode(NeutralMode.Coast);
   }
 
   /**

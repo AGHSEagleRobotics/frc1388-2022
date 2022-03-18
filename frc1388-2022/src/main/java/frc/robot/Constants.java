@@ -79,8 +79,8 @@ public final class Constants {
         public static final double MIN_SHOOTER_RPM = 0;
 
         //High and Low goal RPM 
-        public static final double SHOOTER_RPM_HIGHGOAL    = 4500;
-        public static final double SHOOTER_RMP_LOWGOAL     = 2000;
+        public static final double SHOOTER_RPM_HIGHGOAL    = 4300; //FIXME lower??
+        public static final double SHOOTER_RMP_LOWGOAL     = 2200;
         public static final double SHOOTER_RPM_EJECT       = 1200;
 
         public static final double SHOOT_LOW_RIGHT_DRIVE_TRIGGER = 0.5;
@@ -192,24 +192,32 @@ public final class Constants {
     public final class AutoConstants {
         //TEST P VALUE LATER
         
-        public static final double TURN_P_VALUE = 0.03;
+        public static final double TURN_P_VALUE = 0.04;
         public static final double TURN_P_TOLERANCE = 0.5;
-        public static final double MOVE_P_VALUE = 0.03;
+        public static final double MOVE_P_VALUE = 0.04;
         public static final double MOVE_P_TOLERANCE = 0.5;
+
+        public static final double MOVE_F_VALUE = 0;
      
 
         public static final int USB_CAMERACOLOR = 0; //FIXME Not confirmed
 
-        public static final double AUTO_SHOOT_RPM = 5400;
-        public static final double SHOOTER_TIMER = 1.8;
+        public static final double AUTO_SHOOT_RPM = 4350; 
+        public static final double SHOOTER_TIMER_1 = 1;
+        public static final double SHOOTER_TIMER_2 = 1.7;
+
         public static final double ENCODER_DISTANCE_CUTOFF = 1.0; //TODO change - is this cutoff??
         public static final double AUTO_DRIVE_SPEED = 0.5;
 
         public static final double AUTO_TIME = 15.0; //seconds
-        public static final double AUTO_TARMAC_DISTANCE = 90; //inches
+        public static final double AUTO_TARMAC_DISTANCE = 70; //inches
 
         public static final double AUTO_TURN_SPEED = 0.5;
         public static final double AUTO_TURN_ANGLE_MAX = 100; //degrees
+
+        public static final double AUTO_POSITION_4_DISTANCE_1 = 28;
+        public static final double AUTO_POSITION_4_DISTANCE_2 = 8;
+        public static final double AUTO_POSITION_4_DISTANCE_3 = -12;
     }
  
 
@@ -221,6 +229,8 @@ public final class Constants {
         public final static int FRONT_CAMERA_PORT = 2;
         public final static int REVERSE_CAMERA_PORT = 1;
         public final static int BALL_CAMERA_PORT = 0;
+
+        public final static String BALL_CAM_URL = "http://roboRIO-1388-FRC.local:1183/?action=stream";
     }
  
     public final static class RumbleConstants {

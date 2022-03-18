@@ -12,15 +12,15 @@ Configuration:
       target: SYSTEM_OUT
       PatternLayout:
         pattern: '%-5level %c: %m%n'
-    # RollingRandomAccessFile:
-    #   name: LOG_FILE
-    #   fileName: ${log-path}/robot.log
-    #   filePattern: ${log-path}/robot.%i.log
-    #   PatternLayout:
-    #     pattern: '%d %-5level %c: %m%n'
-    #   Policies:
-    #     OnStartupTriggeringPolicy:
-    #       minSize: 1
+    RollingRandomAccessFile:
+      name: LOG_FILE
+      fileName: ${log-path}/robot.log
+      filePattern: ${log-path}/robot.%i.log
+      PatternLayout:
+        pattern: '%d %-5level %c: %m%n'
+      Policies:
+        OnStartupTriggeringPolicy:
+          minSize: 1
   
   Loggers:
     Root:

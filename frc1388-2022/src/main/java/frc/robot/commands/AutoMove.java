@@ -10,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import static frc.robot.Constants.AutoConstants.*;
+
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
@@ -21,7 +23,7 @@ public class AutoMove extends CommandBase {
   private final double m_setPoint;
   private final double m_speed;
 
-  private final PIDController m_pidController = new PIDController(AutoConstants.MOVE_P_VALUE, 0, 0);
+  private final PIDController m_pidController = new PIDController(MOVE_P_VALUE, 0, 0);
 
   /** Creates a new AutoMove. */
   public AutoMove(DriveTrainSubsystem driveTrainSubsystem, double setPoint, double speed) {
@@ -33,13 +35,14 @@ public class AutoMove extends CommandBase {
     addRequirements(driveTrainSubsystem);
 
     //Setting PID control tolerance
-    m_pidController.setTolerance(AutoConstants.MOVE_P_TOLERANCE); //change P tolerance?
+    m_pidController.setTolerance(MOVE_P_TOLERANCE); //change P tolerance?
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     m_driveTrainSubsystem.resetLeftEncoder();
+    m_driveTrainSubsystem.setDeadbandZero();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -50,6 +53,7 @@ public class AutoMove extends CommandBase {
 
     speed = m_pidController.calculate(leftEncoderDistance, m_setPoint);
     speed = MathUtil.clamp(speed, -m_speed, m_speed);
+    speed += Math.copySign(MOVE_F_VALUE, speed);
 
     m_driveTrainSubsystem.curvatureDrive(speed, 0, false);
 
