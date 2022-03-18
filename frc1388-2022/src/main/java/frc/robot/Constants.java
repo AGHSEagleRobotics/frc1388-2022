@@ -159,9 +159,11 @@ public final class Constants {
     public final class IntakeConstants { 
         //FIXME 
         public static final int CANID_WHEEL_MOTOR = 10; 
-        public static final int CANID_ARM_MOTOR = 9; 
+        public static final int CANID_ARM_MOTOR = 9;
 
         public static final double ARM_SPEED_DEPLOY   = 1;
+        public static final double ARM_SLOW_DEPLOY    = 0.25;
+        public static final int ARM_SLOW_SPEED_TICKS  = 50;
         public static final double WHEEL_SPEED_INTAKE = 0.5;
 
         //DIO ports for sensors

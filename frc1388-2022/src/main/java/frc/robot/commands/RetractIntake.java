@@ -11,6 +11,12 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class RetractIntake extends CommandBase {
 
   private final IntakeSubsystem m_intakeSubsystem;
+  /**after the limit switch is initaly triggered, the motor will run at low power for a bit longer to ensure limit switch is triggered.*/
+  private boolean m_intakeLimitHitOnce = false;
+  private int m_lowPowerTimer = 0;
+  private boolean m_isfinished = false;
+
+  
 
   /** Creates a new IntakeCommand. */
   public RetractIntake (IntakeSubsystem intakeSubsystem) { 
@@ -28,12 +34,29 @@ public class RetractIntake extends CommandBase {
 
 // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_intakeLimitHitOnce = false;
+    m_lowPowerTimer = 0;
+    m_isfinished = false;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SPEED_DEPLOY);
+    if (m_intakeSubsystem.isLimitUpReached()) {
+      m_intakeLimitHitOnce = true;
+    }
+    
+    if (!m_intakeLimitHitOnce) {
+      m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SPEED_DEPLOY);
+    } else {
+      if (++m_lowPowerTimer <= IntakeConstants.ARM_SLOW_SPEED_TICKS) {
+        m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SLOW_DEPLOY);
+      } else {
+        m_isfinished = true;
+      }
+    }
+
   }
 
   // Called once the command ends or is interrupted.
@@ -47,6 +70,6 @@ public class RetractIntake extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_intakeSubsystem.isLimitUpReached();
+    return m_isfinished;
   }
 }
