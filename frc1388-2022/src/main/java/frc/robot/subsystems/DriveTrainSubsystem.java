@@ -53,7 +53,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_differentialDrive.setMaxOutput(DriveTrainConstants.MAX_OUTPUT);
     m_differentialDrive.setDeadband(DriveTrainConstants.DEADBAND); 
 
-    //set all motors to break
+    //set all motors to brake
     leftFront.setNeutralMode(NeutralMode.Brake);
     leftBack.setNeutralMode(NeutralMode.Brake);
     rightFront.setNeutralMode(NeutralMode.Brake);

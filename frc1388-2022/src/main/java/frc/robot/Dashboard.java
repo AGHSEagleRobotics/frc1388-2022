@@ -29,8 +29,8 @@ public class Dashboard {
     //Change these to constants?
     public ComplexWidget m_complexWidgetObjective;
     public ComplexWidget m_complexWidgetPosition;
-    private final int autonChooserWidth = 8;
-    private final int autonChooserHeight = 2;
+    private final int autonChooserWidth = 9;
+    private final int autonChooserHeight = 3;
     private final int autonChooserColumnIndex = 12;
     private final int autonChooserRowIndex = 0;
 
