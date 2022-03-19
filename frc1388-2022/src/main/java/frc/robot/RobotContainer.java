@@ -14,12 +14,15 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+
 import static frc.robot.Constants.AutoConstants.*;
 // import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.TransitionConstants;
 import frc.robot.Constants.DriveTrainConstants;     // climber constats
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.LEDConstants;
 import frc.robot.Constants.USBConstants;            // USB
 import frc.robot.Constants.XBoxControllerConstants;
 // import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
@@ -41,6 +44,7 @@ import frc.robot.commands.AutoTurn;
 // import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.RumbleSubsystem;
 import frc.robot.subsystems.ShooterFeederSubsystem;
 import frc.robot.subsystems.TransitionSubsystem;
@@ -104,6 +108,10 @@ public class RobotContainer {
       new CANSparkMax(TransitionConstants.CANID_TRANSITION_MOTOR, MotorType.kBrushless));
 
   private final Dashboard m_dashboard = new Dashboard();
+
+  private final LED m_LED = new LED(
+    new PWMSparkMax(LEDConstants.PWM_LED)
+  );
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -250,6 +258,12 @@ public class RobotContainer {
               }
             });
     // .whenPressed(() -> m_dashboard.switchCamera());
+
+    new Button(() -> isOpUpDpadPressed())
+      .whenPressed(() -> m_LED.increaseLED());
+
+    new Button(() -> isOpDownDpadPressed())
+      .whenPressed(() -> m_LED.decreaseLED());
   }
 
   private void setForward(boolean isForward) {
@@ -262,6 +276,7 @@ public class RobotContainer {
     }
   } 
 
+  // triggers
   public static boolean isRightDriverTriggerPressed() {
     return m_driveController.getRightTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
@@ -274,8 +289,18 @@ public class RobotContainer {
     return m_opController.getLeftTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
 
+  // driver dpad
   public static boolean isDriverDPadPressed() {
     return m_driveController.getPOV() != -1 ;
+  }
+
+  // op dpad
+  public static boolean isOpUpDpadPressed() {
+    return m_opController.getPOV() == 0;
+  }
+
+  public static boolean isOpDownDpadPressed() {
+    return m_opController.getPOV() == 180;
   }
 
   //EJECT REJECT FOR OP

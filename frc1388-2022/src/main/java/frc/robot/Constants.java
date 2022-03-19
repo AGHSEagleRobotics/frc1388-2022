@@ -256,4 +256,9 @@ public final class Constants {
             }
         }
     }
+
+    public final class LEDConstants {
+        public static final int PWM_LED = 0;
+    }
+
 }
