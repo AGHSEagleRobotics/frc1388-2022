@@ -56,8 +56,10 @@ public class RetractIntake extends CommandBase {
         m_isfinished = true;
       }
     }
+
     if (m_intakeSubsystem.isCloseToUpLimit()) {
       m_intakeSubsystem.setIntakeWheelSpin(0);
+      m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SLOW_DEPLOY);
     }
   }
 
