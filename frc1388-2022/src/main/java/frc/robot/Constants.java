@@ -173,9 +173,13 @@ public final class Constants {
 
         //Encoder constants
         public static final int INTAKE_ARM_ENCODER_COUNTS_PER_REV = 2048;
-        public static final double INTAKE_ARM_ENCODER_ROTATIONS = 1.75;
+        public static final double INTAKE_ARM_ENCODER_DOWN_ROTATIONS = 1.75; //specifically down, because down to up is 1.75 back to 0
         public static final int INTAKE_ARM_DOWN_ENCODER_COUNT = 
-        (int) (INTAKE_ARM_ENCODER_ROTATIONS * INTAKE_ARM_ENCODER_COUNTS_PER_REV);
+        (int) (INTAKE_ARM_ENCODER_DOWN_ROTATIONS * INTAKE_ARM_ENCODER_COUNTS_PER_REV);
+
+        public static final double INTAKE_ARM_ENCODER_NEAR_UP_ROTATIONS = 0.5; //this is going from 1.75 to 0, so it's closer to 0
+        public static final int INTAKE_ARM_NEAR_UP_ENCODER_COUNT = 
+        (int) (INTAKE_ARM_ENCODER_NEAR_UP_ROTATIONS * INTAKE_ARM_ENCODER_COUNTS_PER_REV);
     }
 
     public final class TransitionConstants {
