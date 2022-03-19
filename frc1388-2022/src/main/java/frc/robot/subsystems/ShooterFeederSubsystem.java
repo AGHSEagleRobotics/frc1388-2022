@@ -169,7 +169,7 @@ public class ShooterFeederSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("shooter target rpm", getTargetRPM());
     SmartDashboard.putNumber("shooter temperature F", (m_shooterMotor.getTemperature() * 9/5) + 32);
 
-    log.info("shooter real rpm {} shooter target rpm {} ", getRealRPM(), getTargetRPM());
+    log.debug("shooter real rpm {} shooter target rpm {} ", getRealRPM(), getTargetRPM());
     // System.out.println(m_shooterCooldownTimer.get());
     // System.out.println(m_shooterEnabled);
   }  // END periodic()

@@ -63,6 +63,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     
     //add to shuffle board
     addChild("DifferentialDrive", m_differentialDrive);
+    addChild("Gyro", m_gyro);
 
   }
 
@@ -109,7 +110,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   }
 
   public double getGyroAngle() {
-    return m_gyro.getAngle();
+    return -(m_gyro.getAngle());
   }
 
   public double getRightEncoderDistance(){

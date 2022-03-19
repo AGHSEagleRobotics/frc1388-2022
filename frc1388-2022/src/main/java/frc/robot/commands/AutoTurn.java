@@ -28,6 +28,7 @@ public class AutoTurn extends CommandBase {
     m_driveTrainSubsystem = driveTrainSubsystem;
     m_turnSpeed = turnSpeed;
     m_turnAngleSet = turnAngleSet;
+    //System.out.println("*****************TURNCONSTUCTOR****************************************TURNCONSTRUCTOR*******************");
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrainSubsystem);
 
@@ -39,20 +40,21 @@ public class AutoTurn extends CommandBase {
   public void initialize() {
     m_driveTrainSubsystem.resetGyro();
     m_driveTrainSubsystem.setDeadbandZero();
+    System.out.println("*****************TURNINIT****************************************TURNINIT*******************");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     double turnSpeed;
-    double angle = -(m_driveTrainSubsystem.getGyroAngle());
+    double angle = m_driveTrainSubsystem.getGyroAngle();
 
 
     turnSpeed = m_pidController.calculate(angle, m_turnAngleSet);
     turnSpeed = MathUtil.clamp(turnSpeed, -m_turnSpeed, m_turnSpeed);
 
     log.info("Angle: {} \tturnSpeed: {} \tTurnSetPoint: {}", angle, turnSpeed, m_turnAngleSet);
-    System.out.println("Angle: "+angle+"\tturnSpeed: "+turnSpeed+"\tTurnSetPoint"+m_turnAngleSet);
+    //System.out.println("Angle: "+angle+"\tturnSpeed: "+turnSpeed+"\tTurnSetPoint"+m_turnAngleSet);
 
     m_driveTrainSubsystem.curvatureDrive(0, turnSpeed, true);
   }
@@ -67,7 +69,7 @@ public class AutoTurn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    boolean finished = (m_pidController.atSetpoint() || (Timer.getMatchTime() > AutoConstants.AUTO_TIME) );
+    boolean finished = (m_pidController.atSetpoint());
     return finished;
   }
 }

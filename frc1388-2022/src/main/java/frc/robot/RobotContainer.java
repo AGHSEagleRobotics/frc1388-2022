@@ -308,6 +308,7 @@ public class RobotContainer {
 
     Objective objective = m_dashboard.getObjective();
     Position position = m_dashboard.getPosition();
+    System.out.println(objective);
     //objective = Objective.MOVESHOOT1;
     switch (objective) {
       case LEAVETARMAC:
@@ -388,7 +389,7 @@ public class RobotContainer {
       // .withTimeout(2));
 
       case TURN:
-      new AutoTurn(m_driveTrainSubsystem,
+      return new AutoTurn(m_driveTrainSubsystem,
           AUTO_TURN_SPEED,
           AUTO_TURN_ANGLE_MAX)
       .andThen(new RetractIntake(m_intakeSubsystem)
