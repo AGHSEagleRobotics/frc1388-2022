@@ -84,6 +84,9 @@ public class Drive extends CommandBase {
       rotation = scale(rotation);
     }
 
+    // scale the drive speed
+    speed = scale(speed);
+    
     // One of three drives to choose from
     m_driveTrainSubsystem.curvatureDrive(speed, rotation, m_precisionMode);
     // m_driveTrainSubsystem.arcadeDrive(speed, rotation);

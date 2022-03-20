@@ -83,8 +83,8 @@ public class Dashboard {
         MOVESHOOT1 ("Shoot1Turn"),
         // LOWSHOOTMOVE ("LowShoot"),
         DONOTHING ("Nothing"),
-        TURN ("Turn")
-        //, MOVESHOOT3 ("PickUp2Shoot3")
+        TURN ("Turn"),
+        THREEBALLAUTO ("3BALL")
         ;
 
         public static final Objective Default = MOVESHOOT1;
