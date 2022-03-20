@@ -18,6 +18,7 @@ import static frc.robot.Constants.AutoConstants.*;
 // import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.TransitionConstants;
+import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DriveTrainConstants;     // climber constats
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.USBConstants;            // USB
@@ -38,6 +39,8 @@ import frc.robot.commands.AutoIntake;
 import frc.robot.commands.AutoMove;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.AutoTurn;
+import frc.robot.commands.ClimberCommand;
+import frc.robot.subsystems.ClimberSubsystem;
 // import frc.robot.commands.ClimberCommand;           // climber command
 // import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
@@ -85,11 +88,9 @@ public class RobotContainer {
       new ADIS16470_IMU()
       );
 
-  /*
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
     new WPI_TalonFX(ClimberConstants.CANID_WINCH),
       new CANSparkMax(ClimberConstants.CANID_ARTICULATOR, MotorType.kBrushless));
-  */
   
   private final ShooterFeederSubsystem m_shooterFeederSubsystem = new ShooterFeederSubsystem(
     new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR),
@@ -111,12 +112,12 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
-    // m_climberSubsystem.setDefaultCommand(
-    //   new ClimberCommand(
-    //     m_climberSubsystem, 
-    //         () -> m_opController.getLeftY(), // extend
-    //     () -> m_opController.getRightY())    // articulate
-    //   );
+    m_climberSubsystem.setDefaultCommand(
+      new ClimberCommand(
+        m_climberSubsystem, 
+            () -> m_opController.getLeftY(), // extend
+        () -> m_opController.getRightY())    // articulate
+      );
     // set default commands
 
 

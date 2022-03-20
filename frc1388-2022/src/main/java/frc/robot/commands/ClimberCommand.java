@@ -53,9 +53,10 @@ public class ClimberCommand extends CommandBase {
     SmartDashboard.putNumber("articulator input", deadband);
     m_climberSubsystem.setArticulatorPower(Math.copySign(Math.pow(deadband, 2), deadband));
 
-    if (m_climberSubsystem.isArticulatorAtVerticalLimit()) {
-      m_climberSubsystem.setArticulatorPower(0);
-    }
+    // FIXME
+    // if (m_climberSubsystem.isArticulatorAtVerticalLimit()) {
+    //   m_climberSubsystem.setArticulatorPower(0);
+    // }
   }
 
   // Called once the command ends or is interrupted.
