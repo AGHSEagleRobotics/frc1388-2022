@@ -257,13 +257,14 @@ public class RobotContainer {
                 return true;
               }
             });
+
     // .whenPressed(() -> m_dashboard.switchCamera());
 
-    new Button(() -> isOpUpDpadPressed())
-      .whenPressed(() -> m_LED.increaseLED());
+  //   new Button(() -> isOpUpDpadPressed())
+  //     .whenPressed(() -> m_LED.increaseLED());
 
-    new Button(() -> isOpDownDpadPressed())
-      .whenPressed(() -> m_LED.decreaseLED());
+  //   new Button(() -> isOpDownDpadPressed())
+  //     .whenPressed(() -> m_LED.decreaseLED());
   }
 
   private void setForward(boolean isForward) {
