@@ -21,20 +21,26 @@ public class AutoMove extends CommandBase {
   private DriveTrainSubsystem m_driveTrainSubsystem;
   private final double m_setPoint;
   private final double m_speed;
+  private final double m_curve;
 
   private final PIDController m_pidController = new PIDController(MOVE_P_VALUE, 0, 0);
 
   /** Creates a new AutoMove. */
-  public AutoMove(DriveTrainSubsystem driveTrainSubsystem, double setPoint, double speed) {
+  public AutoMove(DriveTrainSubsystem driveTrainSubsystem, double setPoint, double speed, double curve) {
     m_driveTrainSubsystem = driveTrainSubsystem;
     m_setPoint = setPoint;
     m_speed = speed;
+    m_curve = curve;
     // Use addRequirements() here to declare subsystem dependencies.
 
     addRequirements(driveTrainSubsystem);
 
     //Setting PID control tolerance
     m_pidController.setTolerance(MOVE_P_TOLERANCE); //change P tolerance?
+  }
+
+  public AutoMove(DriveTrainSubsystem driveTrainSubsystem, double setPoint, double speed) {
+    this(driveTrainSubsystem, setPoint, speed, 0.0);
   }
 
   // Called when the command is initially scheduled.
@@ -54,7 +60,7 @@ public class AutoMove extends CommandBase {
     speed = MathUtil.clamp(speed, -m_speed, m_speed);
     speed += Math.copySign(MOVE_F_VALUE, speed);
 
-    m_driveTrainSubsystem.curvatureDrive(speed, 0, false);
+    m_driveTrainSubsystem.curvatureDrive(speed, m_curve, false);
 
     log.info("Distance: {} \tspeed: {} \tsetPoint: {}", leftEncoderDistance, speed, m_setPoint); 
   

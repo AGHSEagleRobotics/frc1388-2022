@@ -84,7 +84,8 @@ public class Dashboard {
         // LOWSHOOTMOVE ("LowShoot"),
         DONOTHING ("Nothing"),
         TURN ("Turn"),
-        THREEBALLAUTO ("3BALL")
+        THREEBALLAUTO ("3ball"),
+        FOURBALLAUTO ("4BALL")
         ;
 
         public static final Objective Default = MOVESHOOT1;

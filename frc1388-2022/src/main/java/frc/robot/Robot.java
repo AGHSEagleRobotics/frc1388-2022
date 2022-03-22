@@ -54,6 +54,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData(CommandScheduler.getInstance());
     m_robotContainer.setNeutralMode(NeutralMode.Coast);
     System.out.println("###Robot.Init() -> NeutralMode.Coast###");
+
+    CommandScheduler.getInstance().onCommandInitialize(command -> log.info(command.getName() + " Initialized" ));
+    CommandScheduler.getInstance().onCommandInterrupt(command -> log.info(command.getName() + " Interrupted" ));
+    CommandScheduler.getInstance().onCommandFinish(command -> log.info(command.getName() + " Finished" ));
   }
 
   /**

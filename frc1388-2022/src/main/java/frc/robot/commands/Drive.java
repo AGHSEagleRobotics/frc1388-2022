@@ -60,8 +60,8 @@ public class Drive extends CommandBase {
     double rotation = m_driveRightStickXAxis.get();
 
     // For tank drive
-    double leftSpeed = -m_driveLeftStickYAxis.get();
-    double rightSpeed = -m_driveRightStickYAxis.get();
+    //double leftSpeed = -m_driveLeftStickYAxis.get();
+    //double rightSpeed = -m_driveRightStickYAxis.get();
 
     // checks to see if the button has been pressed and then flags the precision mode
     // Don't trigger again if the button is continually held

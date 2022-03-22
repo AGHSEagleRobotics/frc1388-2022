@@ -293,7 +293,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
 
-    new PrintCommand("************************\n************************\n getAutonomousCommand() \n\n");
+    //new PrintCommand("************************\n************************\n getAutonomousCommand() \n\n");
 
     // Position position = m_dashboard.getPosition();
     // // m_dashboard.getPosition();
@@ -395,19 +395,18 @@ public class RobotContainer {
       .andThen(new RetractIntake(m_intakeSubsystem)
         .withTimeout(2));
 
-        case THREEBALLAUTO:
-        if (position == Position.POSITION4) {
-          return new RetractIntake(m_intakeSubsystem)
+      case THREEBALLAUTO:
+      if (position == Position.POSITION4) {
+      return new RetractIntake(m_intakeSubsystem)
             .withTimeout(2)
-          .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem)
-            .withTimeout(2))
-          .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_TO_WALL_BALL, AUTO_DRIVE_SPEED)
+          .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem)) //test along with
+          .alongWith(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_TO_WALL_BALL, AUTO_DRIVE_SPEED)
             .withTimeout(3))
           // .andThen(new RetractIntake(m_intakeSubsystem)
           //   .withTimeout(2))
           // .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_2, AUTO_DRIVE_SPEED)
           //   .withTimeout(2))
-          .andThen(new AutoMove (m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_3_BALL, AUTO_DRIVE_SPEED)
+          .andThen(new AutoMove (m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_3_BALL, 0.8) //test
             .withTimeout(2))
           .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
             .withTimeout(SHOOTER_TIMER_1))
@@ -420,15 +419,49 @@ public class RobotContainer {
             AUTO_TURN_SPEED,
             AUTO_TURN_ANGLE_MAX))
           // .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem))
-          .andThen(new AutoMove(m_driveTrainSubsystem, 96, AUTO_DRIVE_SPEED))
+          .andThen(new AutoMove(m_driveTrainSubsystem, 96, 0.8))//test
           .andThen(new WaitCommand(0.5))
           .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, -40))
-          .andThen(new AutoMove(m_driveTrainSubsystem, -35, AUTO_DRIVE_SPEED))
+          .andThen(new AutoMove(m_driveTrainSubsystem, -35, 0.8)) //test
           .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
           .withTimeout(2))
-          .andThen(new RetractIntake(m_intakeSubsystem));
+          .alongWith(new RetractIntake(m_intakeSubsystem));
         }
 
+        case FOURBALLAUTO:
+        if (position == Position.POSITION4) {
+          return new RetractIntake(m_intakeSubsystem)
+              .withTimeout(2)
+            .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem)) //test along with
+            .alongWith(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_TO_WALL_BALL, AUTO_DRIVE_SPEED)
+              .withTimeout(3))
+            // .andThen(new RetractIntake(m_intakeSubsystem)
+            //   .withTimeout(2))
+            // .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_2, AUTO_DRIVE_SPEED)
+            //   .withTimeout(2))
+            .andThen(new AutoMove (m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_3_BALL, 0.8) //test
+              .withTimeout(2))
+            .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
+              .withTimeout(SHOOTER_TIMER_1))
+            .andThen(new WaitCommand(1))
+            .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
+              .withTimeout(SHOOTER_TIMER_2))
+            // .andThen(new RetractIntake(m_intakeSubsystem)
+            //   .withTimeout(2))
+            .andThen(new AutoTurn(m_driveTrainSubsystem,
+              AUTO_TURN_SPEED,
+              AUTO_TURN_ANGLE_MAX))
+            // .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem))
+            .andThen(new AutoMove(m_driveTrainSubsystem, 96, 0.8))//test
+            .andThen(new WaitCommand(0.5))
+            .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, -40))
+            .andThen(new AutoMove(m_driveTrainSubsystem, -35, 0.8)) //test
+            .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
+            .withTimeout(2))
+            .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, 20)) //test
+            .alongWith(new RetractIntake(m_intakeSubsystem));
+          }
+  
         
       case DONOTHING:
       return null;
