@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Encoder;
-
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 /**
@@ -32,7 +30,7 @@ public final class Constants {
     public final class DriveTrainConstants {
         public static final double EXPIRATION = 0.1;
         public static final double MAX_OUTPUT = 1.0;
-        public static final double DEADBAND = 0.2;
+        public static final double DEADBAND =   0.1;
 
         public static final int CANID_LEFT_FRONT    = 1;
         public static final int CANID_LEFT_BACK     = 2;
@@ -79,7 +77,8 @@ public final class Constants {
         public static final double MIN_SHOOTER_RPM = 0;
 
         //High and Low goal RPM 
-        public static final double SHOOTER_RPM_HIGHGOAL    = 4300; //FIXME lower??
+        public static final double SHOOTER_RPM_HAIL_HARRY  = 5900;
+        public static final double SHOOTER_RPM_HIGHGOAL    = 3900; //lowered, subject to change
         public static final double SHOOTER_RMP_LOWGOAL     = 2200;
         public static final double SHOOTER_RPM_EJECT       = 1200;
 
@@ -114,8 +113,8 @@ public final class Constants {
         public static final double ARTICULATOR_GAINS_POSITION_D = 0;
 
         //Possibly arbitrary
-        public static final int ARTICULATOR_POSITION_REACH    = 5;  // rotations of motor  // TODO change this
-        public static final int ARTICULATOR_POSITION_VERTICAL = 0;   // rotations of motor  // TODO change this
+        public static final int ARTICULATOR_POSITION_REACH    = 5;  // rotations of motor  // TODO change these
+        public static final int ARTICULATOR_POSITION_VERTICAL = 0;   // rotations of motor  // 
 
         //Tolerances - used like enums
         public static final int ARTICULATOR_IN_RANGE    =  0;
@@ -141,8 +140,7 @@ public final class Constants {
           }
     }
 
-    //Put back into climber constants TODO
-    //AND change deadband if needed
+    //change deadband if needed
     public final class ClimberCommandConstants {
             /** speed in inches per second */
         public static final double MAX_WINCH_SPEED = 10;
@@ -158,7 +156,6 @@ public final class Constants {
     }
 
     public final class IntakeConstants { 
-        //FIXME 
         public static final int CANID_WHEEL_MOTOR = 10; 
         public static final int CANID_ARM_MOTOR = 9;
 
@@ -197,17 +194,17 @@ public final class Constants {
     public final class AutoConstants {
         //TEST P VALUE LATER
         
-        public static final double TURN_P_VALUE = 0.04;
-        public static final double TURN_P_TOLERANCE = 0.5;
+        public static final double TURN_P_VALUE = 0.03;
+        public static final double TURN_P_TOLERANCE = 1.25;
         public static final double MOVE_P_VALUE = 0.04;
         public static final double MOVE_P_TOLERANCE = 0.5;
 
         public static final double MOVE_F_VALUE = 0;
      
 
-        public static final int USB_CAMERACOLOR = 0; //FIXME Not confirmed
+        public static final int USB_CAMERACOLOR = 0; //FIXME Not used?
 
-        public static final double AUTO_SHOOT_RPM = 4350; 
+        public static final double AUTO_SHOOT_RPM = 3700; 
         public static final double SHOOTER_TIMER_1 = 1;
         public static final double SHOOTER_TIMER_2 = 1.7;
 
@@ -217,12 +214,14 @@ public final class Constants {
         public static final double AUTO_TIME = 15.0; //seconds
         public static final double AUTO_TARMAC_DISTANCE = 70; //inches
 
-        public static final double AUTO_TURN_SPEED = 0.5;
-        public static final double AUTO_TURN_ANGLE_MAX = 100; //degrees
+        public static final double AUTO_TURN_SPEED = 0.25;
+        public static final double AUTO_TURN_ANGLE_MAX = 84; //degrees
 
-        public static final double AUTO_POSITION_4_DISTANCE_1 = 28;
-        public static final double AUTO_POSITION_4_DISTANCE_2 = 8;
-        public static final double AUTO_POSITION_4_DISTANCE_3 = -12;
+        public static final double AUTO_POSITION_4_DISTANCE_TO_WALL_BALL = 42;
+        public static final double AUTO_POSITION_4_DISTANCE_TAXI = 7;
+        public static final double AUTO_POSITION_4_DISTANCE_2_BALL_BACK = -23;
+        public static final double AUTO_POSITION_4_DISTANCE_3_BALL = -26;
+
     }
  
 

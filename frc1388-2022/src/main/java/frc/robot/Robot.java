@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.Drive;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -54,6 +53,11 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData(CommandScheduler.getInstance());
     m_robotContainer.setNeutralMode(NeutralMode.Coast);
+    System.out.println("###Robot.Init() -> NeutralMode.Coast###");
+
+    CommandScheduler.getInstance().onCommandInitialize(command -> log.info(command.getName() + " Initialized" ));
+    CommandScheduler.getInstance().onCommandInterrupt(command -> log.info(command.getName() + " Interrupted" ));
+    CommandScheduler.getInstance().onCommandFinish(command -> log.info(command.getName() + " Finished" ));
   }
 
   /**
@@ -73,6 +77,7 @@ public class Robot extends TimedRobot {
 
     if (RobotController.getUserButton()) {
       m_robotContainer.setNeutralMode(NeutralMode.Coast);
+      System.out.println("###RobotPeriodic() -> UserButtonPressed -> NeutralMode.Coast###");
     }
   }
 
@@ -80,6 +85,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     m_robotContainer.setNeutralMode(NeutralMode.Brake);
+    System.out.println("###disabledInit() -> NeutralMode.Brake ###");
   }
 
   @Override
@@ -89,7 +95,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    // m_robotContainer.setNeutralMode(NeutralMode.Brake);
+    m_robotContainer.setNeutralMode(NeutralMode.Brake);
+    System.out.println("###autonomousInit() -> NeutralMode.Brake ###");
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -115,7 +122,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    // m_robotContainer.setNeutralMode(NeutralMode.Brake);
+    m_robotContainer.setNeutralMode(NeutralMode.Brake);
+    System.out.println("### teleopInit() -> NeutralMode.Brake ###");
   }
 
   /** This function is called periodically during operator control. */

@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
@@ -22,10 +21,8 @@ import org.apache.logging.log4j.Logger;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ClimberCommandConstants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.FalconConstants;
-import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
 
 public class ClimberSubsystem extends SubsystemBase {
 
@@ -39,9 +36,9 @@ public class ClimberSubsystem extends SubsystemBase {
     /** winch gearbox ratio */
   private static final double WINCH_GEAR_RATIO = 20.0;
     /** winch diamater in inches */ 
-  private static final double WINCH_DIAMATER = 2.0; 
+  private static final double WINCH_DIAMETER = 2.0; 
     /** sensor position / WINCH_SENSOR_UNITS_PER_INCH = arm extention in inches */
-  private static final double WINCH_SENSOR_UNITS_PER_INCH = FalconConstants.COUNTS_PER_REV * WINCH_GEAR_RATIO / (WINCH_DIAMATER * Math.PI);
+  private static final double WINCH_SENSOR_UNITS_PER_INCH = FalconConstants.COUNTS_PER_REV * WINCH_GEAR_RATIO / (WINCH_DIAMETER * Math.PI);
     /** length of winch arm in inches */
   private static final double WINCH_ARM_LENGTH = 24;
 
@@ -101,7 +98,7 @@ public class ClimberSubsystem extends SubsystemBase {
     m_articulatorPidController.setD  (ClimberConstants.ARTICULATOR_GAINS_POSITION_D);
     m_articulatorPidController.setFF (ClimberConstants.ARTICULATOR_GAINS_POSITION_F);
 
-    //Make forward instead of reverse, clarify "reverse" is towards the "front" FIXME
+    //FIXME Make forward instead of reverse, clarify "reverse" is towards the "front" - ?
     m_reverseArticulatorLimitSwitch = new DigitalInput(3);
   } 
 

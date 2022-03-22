@@ -19,7 +19,7 @@ public class Drive extends CommandBase {
   private boolean m_lastRightStickButton = false;
   private RumbleSubsystem m_precisionRumble;
   private Supplier<Double> m_driveLeftStickYAxis;
-  private Supplier<Double> m_driveRightStickYAxis;
+  //private Supplier<Double> m_driveRightStickYAxis;
   private Supplier<Double> m_driveRightStickXAxis;
 
   private Supplier<Boolean> m_driveRightStickButton;
@@ -40,7 +40,7 @@ public class Drive extends CommandBase {
     m_driveTrainSubsystem = driveTrainSubsystem;
     m_precisionRumble = precisionrumble;
     m_driveLeftStickYAxis = driveLeftStickYAxis;
-    m_driveRightStickYAxis = driveRightStickYAxis;
+    //m_driveRightStickYAxis = driveRightStickYAxis;
     m_driveRightStickXAxis = driveRightStickXAxis;
     m_driveRightStickButton = driveRightStickButton;
 
@@ -60,8 +60,8 @@ public class Drive extends CommandBase {
     double rotation = m_driveRightStickXAxis.get();
 
     // For tank drive
-    double leftSpeed = -m_driveLeftStickYAxis.get();
-    double rightSpeed = -m_driveRightStickYAxis.get();
+    //double leftSpeed = -m_driveLeftStickYAxis.get();
+    //double rightSpeed = -m_driveRightStickYAxis.get();
 
     // checks to see if the button has been pressed and then flags the precision mode
     // Don't trigger again if the button is continually held
@@ -84,6 +84,9 @@ public class Drive extends CommandBase {
       rotation = scale(rotation);
     }
 
+    // scale the drive speed
+    speed = scale(speed);
+    
     // One of three drives to choose from
     m_driveTrainSubsystem.curvatureDrive(speed, rotation, m_precisionMode);
     // m_driveTrainSubsystem.arcadeDrive(speed, rotation);

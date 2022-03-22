@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.DriveTrainSubsystem;
@@ -40,7 +39,6 @@ public class AutoTurn extends CommandBase {
   public void initialize() {
     m_driveTrainSubsystem.resetGyro();
     m_driveTrainSubsystem.setDeadbandZero();
-    System.out.println("*****************TURNINIT****************************************TURNINIT*******************");
   }
 
   // Called every time the scheduler runs while the command is scheduled.

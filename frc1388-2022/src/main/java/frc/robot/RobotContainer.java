@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -33,11 +32,11 @@ import frc.robot.Dashboard.Position;
 import frc.robot.commands.Drive;
 import frc.robot.commands.ShootHigh;
 import frc.robot.commands.ShootLow;
+import frc.robot.commands.ShootHailHarry;
 import frc.robot.commands.RetractIntake;
 import frc.robot.commands.REject;
 import frc.robot.commands.ShootEject;
 import frc.robot.commands.DeployIntake;
-import frc.robot.commands.AutoIntake;
 import frc.robot.commands.AutoMove;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.AutoTurn;
@@ -160,25 +159,25 @@ public class RobotContainer {
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
         .whenPressed(() -> m_driveTrainSubsystem.setForward(true));
 
-    /*
-     * dev mode
-     * new JoystickButton(m_driveController, XboxController.Button.kX.value)
-     * .whenPressed(() -> m_shooterSubsystem.shooterRpmStepIncrease());
-     * 
-     * new JoystickButton(m_driveController, XboxController.Button.kY.value)
-     * .whenPressed(() -> m_shooterSubsystem.shooterRpmStepDecrease());
-     * 
-     * new JoystickButton(m_driveController, XboxController.Button.kA.value)
-     * .whenPressed(() -> m_shooterSubsystem.shooterEnabled(true));
-     * 
-     * new JoystickButton(m_driveController, XboxController.Button.kB.value)
-     * .whenPressed(() -> m_shooterSubsystem.shooterEnabled(false));
-     * 
-     * new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
+    
+    //  dev mode
+     //new JoystickButton(m_driveController, XboxController.Button.kX.value)
+     //.whenPressed(() -> m_shooterFeederSubsystem.shooterRpmStepIncrease());
+     
+     //new JoystickButton(m_driveController, XboxController.Button.kY.value)
+    //.whenPressed(() -> m_shooterFeederSubsystem.shooterRpmStepDecrease());
+     
+     //new JoystickButton(m_driveController, XboxController.Button.kA.value)
+     //.whenPressed(() -> m_shooterFeederSubsystem.setShooterEnabled(true));
+     
+     //new JoystickButton(m_driveController, XboxController.Button.kB.value)
+     //.whenPressed(() -> m_shooterFeederSubsystem.setShooterEnabled(false));
+     
+     new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
       .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
             TransitionConstants.TRANSITION_SPEED_REVERSE_SLOW),
             m_transitionSubsystem);
-     */
+     
 
 
     // INTAKE DEPLOY LEFT TRIGGER
@@ -186,8 +185,8 @@ public class RobotContainer {
         .whenPressed(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
 
     //INTAKE DRIVE UP
-    new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
-        .whenPressed(new RetractIntake(m_intakeSubsystem));
+    // new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
+    //     .whenPressed(new RetractIntake(m_intakeSubsystem));
 
     // INTAKE OP UP
     new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value)
@@ -199,6 +198,9 @@ public class RobotContainer {
     
     new Button(RobotContainer::isRightDriverTriggerPressed)
         .whenHeld(new ShootLow(m_shooterFeederSubsystem, m_transitionSubsystem));
+
+    new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
+        .whenHeld(new ShootHailHarry(m_shooterFeederSubsystem, m_transitionSubsystem));
 
     //EJECT AND REJECT commands DRIVER 
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
@@ -317,7 +319,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
 
-    new PrintCommand("************************\n************************\n getAutonomousCommand() \n\n");
+    //new PrintCommand("************************\n************************\n getAutonomousCommand() \n\n");
 
     // Position position = m_dashboard.getPosition();
     // // m_dashboard.getPosition();
@@ -353,14 +355,15 @@ public class RobotContainer {
           .withTimeout(2)
         .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem)
           .withTimeout(2))
-        .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_1, AUTO_DRIVE_SPEED)
-          .withTimeout(3))
+        .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_TO_WALL_BALL, AUTO_DRIVE_SPEED)
+          .withTimeout(3))//change pos 4 distance to 43
+        .andThen(new WaitCommand(0.5))
         .andThen(new RetractIntake(m_intakeSubsystem)
           .withTimeout(2))
           //change distance going backwards on automove to Auto_Tarmac distance -40
-        .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_2, AUTO_DRIVE_SPEED)
+        .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_TAXI, AUTO_DRIVE_SPEED)
           .withTimeout(2))
-        .andThen(new AutoMove (m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_3, AUTO_DRIVE_SPEED)
+        .andThen(new AutoMove (m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_2_BALL_BACK, AUTO_DRIVE_SPEED)
           .withTimeout(2))
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
           .withTimeout(SHOOTER_TIMER_1))
@@ -368,11 +371,7 @@ public class RobotContainer {
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
           .withTimeout(SHOOTER_TIMER_2))
         .andThen(new RetractIntake(m_intakeSubsystem)
-          .withTimeout(2)
-        .andThen(new AutoTurn(m_driveTrainSubsystem,
-          AUTO_TURN_SPEED,
-          AUTO_TURN_ANGLE_MAX)
-          .withTimeout(0.4)));
+          .withTimeout(2));
       } else {
         return new RetractIntake(m_intakeSubsystem)
           .withTimeout(2)
@@ -422,6 +421,75 @@ public class RobotContainer {
       .andThen(new RetractIntake(m_intakeSubsystem)
         .withTimeout(2));
 
+      case THREEBALLAUTO:
+      if (position == Position.POSITION4) {
+      return new RetractIntake(m_intakeSubsystem)
+            .withTimeout(2)
+          .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem)) //test along with
+          .alongWith(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_TO_WALL_BALL, AUTO_DRIVE_SPEED)
+            .withTimeout(3))
+          // .andThen(new RetractIntake(m_intakeSubsystem)
+          //   .withTimeout(2))
+          // .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_2, AUTO_DRIVE_SPEED)
+          //   .withTimeout(2))
+          .andThen(new AutoMove (m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_3_BALL, 0.8) //test
+            .withTimeout(2))
+          .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
+            .withTimeout(SHOOTER_TIMER_1))
+          .andThen(new WaitCommand(1))
+          .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
+            .withTimeout(SHOOTER_TIMER_2))
+          // .andThen(new RetractIntake(m_intakeSubsystem)
+          //   .withTimeout(2))
+          .andThen(new AutoTurn(m_driveTrainSubsystem,
+            AUTO_TURN_SPEED,
+            AUTO_TURN_ANGLE_MAX))
+          // .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem))
+          .andThen(new AutoMove(m_driveTrainSubsystem, 96, 0.8))//test
+          .andThen(new WaitCommand(0.5))
+          .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, -40))
+          .andThen(new AutoMove(m_driveTrainSubsystem, -35, 0.8)) //test
+          .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
+          .withTimeout(2))
+          .alongWith(new RetractIntake(m_intakeSubsystem));
+        }
+
+        case FOURBALLAUTO: //MAKE SURE IN A GOOD SPOT TO TEST
+        if (position == Position.POSITION4) {
+          return new RetractIntake(m_intakeSubsystem)
+              .withTimeout(2)
+            .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem)) //test along with
+            .alongWith(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_TO_WALL_BALL, AUTO_DRIVE_SPEED)
+              .withTimeout(3))
+            // .andThen(new RetractIntake(m_intakeSubsystem)
+            //   .withTimeout(2))
+            // .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_2, AUTO_DRIVE_SPEED)
+            //   .withTimeout(2))
+            .andThen(new AutoMove (m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_3_BALL, 0.8) //test
+              .withTimeout(2))
+            .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
+              .withTimeout(SHOOTER_TIMER_1))
+            .andThen(new WaitCommand(1))
+            .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
+              .withTimeout(SHOOTER_TIMER_2))
+            // .andThen(new RetractIntake(m_intakeSubsystem)
+            //   .withTimeout(2))
+            .andThen(new AutoTurn(m_driveTrainSubsystem,
+              AUTO_TURN_SPEED,
+              AUTO_TURN_ANGLE_MAX))
+            // .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem))
+            .andThen(new AutoMove(m_driveTrainSubsystem, 96, 0.8))//test
+            .andThen(new WaitCommand(0.5))
+            .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, -40))
+            .andThen(new AutoMove(m_driveTrainSubsystem, -35, 0.8)) //test
+            .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
+            .withTimeout(2))
+            .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, 20))
+            .andThen(new AutoMove(m_driveTrainSubsystem, 150, AUTO_DRIVE_SPEED, 0)) //actual distance 177?
+            .andThen(new RetractIntake(m_intakeSubsystem));
+          }
+  
+        
       case DONOTHING:
       return null;
 
