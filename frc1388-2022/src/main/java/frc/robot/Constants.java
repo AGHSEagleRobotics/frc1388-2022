@@ -96,10 +96,11 @@ public final class Constants {
         public static final int CANID_WINCH       = 8;
         public static final int CANID_ARTICULATOR = 7;
 
-        public static final double CLIMBER_MAX_POWER_FORWARDS      = 0.3;
-        public static final double CLIMBER_MAX_POWER_REVERSE       = -0.3;
-        public static final double ARTICULATOR_MAX_POWER_FORWARDS  = 0.2;
-        public static final double ARTICULATOR_MAX_POWER_REVERSE   = -1.0;
+        public static final double CLIMBER_MAX_POWER_FORWARDS      = 0.5;
+        public static final double CLIMBER_MAX_POWER_REVERSE       = -0.5;
+        public static final double ARTICULATOR_MAX_POWER_FORWARDS  = 0.3;
+        public static final double ARTICULATOR_MAX_POWER_REVERSE   = -0.3;
+
         public static final int    ARTICULATOR_MAX_SMART_CURRENT_LIMIT = 40; // AMPS
 
         public static final double WINCH_GAINS_VELOCITY_F = 0;
@@ -173,9 +174,13 @@ public final class Constants {
 
         //Encoder constants
         public static final int INTAKE_ARM_ENCODER_COUNTS_PER_REV = 2048;
-        public static final double INTAKE_ARM_ENCODER_ROTATIONS = 1.75;
+        public static final double INTAKE_ARM_ENCODER_DOWN_ROTATIONS = 1.75; //specifically down, because down to up is 1.75 back to 0
         public static final int INTAKE_ARM_DOWN_ENCODER_COUNT = 
-        (int) (INTAKE_ARM_ENCODER_ROTATIONS * INTAKE_ARM_ENCODER_COUNTS_PER_REV);
+        (int) (INTAKE_ARM_ENCODER_DOWN_ROTATIONS * INTAKE_ARM_ENCODER_COUNTS_PER_REV);
+
+        public static final double INTAKE_ARM_ENCODER_NEAR_UP_ROTATIONS = 0.5; //this is going from 1.75 to 0, so it's closer to 0
+        public static final int INTAKE_ARM_NEAR_UP_ENCODER_COUNT = 
+        (int) (INTAKE_ARM_ENCODER_NEAR_UP_ROTATIONS * INTAKE_ARM_ENCODER_COUNTS_PER_REV);
     }
 
     public final class TransitionConstants {

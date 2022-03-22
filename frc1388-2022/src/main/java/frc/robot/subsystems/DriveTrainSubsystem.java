@@ -8,12 +8,19 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
+import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveTrainConstants;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class DriveTrainSubsystem extends SubsystemBase {
+
+  private static final Logger log = LogManager.getLogger(DriveTrainSubsystem.class);
+
 
   //define class fields
   private final DifferentialDrive m_differentialDrive;
@@ -60,9 +67,12 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     m_gyro = gyro;
     m_gyro.calibrate();
+    m_gyro.reset();
+    m_gyro.setYawAxis(IMUAxis.kZ);
     
     //add to shuffle board
     addChild("DifferentialDrive", m_differentialDrive);
+    addChild("Gyro", m_gyro);
 
   }
 
@@ -109,7 +119,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   }
 
   public double getGyroAngle() {
-    return m_gyro.getAngle();
+    return -(m_gyro.getAngle());
   }
 
   public double getRightEncoderDistance(){
@@ -141,6 +151,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    // log.info("Rotation: {}, X angle: {}, Y angle: {}", m_gyro.getAngle(), m_gyro.getXComplementaryAngle(), m_gyro.getYComplementaryAngle());
+    log.info("Y angle: {}", m_gyro.getAngle());
   }
 }
 

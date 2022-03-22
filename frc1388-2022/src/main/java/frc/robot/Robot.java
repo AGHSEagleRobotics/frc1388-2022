@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.Drive;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -43,6 +44,8 @@ public class Robot extends TimedRobot {
     log.info(
         "Git version: " + BuildInfo.GIT_VERSION + " (branch: " + BuildInfo.GIT_BRANCH + BuildInfo.GIT_STATUS + ")");
     log.info("Built: " + BuildInfo.BUILD_DATE + "  " + BuildInfo.BUILD_TIME);
+    //Remember this silences joystick warnings
+    DriverStation.silenceJoystickConnectionWarning(true);
 
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our

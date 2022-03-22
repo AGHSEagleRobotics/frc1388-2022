@@ -12,7 +12,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.IntakeConstants;
+import static frc.robot.Constants.IntakeConstants.*;
 
 public class IntakeSubsystem extends SubsystemBase {
 
@@ -52,7 +52,7 @@ public class IntakeSubsystem extends SubsystemBase {
     //ARM DOWN ENCODER COUNT is the rotations of the intake times the encoder counts per rev
     //ARM DOWN ENCODER COUNT functions as a max value. 
     boolean intakeLimitUp = m_intakeLimitUp.get();
-    if (    (   m_intakeArmEncoder.get() < IntakeConstants.INTAKE_ARM_DOWN_ENCODER_COUNT 
+    if (    (   m_intakeArmEncoder.get() < INTAKE_ARM_DOWN_ENCODER_COUNT 
              && speed > 0 
              && m_isEncoderReset) 
         ||  (   speed < 0 
@@ -86,7 +86,7 @@ public class IntakeSubsystem extends SubsystemBase {
       m_isEncoderReset = true;
     }
     // stop arm motor when arm down encoder count constant is reached
-    if ( (intakeArmMotorSpeed > 0) && (intakeArmEncoder > IntakeConstants.INTAKE_ARM_DOWN_ENCODER_COUNT) ) {
+    if ( (intakeArmMotorSpeed > 0) && (intakeArmEncoder > INTAKE_ARM_DOWN_ENCODER_COUNT) ) {
       m_intakeArmMotor.set(0);
     }
     // stop arm motor when retracting limit switch is reached
@@ -102,6 +102,14 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public boolean isLimitDownReached() {
-    return ( (m_intakeArmEncoder.get() > IntakeConstants.INTAKE_ARM_DOWN_ENCODER_COUNT) );
+    return ( m_intakeArmEncoder.get() > INTAKE_ARM_DOWN_ENCODER_COUNT);
+  }
+
+  public boolean isEncoderReset() {
+    return (m_isEncoderReset);
+  }
+
+  public boolean isCloseToUpLimit() {
+    return ((m_intakeArmEncoder.get() < INTAKE_ARM_NEAR_UP_ENCODER_COUNT) && m_isEncoderReset);
   }
 }

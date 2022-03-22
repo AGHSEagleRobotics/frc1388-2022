@@ -66,7 +66,7 @@ public class ClimberSubsystem extends SubsystemBase {
     m_winchMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);      // todo test this
     m_winchMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     m_winchMotor.setSensorPhase(false);
-    m_winchMotor.setInverted(false);
+    m_winchMotor.setInverted(true);
     m_winchMotor.setSelectedSensorPosition(0);
     m_winchMotor.configReverseSoftLimitThreshold(WINCH_SENSOR_UNITS_PER_INCH * WINCH_ARM_LENGTH);
     m_winchMotor.configPeakOutputForward(ClimberConstants.CLIMBER_MAX_POWER_FORWARDS);
@@ -116,8 +116,9 @@ public class ClimberSubsystem extends SubsystemBase {
      * @param speed speed in inches per second
      */
   public void setWinchSpeed (double speed) {
-    double velocity = speed * WINCH_SENSOR_UNITS_PER_INCH / FalconConstants.SENSOR_CYCLES_PER_SECOND;
-    m_winchMotor.set(ControlMode.Velocity, velocity);
+    m_winchMotor.set(speed);
+    // double velocity = speed * WINCH_SENSOR_UNITS_PER_INCH / FalconConstants.SENSOR_CYCLES_PER_SECOND;
+    // m_winchMotor.set(ControlMode.Velocity, velocity);
   }
 
   /** returns inches */
@@ -131,16 +132,16 @@ public class ClimberSubsystem extends SubsystemBase {
 
   // articulator
   public void setArticulatorPower (double power) {
-    m_articulatorMotor.set(power);
+    m_articulatorMotor.set(power * ClimberConstants.ARTICULATOR_MAX_POWER_FORWARDS);
   }
 
-  public void setArticulatorVertical () {
-    m_articulatorPidController.setReference(ArticulatorPositions.VERTICAL.getPosition(), CANSparkMax.ControlType.kPosition);
-  }
+  // public void setArticulatorVertical () {
+  //   m_articulatorPidController.setReference(ArticulatorPositions.VERTICAL.getPosition(), CANSparkMax.ControlType.kPosition);
+  // }
 
-  public void setArticulatorReach () {
-    m_articulatorPidController.setReference(ArticulatorPositions.REACH.getPosition(), CANSparkMax.ControlType.kPosition);
-  }
+  // public void setArticulatorReach () {
+  //   m_articulatorPidController.setReference(ArticulatorPositions.REACH.getPosition(), CANSparkMax.ControlType.kPosition);
+  // }
 
   public boolean isArticulatorAtVerticalLimit() {
     return m_reverseArticulatorLimitSwitch.get();
