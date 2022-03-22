@@ -458,8 +458,9 @@ public class RobotContainer {
             .andThen(new AutoMove(m_driveTrainSubsystem, -35, 0.8)) //test
             .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
             .withTimeout(2))
-            .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, 20)) //test
-            .alongWith(new RetractIntake(m_intakeSubsystem));
+            .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, 20))
+            .andThen(new AutoMove(m_driveTrainSubsystem, 150, AUTO_DRIVE_SPEED, 0)) //actual distance 177?
+            .andThen(new RetractIntake(m_intakeSubsystem));
           }
   
         

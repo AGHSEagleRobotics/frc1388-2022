@@ -39,7 +39,6 @@ public class AutoTurn extends CommandBase {
   public void initialize() {
     m_driveTrainSubsystem.resetGyro();
     m_driveTrainSubsystem.setDeadbandZero();
-    System.out.println("*****************TURNINIT****************************************TURNINIT*******************");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
