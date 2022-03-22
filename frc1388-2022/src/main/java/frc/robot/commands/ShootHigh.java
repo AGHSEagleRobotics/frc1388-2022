@@ -11,7 +11,6 @@ import frc.robot.subsystems.ShooterFeederSubsystem;
 import frc.robot.subsystems.TransitionSubsystem;
 import frc.robot.subsystems.ShooterFeederSubsystem.FeederFunctions;
 
-//TODO can make high and low one command
 public class ShootHigh extends CommandBase {
   private final ShooterFeederSubsystem m_shooterFeederSubsystem;
   private final TransitionSubsystem m_transitionSubsystem;

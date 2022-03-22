@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Encoder;
-
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 /**
@@ -80,7 +78,7 @@ public final class Constants {
 
         //High and Low goal RPM 
         public static final double SHOOTER_RPM_HAIL_HARRY  = 5900;
-        public static final double SHOOTER_RPM_HIGHGOAL    = 3900; //FIXME lower??
+        public static final double SHOOTER_RPM_HIGHGOAL    = 3900; //lowered, subject to change
         public static final double SHOOTER_RMP_LOWGOAL     = 2200;
         public static final double SHOOTER_RPM_EJECT       = 1200;
 
@@ -115,8 +113,8 @@ public final class Constants {
         public static final double ARTICULATOR_GAINS_POSITION_D = 0;
 
         //Possibly arbitrary
-        public static final int ARTICULATOR_POSITION_REACH    = 5;  // rotations of motor  // TODO change this
-        public static final int ARTICULATOR_POSITION_VERTICAL = 0;   // rotations of motor  // TODO change this
+        public static final int ARTICULATOR_POSITION_REACH    = 5;  // rotations of motor  // TODO change these
+        public static final int ARTICULATOR_POSITION_VERTICAL = 0;   // rotations of motor  // 
 
         //Tolerances - used like enums
         public static final int ARTICULATOR_IN_RANGE    =  0;
@@ -142,8 +140,7 @@ public final class Constants {
           }
     }
 
-    //Put back into climber constants TODO
-    //AND change deadband if needed
+    //change deadband if needed
     public final class ClimberCommandConstants {
             /** speed in inches per second */
         public static final double MAX_WINCH_SPEED = 10;
@@ -159,7 +156,6 @@ public final class Constants {
     }
 
     public final class IntakeConstants { 
-        //FIXME 
         public static final int CANID_WHEEL_MOTOR = 10; 
         public static final int CANID_ARM_MOTOR = 9;
 
@@ -206,7 +202,7 @@ public final class Constants {
         public static final double MOVE_F_VALUE = 0;
      
 
-        public static final int USB_CAMERACOLOR = 0; //FIXME Not confirmed
+        public static final int USB_CAMERACOLOR = 0; //FIXME Not used?
 
         public static final double AUTO_SHOOT_RPM = 3700; 
         public static final double SHOOTER_TIMER_1 = 1;

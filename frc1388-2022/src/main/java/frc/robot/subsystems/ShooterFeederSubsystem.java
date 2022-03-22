@@ -17,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
 import frc.robot.Constants.ShooterConstants;
 
 public class ShooterFeederSubsystem extends SubsystemBase {
