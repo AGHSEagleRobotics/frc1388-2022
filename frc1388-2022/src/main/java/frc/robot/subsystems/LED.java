@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter.Blue;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -20,6 +21,8 @@ public class LED extends SubsystemBase {
   private PWMSparkMax m_LedArms;
   private PWMSparkMax m_LedBody;
   private boolean m_isLedSet = false;
+  private String m_setTeam = "blue";
+  private String m_getTeam;
   // private double m_value = -0.99;
   // private final double m_change = 0.02;
 
@@ -53,18 +56,37 @@ public class LED extends SubsystemBase {
   //   return m_value;
   // }
 
+  public void ledShoot() {
+    if (m_getTeam == "blue") {
+      m_LedBody.set(-0.83);
+    } else {
+      m_LedBody.set(-0.85);
+    }
+  }
+
+  public void ledNormal() {
+    if (m_getTeam == "blue") {
+      m_LedBody.set(0.87);
+    } else {
+      m_LedBody.set(0.61);
+    }
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     // log.info("led value: {}", getValue());
     if (DriverStation.isFMSAttached() && !m_isLedSet) {
       m_isLedSet = true;
-      if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+      // if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+      if (m_setTeam == "blue") { 
+        m_getTeam = "blue";
         m_LedArms.set(-0.01);
         m_LedBody.set(0.87);
       } else {
+        m_getTeam = "red";
         m_LedArms.set(-0.19);
-        m_LedBody.set(-0.83);
+        m_LedBody.set(0.61);
       }
     }
 
