@@ -19,7 +19,7 @@ public class Drive extends CommandBase {
   private boolean m_lastRightStickButton = false;
   private RumbleSubsystem m_precisionRumble;
   private Supplier<Double> m_driveLeftStickYAxis;
-  private Supplier<Double> m_driveRightStickYAxis;
+  //private Supplier<Double> m_driveRightStickYAxis;
   private Supplier<Double> m_driveRightStickXAxis;
 
   private Supplier<Boolean> m_driveRightStickButton;
@@ -40,7 +40,7 @@ public class Drive extends CommandBase {
     m_driveTrainSubsystem = driveTrainSubsystem;
     m_precisionRumble = precisionrumble;
     m_driveLeftStickYAxis = driveLeftStickYAxis;
-    m_driveRightStickYAxis = driveRightStickYAxis;
+    //m_driveRightStickYAxis = driveRightStickYAxis;
     m_driveRightStickXAxis = driveRightStickXAxis;
     m_driveRightStickButton = driveRightStickButton;
 

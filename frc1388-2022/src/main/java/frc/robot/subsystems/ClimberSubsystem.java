@@ -36,9 +36,9 @@ public class ClimberSubsystem extends SubsystemBase {
     /** winch gearbox ratio */
   private static final double WINCH_GEAR_RATIO = 20.0;
     /** winch diamater in inches */ 
-  private static final double WINCH_DIAMATER = 2.0; 
+  private static final double WINCH_DIAMETER = 2.0; 
     /** sensor position / WINCH_SENSOR_UNITS_PER_INCH = arm extention in inches */
-  private static final double WINCH_SENSOR_UNITS_PER_INCH = FalconConstants.COUNTS_PER_REV * WINCH_GEAR_RATIO / (WINCH_DIAMATER * Math.PI);
+  private static final double WINCH_SENSOR_UNITS_PER_INCH = FalconConstants.COUNTS_PER_REV * WINCH_GEAR_RATIO / (WINCH_DIAMETER * Math.PI);
     /** length of winch arm in inches */
   private static final double WINCH_ARM_LENGTH = 24;
 

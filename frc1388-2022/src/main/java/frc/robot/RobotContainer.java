@@ -428,7 +428,7 @@ public class RobotContainer {
           .alongWith(new RetractIntake(m_intakeSubsystem));
         }
 
-        case FOURBALLAUTO:
+        case FOURBALLAUTO: //MAKE SURE IN A GOOD SPOT TO TEST
         if (position == Position.POSITION4) {
           return new RetractIntake(m_intakeSubsystem)
               .withTimeout(2)
