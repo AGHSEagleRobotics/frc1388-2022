@@ -262,7 +262,15 @@ public final class Constants {
     }
 
     public final class LEDConstants {
-        public static final int PWM_LED = 0;
+        public static final int PWM_LED_BODY = 0;
+        public static final int PWM_LED_ARMS = 1;
+
+        public static final double RED_SOLID = 0.61;
+        public static final double BLUE_SOLID = 0.87;
+        public static final double RED_FLASH = -0.85;
+        public static final double BLUE_FLASH = -0.83;
+        public static final double RED_LARSON = -0.19;
+        public static final double BLUE_LARSON = -0.01;
     }
 
 }

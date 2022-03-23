@@ -12,6 +12,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.LEDConstants;
 
 public class LED extends SubsystemBase {
 
@@ -22,15 +23,16 @@ public class LED extends SubsystemBase {
   private PWMSparkMax m_LedBody;
   /**tells wether the led is set */
   private boolean m_isLedSet = false;
+  private boolean m_notAtComp = true;
   private String m_setTeam = "blue";
   private String m_getTeam;
   // private double m_value = -0.99;
   // private final double m_change = 0.02;
 
   /** Creates a new LED. */
-  public LED(PWMSparkMax armLeds, PWMSparkMax bodyLeds) {
-    m_LedArms = armLeds;
+  public LED(PWMSparkMax bodyLeds, PWMSparkMax armLeds) {
     m_LedBody = bodyLeds;
+    m_LedArms = armLeds;
   } // end constructor
 
   /**sets the led value.
@@ -60,17 +62,17 @@ public class LED extends SubsystemBase {
 
   public void ledShoot() {
     if (m_getTeam == "blue") {
-      m_LedBody.set(-0.83);
+      m_LedBody.set(LEDConstants.BLUE_FLASH);
     } else {
-      m_LedBody.set(-0.85);
+      m_LedBody.set(LEDConstants.RED_FLASH);
     }
   }
 
   public void ledNormal() {
     if (m_getTeam == "blue") {
-      m_LedBody.set(0.87);
+      m_LedBody.set(LEDConstants.BLUE_SOLID);
     } else {
-      m_LedBody.set(0.61);
+      m_LedBody.set(LEDConstants.RED_SOLID);
     }
   }
 
@@ -78,17 +80,17 @@ public class LED extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // log.info("led value: {}", getValue());
-    if (DriverStation.isFMSAttached() && !m_isLedSet) {
+    if ((DriverStation.isFMSAttached() || m_notAtComp) && !m_isLedSet) {
       m_isLedSet = true;
       // if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
       if (m_setTeam == "blue") { 
         m_getTeam = "blue";
-        m_LedArms.set(-0.01); // FIXME set in led controler
-        m_LedBody.set(0.87);
+        m_LedArms.set(LEDConstants.BLUE_LARSON); // FIXME set in led controler
+        m_LedBody.set(LEDConstants.BLUE_SOLID);
       } else {
         m_getTeam = "red";
-        m_LedArms.set(-0.19); // FIXME set in led controler
-        m_LedBody.set(0.61);
+        m_LedArms.set(LEDConstants.RED_LARSON); // FIXME set in led controler
+        m_LedBody.set(LEDConstants.RED_SOLID);
       }
     }
 

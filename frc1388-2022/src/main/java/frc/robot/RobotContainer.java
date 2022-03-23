@@ -110,8 +110,8 @@ public class RobotContainer {
   private final Dashboard m_dashboard = new Dashboard();
 
   private final LED m_LED = new LED(
-    new PWMSparkMax(LEDConstants.PWM_LED),
-    new PWMSparkMax(1) // FIXME constants
+    new PWMSparkMax(LEDConstants.PWM_LED_BODY),
+    new PWMSparkMax(LEDConstants.PWM_LED_ARMS)
   );
 
   /**
