@@ -79,13 +79,13 @@ public class Dashboard {
     public enum Objective {
 
         LEAVETARMAC ("LeaveTarmac"),
+        MOVESHOOT1 ("MoveShoot1"),
         MOVEPICKUPSHOOT2 ("PickUp1Shoot2"),
-        MOVESHOOT1 ("Shoot1Turn"),
         // LOWSHOOTMOVE ("LowShoot"),
-        DONOTHING ("Nothing"),
-        TURN ("Turn"),
+        //TURN ("Turn"),
         THREEBALLAUTO ("3ball"),
-        FOURBALLAUTO ("4BALL")
+        FOURBALLAUTO ("4BALL"),
+        DONOTHING ("Nothing"),
         ;
 
         public static final Objective Default = MOVESHOOT1;
