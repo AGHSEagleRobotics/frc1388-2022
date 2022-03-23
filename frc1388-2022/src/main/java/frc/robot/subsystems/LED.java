@@ -32,7 +32,9 @@ public class LED extends SubsystemBase {
   /** Creates a new LED. */
   public LED(PWMSparkMax bodyLeds, PWMSparkMax armLeds) {
     m_LedBody = bodyLeds;
+      m_LedBody.setSafetyEnabled(false);
     m_LedArms = armLeds;
+      m_LedArms.setSafetyEnabled(false);
   } // end constructor
 
   /**sets the led value.
