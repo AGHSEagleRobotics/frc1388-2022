@@ -20,6 +20,7 @@ public class LED extends SubsystemBase {
 
   private PWMSparkMax m_LedArms;
   private PWMSparkMax m_LedBody;
+  /**tells wether the led is set */
   private boolean m_isLedSet = false;
   private String m_setTeam = "blue";
   private String m_getTeam;
@@ -27,8 +28,9 @@ public class LED extends SubsystemBase {
   // private final double m_change = 0.02;
 
   /** Creates a new LED. */
-  public LED(PWMSparkMax LEDControler) {
-    m_LedArms = LEDControler;
+  public LED(PWMSparkMax armLeds, PWMSparkMax bodyLeds) {
+    m_LedArms = armLeds;
+    m_LedBody = bodyLeds;
   } // end constructor
 
   /**sets the led value.
@@ -81,11 +83,11 @@ public class LED extends SubsystemBase {
       // if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
       if (m_setTeam == "blue") { 
         m_getTeam = "blue";
-        m_LedArms.set(-0.01);
+        m_LedArms.set(-0.01); // FIXME set in led controler
         m_LedBody.set(0.87);
       } else {
         m_getTeam = "red";
-        m_LedArms.set(-0.19);
+        m_LedArms.set(-0.19); // FIXME set in led controler
         m_LedBody.set(0.61);
       }
     }

@@ -110,7 +110,8 @@ public class RobotContainer {
   private final Dashboard m_dashboard = new Dashboard();
 
   private final LED m_LED = new LED(
-    new PWMSparkMax(LEDConstants.PWM_LED)
+    new PWMSparkMax(LEDConstants.PWM_LED),
+    new PWMSparkMax(1) // FIXME constants
   );
 
   /**
@@ -194,13 +195,13 @@ public class RobotContainer {
 
     // SHOOT LOW HIGH GOAL and EJECT
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
-        .whenHeld(new ShootHigh(m_shooterFeederSubsystem, m_transitionSubsystem));
+        .whenHeld(new ShootHigh(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
     
     new Button(RobotContainer::isRightDriverTriggerPressed)
-        .whenHeld(new ShootLow(m_shooterFeederSubsystem, m_transitionSubsystem));
+        .whenHeld(new ShootLow(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
 
     new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
-        .whenHeld(new ShootHailHarry(m_shooterFeederSubsystem, m_transitionSubsystem));
+        .whenHeld(new ShootHailHarry(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
 
     //EJECT AND REJECT commands DRIVER 
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)

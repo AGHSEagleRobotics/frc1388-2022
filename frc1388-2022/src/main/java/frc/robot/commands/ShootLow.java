@@ -17,9 +17,10 @@ public class ShootLow extends CommandBase {
   private final ShooterFeederSubsystem m_shooterSubsystem;
   private final TransitionSubsystem m_transitionSubsystem;
   private LED m_ledSybsystem;
-  public ShootLow(ShooterFeederSubsystem shooterSubsystem, TransitionSubsystem transitionSubsystem) {
+  public ShootLow(ShooterFeederSubsystem shooterSubsystem, TransitionSubsystem transitionSubsystem, LED led) {
     m_shooterSubsystem = shooterSubsystem;
     m_transitionSubsystem = transitionSubsystem;
+    m_ledSybsystem = led;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooterSubsystem);

@@ -17,9 +17,10 @@ public class ShootHigh extends CommandBase {
   private final TransitionSubsystem m_transitionSubsystem;
   private LED m_ledSybsystem;
   /** Creates a new ShooterCommands. */
-  public ShootHigh(ShooterFeederSubsystem shooterSubsystem, TransitionSubsystem transitionSubsystem) {
+  public ShootHigh(ShooterFeederSubsystem shooterSubsystem, TransitionSubsystem transitionSubsystem, LED led) {
     m_shooterFeederSubsystem = shooterSubsystem;
     m_transitionSubsystem = transitionSubsystem;
+    m_ledSybsystem = led;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooterSubsystem);
