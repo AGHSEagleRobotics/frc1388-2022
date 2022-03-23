@@ -62,7 +62,7 @@ public class AutoMove extends CommandBase {
 
     m_driveTrainSubsystem.curvatureDrive(speed, m_curve, false);
 
-    log.info("Distance: {} \tspeed: {} \tsetPoint: {}", leftEncoderDistance, speed, m_setPoint); 
+    log.debug("Distance: {} \tspeed: {} \tsetPoint: {}", leftEncoderDistance, speed, m_setPoint); 
   
   }
 
