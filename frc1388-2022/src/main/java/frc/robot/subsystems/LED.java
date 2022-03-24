@@ -24,7 +24,7 @@ public class LED extends SubsystemBase {
   /**tells wether the led is set */
   private boolean m_isLedSet = false;
   private boolean m_notAtComp = true;
-  private String m_setTeam = "blue";
+  private String m_setTeam = "red";
   private String m_getTeam;
   // private double m_value = -0.99;
   // private final double m_change = 0.02;
