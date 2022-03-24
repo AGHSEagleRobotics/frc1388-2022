@@ -416,8 +416,8 @@ public class RobotContainer {
     return new RetractIntake(m_intakeSubsystem)
           .withTimeout(2)
         .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem) //test along with
-          .alongWith(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_TO_WALL_BALL, AUTO_DRIVE_SPEED)
-          .withTimeout(3))) //test
+          .alongWith(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_TO_WALL_BALL, AUTO_DRIVE_SPEED))
+          .withTimeout(3)) //test
           // .andThen(new RetractIntake(m_intakeSubsystem)
           //   .withTimeout(2))
           // .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_2, AUTO_DRIVE_SPEED)
@@ -448,8 +448,8 @@ public class RobotContainer {
       if (position == Position.POSITION4) {
         return new RetractIntake(m_intakeSubsystem)
           .withTimeout(2)
-        .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem)) //test along with
-          .alongWith(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_TO_WALL_BALL, AUTO_DRIVE_SPEED)
+        .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem) //test along with
+          .alongWith(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_TO_WALL_BALL, AUTO_DRIVE_SPEED))
           .withTimeout(3))
          // .andThen(new RetractIntake(m_intakeSubsystem)
          //   .withTimeout(2))
