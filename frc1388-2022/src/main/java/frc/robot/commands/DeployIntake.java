@@ -50,7 +50,6 @@ public class DeployIntake extends CommandBase {
     m_intakeSubsystem.setIntakeArmMotor(0);
    // m_intakeSubsystem.setIntakeWheelSpin(0);
     m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_SLOW);
-    m_intakeSubsystem.setIntakeArmMotor(0);
   }
 
   // Returns true when the command should end.

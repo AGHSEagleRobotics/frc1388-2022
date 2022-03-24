@@ -41,6 +41,7 @@ import frc.robot.commands.AutoMove;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.AutoTurn;
 import frc.robot.commands.ClimberCommand;
+import frc.robot.commands.ClimberRetract;
 import frc.robot.subsystems.ClimberSubsystem;
 // import frc.robot.commands.ClimberCommand;           // climber command
 // import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
@@ -52,6 +53,7 @@ import frc.robot.subsystems.ShooterFeederSubsystem;
 import frc.robot.subsystems.TransitionSubsystem;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -92,7 +94,9 @@ public class RobotContainer {
 
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
     new WPI_TalonFX(ClimberConstants.CANID_WINCH),
-      new CANSparkMax(ClimberConstants.CANID_ARTICULATOR, MotorType.kBrushless));
+    new CANSparkMax(ClimberConstants.CANID_ARTICULATOR, MotorType.kBrushless),
+    new DigitalInput(3)
+      );
   
   private final ShooterFeederSubsystem m_shooterFeederSubsystem = new ShooterFeederSubsystem(
     new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR),
@@ -500,6 +504,11 @@ public class RobotContainer {
     }
       return null;
     }
+  
+  public Command getRetractCommand() {
+    ClimberRetract m_climberRetract = new ClimberRetract(m_climberSubsystem);
+    return m_climberRetract;
+  }
   
 
   public void simulationInit() {

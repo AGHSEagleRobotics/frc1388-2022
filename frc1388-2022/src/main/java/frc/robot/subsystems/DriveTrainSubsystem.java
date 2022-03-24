@@ -151,7 +151,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // log.info("Rotation: {}, X angle: {}, Y angle: {}", m_gyro.getAngle(), m_gyro.getXComplementaryAngle(), m_gyro.getYComplementaryAngle());
-    log.info("Y angle: {}", m_gyro.getAngle());
+    // log.info("Y angle: {}", m_gyro.getAngle());
   }
 }
 

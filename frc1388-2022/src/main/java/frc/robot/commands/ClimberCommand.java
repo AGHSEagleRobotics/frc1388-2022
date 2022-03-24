@@ -40,19 +40,24 @@ public class ClimberCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
+    /*
     double deadband = MathUtil.applyDeadband(m_extendAxis.get(), ClimberCommandConstants.DEADBAND);
     if ( deadband == 0) {
       m_climberSubsystem.setWinchPower(0);
     } else {
-      double speed = Math.copySign(Math.pow(deadband, 2) * ClimberCommandConstants.MAX_WINCH_SPEED, deadband);
-      m_climberSubsystem.setWinchSpeed(speed);
+      double speed = Math.copySign(Math.pow(deadband, 2), deadband);
+      m_climberSubsystem.setWinchPower(speed);
     }
 
     deadband = MathUtil.applyDeadband(m_articulateAxis.get(), ClimberCommandConstants.DEADBAND);
     SmartDashboard.putNumber("articulator input", deadband);
     m_climberSubsystem.setArticulatorPower(Math.copySign(Math.pow(deadband, 2), deadband));
-
+    */
+    // extend is negated!!
+    
+    m_climberSubsystem.setWinchPower(MathUtil.applyDeadband(-m_extendAxis.get(), 0.1));
+    m_climberSubsystem.setArticulatorPower(MathUtil.applyDeadband(m_articulateAxis.get(), 0.1));
+    
     // FIXME
     // if (m_climberSubsystem.isArticulatorAtVerticalLimit()) {
     //   m_climberSubsystem.setArticulatorPower(0);
