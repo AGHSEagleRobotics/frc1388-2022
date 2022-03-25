@@ -18,16 +18,11 @@ public class LED extends SubsystemBase {
 
   private static final Logger log = LogManager.getLogger(LED.class);
 
-
   private PWMSparkMax m_LedArms;
   private PWMSparkMax m_LedBody;
-  /**tells wether the led is set */
-  private boolean m_isLedSet = false;
   private boolean m_notAtComp = true;
-  private String m_setTeam = "red";
-  private String m_getTeam;
-  // private double m_value = -0.99;
-  // private final double m_change = 0.02;
+  private boolean m_shooting = false;
+  private boolean m_isBlue; // set in perodic
 
   /** Creates a new LED. */
   public LED(PWMSparkMax bodyLeds, PWMSparkMax armLeds) {
@@ -37,64 +32,54 @@ public class LED extends SubsystemBase {
       m_LedArms.setSafetyEnabled(false);
   } // end constructor
 
-  /**sets the led value.
-  //  * @param num clamps from -0.99 to 0.99  */
-  // public void setLED(double num) {
-  //   MathUtil.clamp(num, -0.99, 0.99);
-  //   m_LedArms.set(num);
-  // }
-  
-  /**change led up */
-  // public void increaseLED() {
-  //   m_value += m_change;
-  //   MathUtil.clamp(m_value, -0.99, 0.99);
-  //   m_LedArms.set(m_value);
-  // }
-
-  /**change led down */
-  // public void decreaseLED() {
-  //   m_value -= m_change;
-  //   MathUtil.clamp(m_value, -0.99, 0.99);
-  //   m_LedArms.set(m_value);
-  // }
-
-  // public double getValue() {
-  //   return m_value;
-  // }
 
   public void ledShoot() {
-    if (m_getTeam == "blue") {
-      m_LedBody.set(LEDConstants.BLUE_FLASH);
-    } else {
-      m_LedBody.set(LEDConstants.RED_FLASH);
-    }
+    m_shooting = true;
   }
 
   public void ledNormal() {
-    if (m_getTeam == "blue") {
-      m_LedBody.set(LEDConstants.BLUE_SOLID);
-    } else {
-      m_LedBody.set(LEDConstants.RED_SOLID);
-    }
+    m_shooting = false;
   }
+
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    // log.info("led value: {}", getValue());
-    if ((DriverStation.isFMSAttached() || m_notAtComp) && !m_isLedSet) {
-      m_isLedSet = true;
-      // if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
-      if (m_setTeam == "blue") { 
-        m_getTeam = "blue";
-        m_LedArms.set(LEDConstants.BLUE_LARSON); // FIXME set in led controler
-        m_LedBody.set(LEDConstants.BLUE_SOLID);
-      } else {
-        m_getTeam = "red";
-        m_LedArms.set(LEDConstants.RED_LARSON); // FIXME set in led controler
-        m_LedBody.set(LEDConstants.RED_SOLID);
-      }
-    }
+    
+    // m_shooting = true;
+    m_isBlue = (DriverStation.getAlliance() == DriverStation.Alliance.Blue);
 
+    if ((DriverStation.isFMSAttached() || m_notAtComp)) {
+      if (m_isBlue) {
+
+        m_LedArms.set(LEDConstants.BLUE_LARSON);
+        log.info("blue arms");
+
+        if (m_shooting) {
+          m_LedBody.set(LEDConstants.BLUE_FLASH);
+        log.info("blue shoot");
+        } else {
+          m_LedBody.set(LEDConstants.BLUE_SOLID);
+        log.info("blue solid");
+        }
+
+      } else {
+
+        m_LedArms.set(LEDConstants.RED_LARSON);
+        log.info("red arms");
+
+        if (m_shooting) {
+          m_LedBody.set(LEDConstants.RED_FLASH);
+        log.info("red shoot");
+        } else { 
+          m_LedBody.set(LEDConstants.RED_SOLID);
+        log.info("red solid");
+        }
+
+      }
+    } // end if
+
+    log.info("\n\n\n" + m_shooting + "\n\n\n");
+  
   }
 }
