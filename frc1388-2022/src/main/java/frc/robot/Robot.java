@@ -40,9 +40,8 @@ public class Robot extends TimedRobot {
     log.info("robotInit");
 
     // log and print software version
-    log.info(
-        "Git version: " + BuildInfo.GIT_VERSION + " (branch: " + BuildInfo.GIT_BRANCH + BuildInfo.GIT_STATUS + ")");
-    log.info("Built: " + BuildInfo.BUILD_DATE + "  " + BuildInfo.BUILD_TIME);
+    log.info("Git version: " + BuildInfo.GIT_VERSION + " (branch: " + BuildInfo.GIT_BRANCH + BuildInfo.GIT_STATUS + ")");
+    log.info("      Built: " + BuildInfo.BUILD_DATE + "  " + BuildInfo.BUILD_TIME);
     //Remember this silences joystick warnings
     DriverStation.silenceJoystickConnectionWarning(true);
 
@@ -53,11 +52,10 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData(CommandScheduler.getInstance());
     m_robotContainer.setNeutralMode(NeutralMode.Coast);
-    System.out.println("###Robot.Init() -> NeutralMode.Coast###");
 
-    CommandScheduler.getInstance().onCommandInitialize(command -> log.info(command.getName() + " Initialized" ));
-    CommandScheduler.getInstance().onCommandInterrupt(command -> log.info(command.getName() + " Interrupted" ));
-    CommandScheduler.getInstance().onCommandFinish(command -> log.info(command.getName() + " Finished" ));
+    CommandScheduler.getInstance().onCommandInitialize(command -> log.info("++ " + command.getName() + " Initialized" ));
+    CommandScheduler.getInstance().onCommandInterrupt(command -> log.info("-- " + command.getName() + " Interrupted" ));
+    CommandScheduler.getInstance().onCommandFinish(command -> log.info("-- " + command.getName() + " Finished" ));
   }
 
   /**
@@ -85,7 +83,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     m_robotContainer.setNeutralMode(NeutralMode.Brake);
-    System.out.println("###disabledInit() -> NeutralMode.Brake ###");
+    log.info("########  Robot disabled");
   }
 
   @Override
@@ -94,19 +92,30 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    log.info("########  Autonomous enabled");
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.setNeutralMode(NeutralMode.Brake);
-    System.out.println("###autonomousInit() -> NeutralMode.Brake ###");
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
 
-    log.info("Match type:\t" + DriverStation.getMatchType());
-    log.info("Event name:\t" + DriverStation.getEventName());
-    log.info("Alliance:\t" + DriverStation.getAlliance());
-    log.info("Match number:\t" + DriverStation.getMatchNumber());
+    
+    // Get match info from FMS
+    if (DriverStation.isFMSAttached()) {
+      String fmsInfo = "FMS info: ";
+      fmsInfo += " " + DriverStation.getEventName();
+      fmsInfo += " " + DriverStation.getMatchType();
+      fmsInfo += " match " + DriverStation.getMatchNumber();
+      fmsInfo += " replay " + DriverStation.getReplayNumber();
+      fmsInfo += ";  " + DriverStation.getAlliance() + " alliance";
+      fmsInfo += ",  Driver Station " + DriverStation.getLocation();
+      log.info(fmsInfo);
+    } else {
+      log.info("FMS not connected");
+    }
   }
 
   /** This function is called periodically during autonomous. */
@@ -115,6 +124,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    log.info("########  Teleop enabled");
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -123,26 +134,29 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     m_robotContainer.setNeutralMode(NeutralMode.Brake);
-    System.out.println("### teleopInit() -> NeutralMode.Brake ###");
   }
-
+  
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {}
-
+  
   @Override
   public void testInit() {
+    log.info("########  Test enabled");
+
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
     // m_robotContainer.setNeutralMode(NeutralMode.Brake);
   }
-
+  
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
-
+  
   @Override
   public void simulationInit() {
+    log.info("########  Simulation enabled");
+    
     m_robotContainer.simulationInit(); 
     // m_robotContainer.setNeutralMode(NeutralMode.Brake);
   }

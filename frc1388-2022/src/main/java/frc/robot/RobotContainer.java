@@ -50,6 +50,9 @@ import frc.robot.subsystems.TransitionSubsystem;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -67,6 +70,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+  private static final Logger log = LogManager.getLogger(Robot.class);
+
   // components
   public static XboxController m_driveController = new XboxController(USBConstants.DRIVE_CONTROLLER);
   public static XboxController m_opController = new XboxController(USBConstants.OP_CONTROLLER);
@@ -310,8 +316,9 @@ public class RobotContainer {
 
     Objective objective = m_dashboard.getObjective();
     Position position = m_dashboard.getPosition();
-    System.out.println(objective);
+    log.info("Objective: " + objective + "   Position: " + position);
     //objective = Objective.MOVESHOOT1;
+    
     switch (objective) {
       case LEAVETARMAC:
       //position 4 starts with robot toucing edge of tarmac
