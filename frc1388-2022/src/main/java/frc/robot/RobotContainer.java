@@ -41,7 +41,7 @@ import frc.robot.commands.AutoMove;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.AutoTurn;
 import frc.robot.commands.ClimberCommand;
-import frc.robot.commands.ClimberRetract;
+// import frc.robot.commands.ClimberRetract;
 import frc.robot.subsystems.ClimberSubsystem;
 // import frc.robot.commands.ClimberCommand;           // climber command
 // import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
@@ -505,10 +505,10 @@ public class RobotContainer {
       return null;
     }
   
-  public Command getRetractCommand() {
-    ClimberRetract m_climberRetract = new ClimberRetract(m_climberSubsystem);
-    return m_climberRetract;
-  }
+  // public Command getRetractCommand() {
+  //   ClimberRetract m_climberRetract = new ClimberRetract(m_climberSubsystem);
+  //   return m_climberRetract;
+  // }
   
 
   public void simulationInit() {

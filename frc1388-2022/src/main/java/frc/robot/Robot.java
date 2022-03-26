@@ -106,8 +106,8 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.schedule();
     }
 
-    m_retractClimberWinchCommand = m_robotContainer.getRetractCommand();
-    m_retractClimberWinchCommand.schedule();
+    // m_retractClimberWinchCommand = m_robotContainer.getRetractCommand();
+    // m_retractClimberWinchCommand.schedule();
 
     log.info("Match type:\t" + DriverStation.getMatchType());
     log.info("Event name:\t" + DriverStation.getEventName());
