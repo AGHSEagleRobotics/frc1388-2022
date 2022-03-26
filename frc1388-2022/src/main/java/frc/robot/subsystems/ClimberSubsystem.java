@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems;
 
+import java.security.DigestInputStream;
+
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
@@ -31,7 +35,7 @@ public class ClimberSubsystem extends SubsystemBase {
   private static final Logger log = LogManager.getLogger(ClimberSubsystem.class);
   
   private final WPI_TalonFX m_winchMotor;
-    private DigitalInput m_winchLimit;
+    // private DigitalInput m_winchLimit;
     // private boolean m_isWinchReset = false;
   private final CANSparkMax m_articulatorMotor;
     private final SparkMaxLimitSwitch m_artuculatorForwardsLimit;
@@ -59,18 +63,23 @@ public class ClimberSubsystem extends SubsystemBase {
 
   // private final SparkMaxLimitSwitch m_forwardLimitSwitch;
   // private final SparkMaxLimitSwitch m_reverseLimitSwitch;
+
+  private final DigitalInput m_winchForward;
+  private final DigitalInput m_winchReverse;
   
   /** Creates a new ClimberSubsystem. */
-  public ClimberSubsystem(WPI_TalonFX winchMotor, CANSparkMax articulatorMotor, DigitalInput winchLimit) { // constructer
+  public ClimberSubsystem(WPI_TalonFX winchMotor, CANSparkMax articulatorMotor, DigitalInput winchForward, DigitalInput winchReverse) { // constructer
 
     m_winchMotor = winchMotor;
 
-      m_winchLimit = winchLimit;
+      // m_winchLimit = winchLimit;
       m_winchMotor.configFactoryDefault();
       m_winchMotor.setNeutralMode(NeutralMode.Brake);
       m_winchMotor.setInverted(false);
-      m_winchMotor.configForwardLimitSwitchSource(LimitSwitchSource.RemoteTalon, LimitSwitchNormal.NormallyClosed);
-      m_winchMotor.configReverseLimitSwitchSource(LimitSwitchSource.RemoteTalon, LimitSwitchNormal.NormallyClosed);
+      // m_winchMotor.configForwardLimitSwitchSource(LimitSwitchSource.RemoteTalon, LimitSwitchNormal.NormallyClosed);
+      // m_winchMotor.configReverseLimitSwitchSource(LimitSwitchSource.RemoteTalon, LimitSwitchNormal.NormallyClosed);
+      m_winchForward = winchForward;
+      m_winchReverse = winchForward;
 
     m_articulatorMotor = articulatorMotor;
 
@@ -133,7 +142,9 @@ public class ClimberSubsystem extends SubsystemBase {
    * @param power power from [-1, 1]
   */
   public void setWinchPower (double power) {
-    m_winchMotor.set(power * ClimberConstants.CLIMBER_MAX_POWER_FORWARDS);
+    if ((power == 0) || (m_winchForward.get() && power > 0) || (m_winchReverse.get() && power < 0)) {
+      m_winchMotor.set(power * ClimberConstants.CLIMBER_MAX_POWER_FORWARDS);
+    }
   }
 
   // articulator

@@ -95,8 +95,9 @@ public class RobotContainer {
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
     new WPI_TalonFX(ClimberConstants.CANID_WINCH),
     new CANSparkMax(ClimberConstants.CANID_ARTICULATOR, MotorType.kBrushless),
-    new DigitalInput(3)
-      );
+    new DigitalInput(4),
+    new DigitalInput(5)
+  );
   
   private final ShooterFeederSubsystem m_shooterFeederSubsystem = new ShooterFeederSubsystem(
     new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR),
