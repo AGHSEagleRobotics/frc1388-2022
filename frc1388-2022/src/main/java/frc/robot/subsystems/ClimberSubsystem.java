@@ -4,54 +4,42 @@
 
 package frc.robot.subsystems;
 
-import java.security.DigestInputStream;
-
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxLimitSwitch;
-import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ClimberCommandConstants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.FalconConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
   
-  private static final Logger log = LogManager.getLogger(ClimberSubsystem.class);
+  // private static final Logger log = LogManager.getLogger(ClimberSubsystem.class);
   
   private final WPI_TalonFX m_winchMotor;
     // private DigitalInput m_winchLimit;
     // private boolean m_isWinchReset = false;
   private final CANSparkMax m_articulatorMotor;
-    private final SparkMaxLimitSwitch m_artuculatorForwardsLimit;
+    private final SparkMaxLimitSwitch m_articulatorForwardsLimit;
     private final SparkMaxLimitSwitch m_articulatorReverseLimit;
   
   // private final RelativeEncoder m_articulatorEncoder;
 
   // private static final double COUNTS_PER_REV = 2048.0;
-    /** winch gearbox ratio */
-  private static final double WINCH_GEAR_RATIO = 20.0;
-    /** winch diamater in inches */ 
-  private static final double WINCH_DIAMETER = 2.0; 
-    /** sensor position / WINCH_SENSOR_UNITS_PER_INCH = arm extention in inches */
-  private static final double WINCH_SENSOR_UNITS_PER_INCH = FalconConstants.COUNTS_PER_REV * WINCH_GEAR_RATIO / (WINCH_DIAMETER * Math.PI);
-    /** length of winch arm in inches */
-  private static final double WINCH_ARM_LENGTH = 24;
+  //   /** winch gearbox ratio */
+  // private static final double WINCH_GEAR_RATIO = 20.0;
+  //   /** winch diamater in inches */ 
+  // private static final double WINCH_DIAMETER = 2.0; 
+  //   /** sensor position / WINCH_SENSOR_UNITS_PER_INCH = arm extention in inches */
+  // private static final double WINCH_SENSOR_UNITS_PER_INCH = FalconConstants.COUNTS_PER_REV * WINCH_GEAR_RATIO / (WINCH_DIAMETER * Math.PI);
+  //   /** length of winch arm in inches */
+  // private static final double WINCH_ARM_LENGTH = 24;
 
   // private static final int PID_IDX = 0;
 
@@ -64,11 +52,13 @@ public class ClimberSubsystem extends SubsystemBase {
   // private final SparkMaxLimitSwitch m_forwardLimitSwitch;
   // private final SparkMaxLimitSwitch m_reverseLimitSwitch;
 
-  private final DigitalInput m_winchForward;
-  private final DigitalInput m_winchReverse;
+  private final DigitalInput m_winchLimitSwitch;
+
+  private enum Limit {forward, reverse, none, unInit};
+  private Limit m_winchLimit = Limit.unInit;
   
   /** Creates a new ClimberSubsystem. */
-  public ClimberSubsystem(WPI_TalonFX winchMotor, CANSparkMax articulatorMotor, DigitalInput winchForward, DigitalInput winchReverse) { // constructer
+  public ClimberSubsystem(WPI_TalonFX winchMotor, CANSparkMax articulatorMotor, DigitalInput winchLimit) { // constructer
 
     m_winchMotor = winchMotor;
 
@@ -78,17 +68,20 @@ public class ClimberSubsystem extends SubsystemBase {
       m_winchMotor.setInverted(false);
       // m_winchMotor.configForwardLimitSwitchSource(LimitSwitchSource.RemoteTalon, LimitSwitchNormal.NormallyClosed);
       // m_winchMotor.configReverseLimitSwitchSource(LimitSwitchSource.RemoteTalon, LimitSwitchNormal.NormallyClosed);
-      m_winchForward = winchForward;
-      m_winchReverse = winchForward;
+      m_winchLimitSwitch = winchLimit;
+      // m_lastEncoderPossition = m_winchMotor.getSelectedSensorPosition();
+
 
     m_articulatorMotor = articulatorMotor;
 
       m_articulatorMotor.restoreFactoryDefaults();
       m_articulatorMotor.setInverted(false);
       m_articulatorMotor.setIdleMode(IdleMode.kBrake);
-      m_articulatorMotor.setSecondaryCurrentLimit(ClimberConstants.ARTICULATOR_MAX_SMART_CURRENT_LIMIT);
-      m_artuculatorForwardsLimit = m_articulatorMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+      // m_articulatorMotor.setSecondaryCurrentLimit(ClimberConstants.ARTICULATOR_MAX_SMART_CURRENT_LIMIT);
+      m_articulatorForwardsLimit = m_articulatorMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+        m_articulatorForwardsLimit.enableLimitSwitch(true);
       m_articulatorReverseLimit = m_articulatorMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+        m_articulatorReverseLimit.enableLimitSwitch(true);
 
 
 
@@ -141,16 +134,29 @@ public class ClimberSubsystem extends SubsystemBase {
   /** set power
    * @param power power from [-1, 1]
   */
-  public void setWinchPower (double power) {
-    if ((power == 0) || (m_winchForward.get() && power > 0) || (m_winchReverse.get() && power < 0)) {
+  public void setWinchPower(double power) {
+    // if ((power == 0) || (m_winchForward.get() && power > 0) || (m_winchReverse.get() && power < 0)) {
+    if (
+        (power == 0) 
+        || ((power > 0) && (m_winchLimit != Limit.forward)) 
+        || ((power < 0) && (m_winchLimit != Limit.reverse))
+      ) {
       m_winchMotor.set(power * ClimberConstants.CLIMBER_MAX_POWER_FORWARDS);
+    } else {
+      m_winchMotor.set(0);
     }
   }
 
   // articulator
-  public void setArticulatorPower (double power) {
+  public void setArticulatorPower(double power) {
     m_articulatorMotor.set(power * ClimberConstants.ARTICULATOR_MAX_POWER_FORWARDS); // keep
   }
+
+  // public boolean isWinchForward() {
+  //   boolean direction = (m_lastEncoderPossition < m_winchMotor.getSelectedSensorPosition());
+  //   m_lastEncoderPossition = m_winchMotor.getSelectedSensorPosition();
+  //   return direction;
+  // }
 
   // public void resetWinchLimit() {
   //   if (!m_isWinchReset && !m_winchLimit.get()) {
@@ -162,8 +168,21 @@ public class ClimberSubsystem extends SubsystemBase {
   //   }
   // }
 
+  public boolean atWinchLimit() {
+    return m_winchLimitSwitch.get();
+  }
+
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    
+    if (atWinchLimit()) {
+      if ((m_winchMotor.getSelectedSensorVelocity() > 0) && (m_winchLimit != Limit.reverse) && (m_winchLimit != Limit.unInit)) {
+        m_winchLimit = Limit.forward;
+      } else if ((m_winchMotor.getSelectedSensorVelocity() < 0) && (m_winchLimit != Limit.forward) && (m_winchLimit != Limit.unInit)) {
+        m_winchLimit = Limit.reverse;
+      }
+    } else {
+      m_winchLimit = Limit.none;
+    }
   }
 }

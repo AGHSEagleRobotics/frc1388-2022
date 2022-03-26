@@ -55,8 +55,8 @@ public class ClimberCommand extends CommandBase {
     */
     // extend is negated!!
     
-    m_climberSubsystem.setWinchPower(MathUtil.applyDeadband(-m_extendAxis.get(), 0.1));
-    m_climberSubsystem.setArticulatorPower(MathUtil.applyDeadband(m_articulateAxis.get(), 0.1));
+    m_climberSubsystem.setWinchPower(MathUtil.applyDeadband(-m_extendAxis.get(), ClimberCommandConstants.DEADBAND));
+    m_climberSubsystem.setArticulatorPower(MathUtil.applyDeadband(m_articulateAxis.get(), ClimberCommandConstants.DEADBAND));
     
     // FIXME
     // if (m_climberSubsystem.isArticulatorAtVerticalLimit()) {
