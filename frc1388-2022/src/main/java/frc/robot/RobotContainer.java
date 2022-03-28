@@ -367,7 +367,7 @@ public class RobotContainer {
         .andThen(new AutoMove(m_driveTrainSubsystem, 64, AUTO_DRIVE_SPEED)
           .withTimeout(3))
           //change distance going backwards on automove to Auto_Tarmac distance -40
-        .andThen(new AutoMove(m_driveTrainSubsystem, -27, AUTO_DRIVE_SPEED)
+        .andThen(new AutoMove(m_driveTrainSubsystem, -37, AUTO_DRIVE_SPEED)
           .withTimeout(2))
           //If intake works properly, 1.8 or less works for both
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
@@ -431,6 +431,7 @@ public class RobotContainer {
           //   .withTimeout(2))
         .andThen(new AutoMove (m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_3_BALL, 0.8) //test
           .withTimeout(2))
+        .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, 8)) // TODO 
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
           .withTimeout(SHOOTER_TIMER_1))
         .andThen(new WaitCommand(1))
@@ -442,10 +443,10 @@ public class RobotContainer {
           AUTO_TURN_SPEED,
           AUTO_TURN_ANGLE_MAX))
          // .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem))
-        .andThen(new AutoMove(m_driveTrainSubsystem, 96, 0.8))//test
+        .andThen(new AutoMove(m_driveTrainSubsystem, 96, 0.8))//
         .andThen(new WaitCommand(0.5))
         .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, -40))
-        .andThen(new AutoMove(m_driveTrainSubsystem, -35, 0.8)) //test
+        .andThen(new AutoMove(m_driveTrainSubsystem, -37, 0.8)) //
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
           .withTimeout(2)
           .alongWith(new RetractIntake(m_intakeSubsystem)));
@@ -454,37 +455,42 @@ public class RobotContainer {
       case FOURBALLAUTO: //MAKE SURE IN A GOOD SPOT TO TEST
       if (position == Position.POSITION4) {
         return new RetractIntake(m_intakeSubsystem)
-          .withTimeout(2)
-        .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem) //test along with
-          .alongWith(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_TO_WALL_BALL, AUTO_DRIVE_SPEED))
-          .withTimeout(3))
-         // .andThen(new RetractIntake(m_intakeSubsystem)
-         //   .withTimeout(2))
-         // .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_2, AUTO_DRIVE_SPEED)
-         //   .withTimeout(2))
-        .andThen(new AutoMove (m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_3_BALL, 0.8) //test
-          .withTimeout(2))
-        .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
-          .withTimeout(SHOOTER_TIMER_1))
-        .andThen(new WaitCommand(1))
-        .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
-          .withTimeout(SHOOTER_TIMER_2))
-         // .andThen(new RetractIntake(m_intakeSubsystem)
-         //   .withTimeout(2))
-        .andThen(new AutoTurn(m_driveTrainSubsystem,
-          AUTO_TURN_SPEED,
-          AUTO_TURN_ANGLE_MAX))
-        // .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem))
-        .andThen(new AutoMove(m_driveTrainSubsystem, 96, 0.8))//test
-        .andThen(new WaitCommand(0.5))
-        .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, -40))
-        .andThen(new AutoMove(m_driveTrainSubsystem, -35, 0.8)) //test
-        .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
-          .withTimeout(2))
-        .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, 20))
-        .andThen(new AutoMove(m_driveTrainSubsystem, 150, AUTO_DRIVE_SPEED, 0)) //actual distance 177?
-        .andThen(new RetractIntake(m_intakeSubsystem));
-       }
+            .withTimeout(2)
+            // return new DeployIntake(m_intakeSubsystem, m_transitionSubsystem) //test
+            // along with
+            .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem) // test along with
+                .alongWith(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_TO_WALL_BALL, AUTO_DRIVE_SPEED))
+                .withTimeout(3))
+            // .andThen(new RetractIntake(m_intakeSubsystem)
+            // .withTimeout(2))
+            // .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_2,
+            // AUTO_DRIVE_SPEED)
+            // .withTimeout(2))
+            .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_3_BALL, 0.8) // test
+                .withTimeout(2))
+            .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, 8)) // TODO
+            .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
+                .withTimeout(SHOOTER_TIMER_1))
+            .andThen(new WaitCommand(1))
+            .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
+                .withTimeout(SHOOTER_TIMER_2))
+            // .andThen(new RetractIntake(m_intakeSubsystem)
+            // .withTimeout(2))
+            .andThen(new AutoTurn(m_driveTrainSubsystem,
+                AUTO_TURN_SPEED,
+                AUTO_TURN_ANGLE_MAX))
+            // .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem))
+            .andThen(new AutoMove(m_driveTrainSubsystem, 96, 0.8))// 
+            .andThen(new WaitCommand(0.5))
+            .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, -40))
+            .andThen(new AutoMove(m_driveTrainSubsystem, -37, 0.8)) //
+            .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
+                .withTimeout(2))
+            .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, 18)) // change 16?
+            .andThen(new AutoMove(m_driveTrainSubsystem, 177, 0.75, 0)) // actual distance 177?
+            .andThen(new WaitCommand(.75))
+            .andThen(new RetractIntake(m_intakeSubsystem));
+      }
         
       case DONOTHING:
       return null;

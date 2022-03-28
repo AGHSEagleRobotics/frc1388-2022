@@ -215,7 +215,7 @@ public final class Constants {
         public static final double AUTO_LEAVE_TARMAC_DISTANCE = 70; //inches
 
         public static final double AUTO_TURN_SPEED = 0.25;
-        public static final double AUTO_TURN_ANGLE_MAX = 84; //degrees
+        public static final double AUTO_TURN_ANGLE_MAX = 79; //degrees
 
         public static final double AUTO_POSITION_4_DISTANCE_TO_WALL_BALL = 42;
         public static final double AUTO_POSITION_4_DISTANCE_TAXI = 7;
