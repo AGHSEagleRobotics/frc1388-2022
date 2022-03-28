@@ -34,7 +34,6 @@ public class DeployIntake extends CommandBase {
   @Override
   public void initialize() {}
 
-  //TODO change so that wheel can always run
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {

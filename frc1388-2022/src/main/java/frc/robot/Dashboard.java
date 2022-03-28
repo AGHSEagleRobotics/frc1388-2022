@@ -29,7 +29,7 @@ public class Dashboard {
     //Change these to constants?
     public ComplexWidget m_complexWidgetObjective;
     public ComplexWidget m_complexWidgetPosition;
-    private final int autonChooserWidth = 12;
+    private final int autonChooserWidth = 18;
     private final int autonChooserHeight = 2;
     private final int autonChooserColumnIndex = 12;
     private final int autonChooserRowIndex = 0;
@@ -79,13 +79,13 @@ public class Dashboard {
     public enum Objective {
 
         LEAVETARMAC ("LeaveTarmac"),
+        MOVESHOOT1 ("MoveShoot1"),
         MOVEPICKUPSHOOT2 ("PickUp1Shoot2"),
-        MOVESHOOT1 ("Shoot1Turn"),
         // LOWSHOOTMOVE ("LowShoot"),
-        DONOTHING ("Nothing"),
-        TURN ("Turn"),
+        //TURN ("Turn"),
         THREEBALLAUTO ("3ball"),
-        FOURBALLAUTO ("4BALL")
+        FOURBALLAUTO ("4BALL"),
+        DONOTHING ("Nothing"),
         ;
 
         public static final Objective Default = MOVESHOOT1;
