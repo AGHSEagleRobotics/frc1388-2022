@@ -99,8 +99,8 @@ public final class Constants {
 
         public static final double CLIMBER_MAX_POWER_FORWARDS      = 0.5;
         public static final double CLIMBER_MAX_POWER_REVERSE       = -0.5;
-        public static final double ARTICULATOR_MAX_POWER_FORWARDS  = 0.3;
-        public static final double ARTICULATOR_MAX_POWER_REVERSE   = -0.3;
+        public static final double ARTICULATOR_MAX_POWER_FORWARDS  = 0.15;
+        public static final double ARTICULATOR_MAX_POWER_REVERSE   = -0.15;
 
         public static final int    ARTICULATOR_MAX_SMART_CURRENT_LIMIT = 40; // AMPS
 
