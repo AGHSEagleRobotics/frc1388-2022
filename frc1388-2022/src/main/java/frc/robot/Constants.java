@@ -95,10 +95,12 @@ public final class Constants {
         public static final int CANID_WINCH       = 8;
         public static final int CANID_ARTICULATOR = 7;
 
+        public static final int DIO_WINCH_LIMIT = 4;
+
         public static final double CLIMBER_MAX_POWER_FORWARDS      = 0.5;
         public static final double CLIMBER_MAX_POWER_REVERSE       = -0.5;
-        public static final double ARTICULATOR_MAX_POWER_FORWARDS  = 0.3;
-        public static final double ARTICULATOR_MAX_POWER_REVERSE   = -0.3;
+        public static final double ARTICULATOR_MAX_POWER_FORWARDS  = 0.15;
+        public static final double ARTICULATOR_MAX_POWER_REVERSE   = -0.15;
 
         public static final int    ARTICULATOR_MAX_SMART_CURRENT_LIMIT = 40; // AMPS
 
@@ -144,7 +146,7 @@ public final class Constants {
     public final class ClimberCommandConstants {
             /** speed in inches per second */
         public static final double MAX_WINCH_SPEED = 10;
-        public static final double DEADBAND        = 0.2;
+        public static final double DEADBAND        = 0.1;
 
 
     }

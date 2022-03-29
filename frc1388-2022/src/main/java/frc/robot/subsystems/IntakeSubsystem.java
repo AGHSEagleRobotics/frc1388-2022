@@ -95,6 +95,8 @@ public class IntakeSubsystem extends SubsystemBase {
     }
     // This method will be called once per scheduler run
 
+    System.out.println("encoder: " + m_intakeArmEncoder);
+
   }
 
   public boolean isLimitUpReached() {
