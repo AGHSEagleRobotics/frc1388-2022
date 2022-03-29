@@ -95,7 +95,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
     // This method will be called once per scheduler run
 
-    System.out.println("encoder: " + m_intakeArmEncoder);
+    // System.out.println("encoder: " + m_intakeArmEncoder.get());
 
   }
 

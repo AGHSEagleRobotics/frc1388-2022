@@ -74,6 +74,7 @@ public class ClimberSubsystem extends SubsystemBase {
       // m_winchMotor.configReverseLimitSwitchSource(LimitSwitchSource.RemoteTalon, LimitSwitchNormal.NormallyClosed);
       m_winchLimitSwitch = winchLimit;
       m_winchMotor.overrideLimitSwitchesEnable(false);
+      m_winchMotor.setSafetyEnabled(true);
       // m_lastEncoderPossition = m_winchMotor.getSelectedSensorPosition();
       
 
@@ -142,16 +143,16 @@ public class ClimberSubsystem extends SubsystemBase {
   */
   public void setWinchPower(double power) {
     // if ((power == 0) || (m_winchForward.get() && power > 0) || (m_winchReverse.get() && power < 0)) {
-    // if (
-    //     (power == 0) 
-    //     || ((power > 0) && (m_winchLimit != Limit.forward)) 
-    //     || ((power < 0) && (m_winchLimit != Limit.reverse))
-    //   ) {
-    //   m_winchMotor.set(power * ClimberConstants.CLIMBER_MAX_POWER_FORWARDS);
-    // } else {
-    //   m_winchMotor.set(0);
-    // }
-    m_winchMotor.set(power);
+    if (
+        (power == 0) 
+        || ((power > 0) && (m_winchLimit != Limit.forward)) 
+        || ((power < 0) && (m_winchLimit != Limit.reverse))
+      ) {
+      m_winchMotor.set(power * ClimberConstants.CLIMBER_MAX_POWER_FORWARDS);
+    } else {
+      m_winchMotor.set(0);
+    }
+    // m_winchMotor.set(power);
   }
 
   // articulator
@@ -176,9 +177,9 @@ public class ClimberSubsystem extends SubsystemBase {
   // }
 
   public boolean atWinchLimit() {
-    System.out.println("winch FWD limit: " + m_winchMotor.isFwdLimitSwitchClosed());
-    System.out.println("winch REV limit: " + m_winchMotor.isRevLimitSwitchClosed());
-    return (m_winchMotor.isRevLimitSwitchClosed() == 1);
+    System.out.println("winch FWD limit: " + m_winchMotor.isFwdLimitSwitchClosed() + "\t winch REV limit: " + m_winchMotor.isRevLimitSwitchClosed());
+    // System.out.println("winch REV limit: " + m_winchMotor.isRevLimitSwitchClosed());s
+    return (m_winchMotor.isFwdLimitSwitchClosed() == 1);
   }
 
   @Override

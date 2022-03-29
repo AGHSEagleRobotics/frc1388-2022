@@ -53,33 +53,33 @@ public class LED extends SubsystemBase {
       if (m_isBlue) {
 
         m_LedArms.set(LEDConstants.BLUE_LARSON);
-        log.info("blue arms");
+        // log.info("blue arms");
 
         if (m_shooting) {
           m_LedBody.set(LEDConstants.BLUE_FLASH);
-        log.info("blue shoot");
+        // log.info("blue shoot");
         } else {
           m_LedBody.set(LEDConstants.BLUE_SOLID);
-        log.info("blue solid");
+        // log.info("blue solid");
         }
 
       } else {
 
         m_LedArms.set(LEDConstants.RED_LARSON);
-        log.info("red arms");
+        // log.info("red arms");
 
         if (m_shooting) {
           m_LedBody.set(LEDConstants.RED_FLASH);
-        log.info("red shoot");
+        // log.info("red shoot");
         } else { 
           m_LedBody.set(LEDConstants.RED_SOLID);
-        log.info("red solid");
+        // log.info("red solid");
         }
 
       }
     } // end if
 
-    log.info("\n\n\n" + m_shooting + "\n\n\n");
+    // log.info("\n\n\n" + m_shooting + "\n\n\n");
   
   }
 }
