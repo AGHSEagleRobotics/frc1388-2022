@@ -104,13 +104,6 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.schedule();
     }
 
-    // m_retractClimberWinchCommand = m_robotContainer.getRetractCommand();
-    // m_retractClimberWinchCommand.schedule();
-
-    log.info("Match type:\t" + DriverStation.getMatchType());
-    log.info("Event name:\t" + DriverStation.getEventName());
-    log.info("Alliance:\t" + DriverStation.getAlliance());
-    log.info("Match number:\t" + DriverStation.getMatchNumber());
     
     // Get match info from FMS
     if (DriverStation.isFMSAttached()) {
@@ -124,6 +117,13 @@ public class Robot extends TimedRobot {
       log.info(fmsInfo);
     } else {
       log.info("FMS not connected");
+    //m_retractClimberWinchCommand = m_robotContainer.getRetractCommand();
+    m_retractClimberWinchCommand.schedule();
+
+    log.info("Match type:\t" + DriverStation.getMatchType());
+    log.info("Event name:\t" + DriverStation.getEventName());
+    log.info("Alliance:\t" + DriverStation.getAlliance());
+    log.info("Match number:\t" + DriverStation.getMatchNumber());
     }
   }
 
