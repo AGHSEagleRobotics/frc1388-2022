@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+
 import static frc.robot.Constants.AutoConstants.*;
 // import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ShooterConstants;
@@ -20,6 +22,7 @@ import frc.robot.Constants.TransitionConstants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DriveTrainConstants;     // climber constats
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.LEDConstants;
 import frc.robot.Constants.USBConstants;            // USB
 import frc.robot.Constants.XBoxControllerConstants;
 // import frc.robot.Constants.ClimberConstants.ArticulatorPositions;
@@ -38,16 +41,19 @@ import frc.robot.commands.AutoMove;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.AutoTurn;
 import frc.robot.commands.ClimberCommand;
+import frc.robot.commands.ClimberRetract;
 import frc.robot.subsystems.ClimberSubsystem;
 // import frc.robot.commands.ClimberCommand;           // climber command
 // import frc.robot.subsystems.ClimberSubsystem;       // climber subsystem
 import frc.robot.subsystems.DriveTrainSubsystem;    // drive train subsystem
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.RumbleSubsystem;
 import frc.robot.subsystems.ShooterFeederSubsystem;
 import frc.robot.subsystems.TransitionSubsystem;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import org.apache.logging.log4j.LogManager;
@@ -93,7 +99,9 @@ public class RobotContainer {
 
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem(
     new WPI_TalonFX(ClimberConstants.CANID_WINCH),
-      new CANSparkMax(ClimberConstants.CANID_ARTICULATOR, MotorType.kBrushless));
+    new CANSparkMax(ClimberConstants.CANID_ARTICULATOR, MotorType.kBrushless),
+    new DigitalInput(3)
+      );
   
   private final ShooterFeederSubsystem m_shooterFeederSubsystem = new ShooterFeederSubsystem(
     new WPI_TalonFX(ShooterConstants.CANID_SHOOTER_MOTOR),
@@ -109,6 +117,11 @@ public class RobotContainer {
       new CANSparkMax(TransitionConstants.CANID_TRANSITION_MOTOR, MotorType.kBrushless));
 
   private final Dashboard m_dashboard = new Dashboard();
+
+  private final LED m_LED = new LED(
+    new PWMSparkMax(LEDConstants.PWM_LED_BODY),
+    new PWMSparkMax(LEDConstants.PWM_LED_ARMS)
+  );
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -191,13 +204,13 @@ public class RobotContainer {
 
     // SHOOT LOW HIGH GOAL and EJECT
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
-        .whenHeld(new ShootHigh(m_shooterFeederSubsystem, m_transitionSubsystem));
+        .whenHeld(new ShootHigh(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
     
     new Button(RobotContainer::isRightDriverTriggerPressed)
-        .whenHeld(new ShootLow(m_shooterFeederSubsystem, m_transitionSubsystem));
+        .whenHeld(new ShootLow(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
 
     new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
-        .whenHeld(new ShootHailHarry(m_shooterFeederSubsystem, m_transitionSubsystem));
+        .whenHeld(new ShootHailHarry(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
 
     //EJECT AND REJECT commands DRIVER 
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
@@ -257,7 +270,14 @@ public class RobotContainer {
                 return true;
               }
             });
+
     // .whenPressed(() -> m_dashboard.switchCamera());
+
+  //   new Button(() -> isOpUpDpadPressed())
+  //     .whenPressed(() -> m_LED.increaseLED());
+
+  //   new Button(() -> isOpDownDpadPressed())
+  //     .whenPressed(() -> m_LED.decreaseLED());
   }
 
   private void setForward(boolean isForward) {
@@ -270,6 +290,7 @@ public class RobotContainer {
     }
   } 
 
+  // triggers
   public static boolean isRightDriverTriggerPressed() {
     return m_driveController.getRightTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
@@ -282,8 +303,18 @@ public class RobotContainer {
     return m_opController.getLeftTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
 
+  // driver dpad
   public static boolean isDriverDPadPressed() {
     return m_driveController.getPOV() != -1 ;
+  }
+
+  // op dpad
+  public static boolean isOpUpDpadPressed() {
+    return m_opController.getPOV() == 0;
+  }
+
+  public static boolean isOpDownDpadPressed() {
+    return m_opController.getPOV() == 180;
   }
 
   //EJECT REJECT FOR OP
@@ -498,6 +529,11 @@ public class RobotContainer {
     }
       return null;
     }
+  
+  public Command getRetractCommand() {
+    ClimberRetract m_climberRetract = new ClimberRetract(m_climberSubsystem);
+    return m_climberRetract;
+  }
   
 
   public void simulationInit() {

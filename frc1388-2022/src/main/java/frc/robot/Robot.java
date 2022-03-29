@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.ClimberSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -28,6 +29,7 @@ public class Robot extends TimedRobot {
   private static final Logger log = LogManager.getLogger(Robot.class);
 
   private Command m_autonomousCommand;
+  private Command m_retractClimberWinchCommand;
 
   private RobotContainer m_robotContainer;
 
@@ -115,6 +117,13 @@ public class Robot extends TimedRobot {
       log.info(fmsInfo);
     } else {
       log.info("FMS not connected");
+    m_retractClimberWinchCommand = m_robotContainer.getRetractCommand();
+    m_retractClimberWinchCommand.schedule();
+
+    log.info("Match type:\t" + DriverStation.getMatchType());
+    log.info("Event name:\t" + DriverStation.getEventName());
+    log.info("Alliance:\t" + DriverStation.getAlliance());
+    log.info("Match number:\t" + DriverStation.getMatchNumber());
     }
   }
 
