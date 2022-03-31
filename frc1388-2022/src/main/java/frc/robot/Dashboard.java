@@ -34,10 +34,10 @@ public class Dashboard {
     private final int autonChooserColumnIndex = 12;
     private final int autonChooserRowIndex = 0;
 
-    private final int autonPositionWidth = 12;
-    private final int autonPositionHeight = 2;
+    private final int autonPositionWidth = 18; // was 12
+    private final int autonPositionHeight = 2; // was 2
     private final int autonPositionColumnIndex = 12;
-    private final int autonPositionRowIndex = 2;
+    private final int autonPositionRowIndex = 2; // was 2
 
     // front reverse & ball cams
     public UsbCamera m_frontCamera = CameraServer.startAutomaticCapture(DashboardConstants.FRONT_CAMERA_PORT);
@@ -128,7 +128,7 @@ public class Dashboard {
         
         m_complexWidgetDriveCam = m_shuffleboardTab.add("Drive", m_driveVideoSink.getSource())
             .withWidget(BuiltInWidgets.kCameraStream)
-            .withSize(12, 10)
+            .withSize(12, 11) // was 12, 10
             .withPosition(0, 0);
 
         m_complexWidgetBallCam  = m_shuffleboardTab.add("Ball", m_ballCamera)
