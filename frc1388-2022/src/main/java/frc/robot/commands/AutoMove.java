@@ -46,6 +46,7 @@ public class AutoMove extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    log.info("m_setPoint={}\tm_speed={}\tm_curve={}",m_setPoint,m_speed,m_curve);
     m_driveTrainSubsystem.resetLeftEncoder();
     m_driveTrainSubsystem.setDeadbandZero();
   }

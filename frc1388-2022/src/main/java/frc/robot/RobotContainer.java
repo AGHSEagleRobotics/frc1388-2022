@@ -474,7 +474,7 @@ public class RobotContainer {
           AUTO_TURN_SPEED,
           AUTO_TURN_ANGLE_MAX))
          // .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem))
-        .andThen(new AutoMove(m_driveTrainSubsystem, 96, 0.8))//
+        .andThen(new AutoMove(m_driveTrainSubsystem, 96, 0.6)) //changed speed from 0.8
         .andThen(new WaitCommand(0.5))
         .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, -40))
         .andThen(new AutoMove(m_driveTrainSubsystem, -37, 0.8)) //

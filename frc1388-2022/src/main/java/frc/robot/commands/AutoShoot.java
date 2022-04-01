@@ -4,6 +4,9 @@
 
 package frc.robot.commands;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 // import frc.robot.Constants.AutoMoveConstants;
 import frc.robot.Constants.TransitionConstants;
@@ -13,6 +16,8 @@ import frc.robot.subsystems.ShooterFeederSubsystem.FeederFunctions;
 
 public class AutoShoot extends CommandBase {
   
+  private static final Logger log = LogManager.getLogger(AutoShoot.class);
+
   private final ShooterFeederSubsystem m_shooterFeederSubsystem;
   private final TransitionSubsystem m_transitionSubsystem;
   // private final ShooterFeederSubsystem m_shootFeederSubsystem;
@@ -34,6 +39,7 @@ public class AutoShoot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    log.info("m_RPM={}",m_RPM);
     m_shooterFeederSubsystem.setShooterEnabled(true);
     m_shooterFeederSubsystem.setTargetRPM(m_RPM);
   }

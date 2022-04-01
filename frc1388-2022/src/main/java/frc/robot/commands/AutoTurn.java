@@ -14,7 +14,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class AutoTurn extends CommandBase {
-  private static final Logger log = LogManager.getLogger(AutoMove.class);
+  private static final Logger log = LogManager.getLogger(AutoTurn.class);
 
   private DriveTrainSubsystem m_driveTrainSubsystem;
   private final double m_turnSpeed;
@@ -37,6 +37,8 @@ public class AutoTurn extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    log.info("m_turnSpeed={}\tm_turnAngleSet={}",m_turnSpeed,m_turnAngleSet);
+
     m_driveTrainSubsystem.resetGyro();
     m_driveTrainSubsystem.setDeadbandZero();
   }
