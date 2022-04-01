@@ -385,7 +385,7 @@ public class RobotContainer {
           .withTimeout(2))
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
           .withTimeout(SHOOTER_TIMER_1))
-        .andThen(new WaitCommand(1))
+        .andThen(new WaitCommand(2.5))
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
           .withTimeout(SHOOTER_TIMER_2))
         .andThen(new RetractIntake(m_intakeSubsystem)
@@ -403,7 +403,7 @@ public class RobotContainer {
           //If intake works properly, 1.8 or less works for both
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
           .withTimeout(SHOOTER_TIMER_1))
-        .andThen(new WaitCommand(1))
+        .andThen(new WaitCommand(2.5))
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
           .withTimeout(SHOOTER_TIMER_2))
         .andThen(new RetractIntake(m_intakeSubsystem)

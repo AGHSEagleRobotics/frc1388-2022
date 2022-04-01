@@ -118,7 +118,7 @@ public class Robot extends TimedRobot {
     } else {
       log.info("FMS not connected");
     //m_retractClimberWinchCommand = m_robotContainer.getRetractCommand();
-    m_retractClimberWinchCommand.schedule();
+    // m_retractClimberWinchCommand.schedule();
 
     log.info("Match type:\t" + DriverStation.getMatchType());
     log.info("Event name:\t" + DriverStation.getEventName());

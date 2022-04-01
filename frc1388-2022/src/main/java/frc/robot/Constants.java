@@ -99,7 +99,7 @@ public final class Constants {
 
         public static final double CLIMBER_MAX_POWER_FORWARDS      = 0.5;
         public static final double CLIMBER_MAX_POWER_REVERSE       = -0.5;
-        public static final double ARTICULATOR_MAX_POWER_FORWARDS  = 0.15;
+        public static final double ARTICULATOR_MAX_POWER_FORWARDS  = 0.25; // was 0.15 // TODO: i changed this :)
         public static final double ARTICULATOR_MAX_POWER_REVERSE   = -0.15;
 
         public static final int    ARTICULATOR_MAX_SMART_CURRENT_LIMIT = 40; // AMPS
@@ -146,7 +146,7 @@ public final class Constants {
     public final class ClimberCommandConstants {
             /** speed in inches per second */
         public static final double MAX_WINCH_SPEED = 10;
-        public static final double DEADBAND        = 0.1;
+        public static final double DEADBAND        = 0.2;
 
 
     }
