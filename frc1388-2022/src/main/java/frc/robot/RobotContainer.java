@@ -476,7 +476,7 @@ public class RobotContainer {
          // .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem))
         .andThen(new AutoMove(m_driveTrainSubsystem, 96, 0.6)) //changed speed from 0.8
         .andThen(new WaitCommand(0.5))
-        .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, -40))
+        .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, -34)) // was -40
         .andThen(new AutoMove(m_driveTrainSubsystem, -37, 0.8)) //
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
           .withTimeout(2)
@@ -502,7 +502,7 @@ public class RobotContainer {
             .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, 8)) // TODO
             .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
                 .withTimeout(SHOOTER_TIMER_1))
-            .andThen(new WaitCommand(1))
+            .andThen(new WaitCommand(1.7)) // was 1
             .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
                 .withTimeout(SHOOTER_TIMER_2))
             // .andThen(new RetractIntake(m_intakeSubsystem)
@@ -513,7 +513,7 @@ public class RobotContainer {
             // .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem))
             .andThen(new AutoMove(m_driveTrainSubsystem, 96, 0.8))// 
             .andThen(new WaitCommand(0.5))
-            .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, -40))
+            .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, -34)) // was -40
             .andThen(new AutoMove(m_driveTrainSubsystem, -37, 0.8)) //
             .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
                 .withTimeout(2))
