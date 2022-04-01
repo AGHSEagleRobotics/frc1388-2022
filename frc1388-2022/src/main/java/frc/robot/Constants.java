@@ -221,7 +221,7 @@ public final class Constants {
 
         public static final double AUTO_POSITION_4_DISTANCE_TO_WALL_BALL = 42;
         public static final double AUTO_POSITION_4_DISTANCE_TAXI = 7;
-        public static final double AUTO_POSITION_4_DISTANCE_2_BALL_BACK = -23;
+        public static final double AUTO_POSITION_4_DISTANCE_2_BALL_BACK = -37; //was -28
         public static final double AUTO_POSITION_4_DISTANCE_3_BALL = -26;
 
     }

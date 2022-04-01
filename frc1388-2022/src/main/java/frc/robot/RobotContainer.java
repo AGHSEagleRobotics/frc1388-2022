@@ -384,7 +384,7 @@ public class RobotContainer {
         .andThen(new AutoMove (m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_2_BALL_BACK, AUTO_DRIVE_SPEED)
           .withTimeout(2))
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
-          .withTimeout(SHOOTER_TIMER_1))
+          .withTimeout(1.7))
         .andThen(new WaitCommand(2.5))
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
           .withTimeout(SHOOTER_TIMER_2))
@@ -398,11 +398,11 @@ public class RobotContainer {
         .andThen(new AutoMove(m_driveTrainSubsystem, 64, AUTO_DRIVE_SPEED)
           .withTimeout(3))
           //change distance going backwards on automove to Auto_Tarmac distance -40
-        .andThen(new AutoMove(m_driveTrainSubsystem, -37, AUTO_DRIVE_SPEED)
+        .andThen(new AutoMove(m_driveTrainSubsystem, -52, AUTO_DRIVE_SPEED) //was -37
           .withTimeout(2))
           //If intake works properly, 1.8 or less works for both
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
-          .withTimeout(SHOOTER_TIMER_1))
+          .withTimeout(1.7))
         .andThen(new WaitCommand(2.5))
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
           .withTimeout(SHOOTER_TIMER_2))
