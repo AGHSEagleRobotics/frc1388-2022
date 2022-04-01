@@ -22,7 +22,7 @@ import frc.robot.Constants.FalconConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
   
-  // private static final Logger log = LogManager.getLogger(ClimberSubsystem.class);
+  private static final Logger log = LogManager.getLogger(ClimberSubsystem.class);
   
   private final WPI_TalonFX m_winchMotor;
     // private DigitalInput m_winchLimit;
@@ -76,6 +76,7 @@ public class ClimberSubsystem extends SubsystemBase {
       m_winchMotor.overrideLimitSwitchesEnable(false);
       m_winchMotor.setSafetyEnabled(true);
       // m_lastEncoderPossition = m_winchMotor.getSelectedSensorPosition();
+      // m_winchMotor.setSelectedSensorPosition(0);
       
 
 
@@ -143,15 +144,20 @@ public class ClimberSubsystem extends SubsystemBase {
   */
   public void setWinchPower(double power) {
     // if ((power == 0) || (m_winchForward.get() && power > 0) || (m_winchReverse.get() && power < 0)) {
+    // System.out.println(m_climbwer);
+    double speed;
     if (
         (power == 0) 
         || ((power > 0) && (m_winchLimit != Limit.forward)) 
         || ((power < 0) && (m_winchLimit != Limit.reverse))
       ) {
-      m_winchMotor.set(power * ClimberConstants.CLIMBER_MAX_POWER_FORWARDS);
+      speed = power * ClimberConstants.CLIMBER_MAX_POWER_FORWARDS;
     } else {
-      m_winchMotor.set(0);
+      speed = 0;
     }
+    m_winchMotor.set(speed);
+    log.info("climber speed: " + speed  + "\tclimber at winch limit" + atWinchLimit() + "\tclimber encoder: " + m_winchMotor.getSelectedSensorPosition());
+    // System.out.println("climber speed: " + speed  + "\tclimber at winch limit" + atWinchLimit() + "\tclimber encoder: " + m_winchMotor.getSelectedSensorPosition());
     // m_winchMotor.set(power);
   }
 
@@ -177,7 +183,7 @@ public class ClimberSubsystem extends SubsystemBase {
   // }
 
   public boolean atWinchLimit() {
-    System.out.println("winch FWD limit: " + m_winchMotor.isFwdLimitSwitchClosed() + "\t winch REV limit: " + m_winchMotor.isRevLimitSwitchClosed());
+    // System.out.println("winch FWD limit: " + m_winchMotor.isFwdLimitSwitchClosed() + "\t winch REV limit: " + m_winchMotor.isRevLimitSwitchClosed());
     // System.out.println("winch REV limit: " + m_winchMotor.isRevLimitSwitchClosed());s
     return (m_winchMotor.isFwdLimitSwitchClosed() == 1);
   }

@@ -465,7 +465,7 @@ public class RobotContainer {
         .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, 8)) // TODO 
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
           .withTimeout(SHOOTER_TIMER_1))
-        .andThen(new WaitCommand(1.5))
+        .andThen(new WaitCommand(1.7))
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
            .withTimeout(SHOOTER_TIMER_2))
             // .andThen(new RetractIntake(m_intakeSubsystem)
