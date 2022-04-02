@@ -48,6 +48,7 @@ public class AutoShoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    log.debug("TargetRPM: {} \tRealRPM: {}", m_RPM, m_shooterFeederSubsystem.getRealRPM());
     if (m_shooterFeederSubsystem.shooterSpeedIsReady()) {
       m_shooterFeederSubsystem.setFeederFunction(FeederFunctions.FORWARD);
       m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_FAST);
