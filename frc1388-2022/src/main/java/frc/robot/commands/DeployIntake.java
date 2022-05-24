@@ -37,8 +37,8 @@ public class DeployIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intakeSubsystem.setIntakeArmMotor(IntakeConstants.ARM_SPEED_DEPLOY);
-    m_intakeSubsystem.setIntakeWheelSpin(IntakeConstants.WHEEL_SPEED_INTAKE);
+    m_intakeSubsystem.setIntakeArmMotor(IntakeConstants.ARM_SLOW_DEPLOY); //normal speed to slow speed
+    m_intakeSubsystem.setIntakeWheelSpin(IntakeConstants.WHEEL_SLOW_INTAKE); //normal to slow wheel speed
     m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_FORWARD_MEDIUM);
   }
 

@@ -29,7 +29,7 @@ public final class Constants {
 
     public final class DriveTrainConstants {
         public static final double EXPIRATION = 0.1;
-        public static final double MAX_OUTPUT = 1.0;
+        public static final double MAX_OUTPUT = 0.2; //made max output 1
         public static final double DEADBAND =   0.1;
 
         public static final int CANID_LEFT_FRONT    = 1;
@@ -165,6 +165,7 @@ public final class Constants {
         public static final double ARM_SLOW_DEPLOY    = 0.25;
         public static final int ARM_SLOW_SPEED_TICKS  = 50;
         public static final double WHEEL_SPEED_INTAKE = 0.5;
+        public static final double WHEEL_SLOW_INTAKE  = 0.2;
 
         //DIO ports for sensors
         public static final int DIGITAL_INPUT_LIMIT_SWITCH_PORT = 0;

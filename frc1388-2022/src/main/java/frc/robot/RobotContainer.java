@@ -166,8 +166,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
 
-    new JoystickButton(m_driveController, XboxController.Button.kB.value)
-        .whenPressed(() -> m_driveTrainSubsystem.setForward(true));
+  //  new JoystickButton(m_driveController, XboxController.Button.kB.value)
+   //     .whenPressed(() -> m_driveTrainSubsystem.setForward(true));
 
     
     //  dev mode
@@ -183,10 +183,10 @@ public class RobotContainer {
      //new JoystickButton(m_driveController, XboxController.Button.kB.value)
      //.whenPressed(() -> m_shooterFeederSubsystem.setShooterEnabled(false));
      
-     new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
-      .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
-            TransitionConstants.TRANSITION_SPEED_REVERSE_SLOW),
-            m_transitionSubsystem);
+   //  new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
+   //   .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
+    //        TransitionConstants.TRANSITION_SPEED_REVERSE_SLOW),
+    //        m_transitionSubsystem);
      
 
 

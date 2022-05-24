@@ -29,13 +29,13 @@ public class REject extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SPEED_DEPLOY);
+    m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SLOW_DEPLOY); //normal to slow deploy
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intakeSubsystem.setIntakeWheelSpin(-IntakeConstants.WHEEL_SPEED_INTAKE);
+    m_intakeSubsystem.setIntakeWheelSpin(-IntakeConstants.WHEEL_SLOW_INTAKE); //normal to slow wheel speed
     //or m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SPEED_DEPLOY);
     m_shooterFeederSubsystem.setFeederFunction(FeederFunctions.REVERSE);
     m_transitionSubsystem.setTransitionSpeed(TransitionConstants.TRANSITION_SPEED_REVERSE_FAST);

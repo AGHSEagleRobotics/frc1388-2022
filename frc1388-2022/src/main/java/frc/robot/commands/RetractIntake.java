@@ -48,7 +48,7 @@ public class RetractIntake extends CommandBase {
     }
     
     if (!m_intakeLimitHitOnce) {
-      m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SPEED_DEPLOY);
+      m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SLOW_DEPLOY); //now regular speed is slow
     } else {
       if (++m_lowPowerTimer <= IntakeConstants.ARM_SLOW_SPEED_TICKS) {
         m_intakeSubsystem.setIntakeArmMotor(-IntakeConstants.ARM_SLOW_DEPLOY);
