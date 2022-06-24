@@ -522,9 +522,15 @@ public class RobotContainer {
             .andThen(new WaitCommand(.75))
             .andThen(new RetractIntake(m_intakeSubsystem));
       }
-        
+ 
       case DONOTHING:
-      return null;
+        if (position == Position.POSITION1)  {
+          return new AutoMove(m_driveTrainSubsystem, 5, .4)
+            .andThen(new AutoTurn(m_driveTrainSubsystem, 0.2, 175)
+              .withTimeout(3))
+            .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_TAXI, 1));
+      }
+
 
     }
       return null;
