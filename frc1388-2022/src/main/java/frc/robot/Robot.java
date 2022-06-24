@@ -41,10 +41,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     log.info("robotInit");
 
-    // log and print software version
-    log.info("Git version: " + BuildInfo.GIT_VERSION + " (branch: " + BuildInfo.GIT_BRANCH + BuildInfo.GIT_STATUS + ")");
-    log.info("      Built: " + BuildInfo.BUILD_DATE + "  " + BuildInfo.BUILD_TIME);
-    //Remember this silences joystick warnings
+    // log and print software version - no more buildInfo
+    // log.info("Git version: " + BuildInfo.GIT_VERSION + " (branch: " + BuildInfo.GIT_BRANCH + BuildInfo.GIT_STATUS + ")");
+    // log.info("      Built: " + BuildInfo.BUILD_DATE + "  " + BuildInfo.BUILD_TIME);
+    // //Remember this silences joystick warnings
     DriverStation.silenceJoystickConnectionWarning(true);
 
 
