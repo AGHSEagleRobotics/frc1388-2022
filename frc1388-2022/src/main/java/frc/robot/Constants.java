@@ -30,7 +30,7 @@ public final class Constants {
     public final class DriveTrainConstants {
         public static final double EXPIRATION = 0.1;
         public static final double MAX_OUTPUT = 1.0;
-        public static final double DEADBAND =   0.1;
+        public static final double DEADBAND =   0.2;
 
         public static final int CANID_LEFT_FRONT    = 1;
         public static final int CANID_LEFT_BACK     = 2;
