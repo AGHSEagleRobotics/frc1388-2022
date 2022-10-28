@@ -142,9 +142,15 @@ public class RobotContainer {
             m_driveTrainSubsystem, m_rumbleSubsystem,
         () -> m_driveController.getLeftY(),
         () -> m_driveController.getRightY(),
-            () -> m_driveController.getRightX(),
-            //rumble for precision mode
-            () -> m_driveController.getRightStickButtonPressed()));
+        () -> m_driveController.getRightX(),
+        //rumble for precision mode
+        () -> m_driveController.getRightStickButtonPressed(),
+        () -> m_guestController.getLeftY(),
+        () -> m_guestController.getRightX(),
+        () -> true  //changeme
+        )
+        
+        );
 
     m_transitionSubsystem.setDefaultCommand(
       new RunCommand(
