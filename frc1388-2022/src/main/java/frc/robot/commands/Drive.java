@@ -21,6 +21,9 @@ public class Drive extends CommandBase {
   private Supplier<Double> m_driveLeftStickYAxis;
   //private Supplier<Double> m_driveRightStickYAxis;
   private Supplier<Double> m_driveRightStickXAxis;
+  private Supplier<Double> m_guestLeftStickYAxis;
+  private Supplier<Double> m_guestRightStickXAxis;
+  private Supplier<Boolean> m_guestMode;
 
   private Supplier<Boolean> m_driveRightStickButton;
 
@@ -32,7 +35,10 @@ public class Drive extends CommandBase {
       Supplier<Double> driveLeftStickYAxis,
       Supplier<Double> driveRightStickYAxis,
       Supplier<Double> driveRightStickXAxis,
-      Supplier<Boolean> driveRightStickButton) {
+      Supplier<Boolean> driveRightStickButton,
+      Supplier<Double> guestLeftStickYAxis,
+      Supplier<Double> guestRightStickXAxis,
+      Supplier<Boolean> guestMode ) {
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrainSubsystem);
