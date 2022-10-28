@@ -123,6 +123,7 @@ public class RobotContainer {
     new PWMSparkMax(LEDConstants.PWM_LED_ARMS)
   );
 
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -543,4 +544,18 @@ public class RobotContainer {
   public void setNeutralMode(NeutralMode mode) {
     m_driveTrainSubsystem.setNeutralMode(mode);
   }
+
+class GuestModeEnabled{
+  private boolean isGuestModeEnabled = true;
+
+  public boolean getisGuestModeEnabled () {
+    return isGuestModeEnabled;
+  }
+
+  public void setGuestMode(boolean enabled){
+    isGuestModeEnabled = enabled;
+  }
+}
+
+
 }
