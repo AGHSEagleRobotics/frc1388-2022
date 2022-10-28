@@ -165,10 +165,16 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    
+    new JoystickButton(m_driveController, XboxController.Button.kA.value)
+        .whenPressed(()-> GuestModeEnabled.setGuestMode(true));
 
 
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
-        .whenPressed(() -> m_driveTrainSubsystem.setForward(true));
+        .whenPressed(() -> GuestModeEnabled.setGuestMode(false));
+
+    new Button(()-> isGuestJoysticksMoved())
+      .whenPressed(()-> GuestModeEnabled.setGuestMode(false));
 
     
     //  dev mode
@@ -545,14 +551,26 @@ public class RobotContainer {
     m_driveTrainSubsystem.setNeutralMode(mode);
   }
 
-class GuestModeEnabled{
-  private boolean isGuestModeEnabled = true;
+  public boolean isGuestJoysticksMoved(){
+    // boolean isGuestJoysticksMoved = (m_driveController.getLeftX()!= 0) || (m_driveController.getLeftY()!= 0) || (m_driveController.getRightX()!= 0) || (m_driveController.getRightY()!= 0);
+    boolean isGuestJoysticksMoved = (!isClosetoZero(m_driveController.getLeftX())) || (!isClosetoZero(m_driveController.getLeftY())) || (!isClosetoZero(m_driveController.getRightX())) || (!isClosetoZero(m_driveController.getRightY())) ;
+    return isGuestJoysticksMoved; 
+  }
+
+  public boolean isClosetoZero(double number){
+    boolean isClosetoZero = (number < DriveTrainConstants.DEADBAND && number > -DriveTrainConstants.DEADBAND);
+    return isClosetoZero;
+  }
+
+
+static class GuestModeEnabled{
+  private static boolean isGuestModeEnabled = true;
 
   public boolean getisGuestModeEnabled () {
     return isGuestModeEnabled;
   }
 
-  public void setGuestMode(boolean enabled){
+  public static void setGuestMode(boolean enabled){
     isGuestModeEnabled = enabled;
   }
 }
