@@ -18,7 +18,8 @@ public final class Constants {
     
     public final class USBConstants { //ADD STATIC?
         public static final int DRIVE_CONTROLLER = 0;
-        public static final int OP_CONTROLLER = 1;
+        public static final int GUEST_CONTROLLER = 1;
+        // public static final int OP_CONTROLLER = 1;
         //public static final void info(String msg) {    wanted to add this
         //}
     }
@@ -66,7 +67,7 @@ public final class Constants {
         */
         public static final double TARGET_RPM_TOLERANCE = 200;             // EX. 30 = +/-30 rpm
         //ITERATIONS is subject to change if shooting is sloppy
-        public static final double ITERATIONS_AT_TARGET_RPM = 3;    // the amount of times rpm needs to be between +/- RPM_RANGE for shooterSpeedIsReady() to return true
+        public static final double ITERATIONS_AT_TARGET_RPM = 7;    // the amount of times rpm needs to be between +/- RPM_RANGE for shooterSpeedIsReady() to return true
 
         public static final double SHOOTER_COOLDOWN_TIME = 2.5; // time in seconds to wait before shooter is turned off (NOTE: feeder turns off instantly)
         
@@ -206,7 +207,7 @@ public final class Constants {
 
         public static final int USB_CAMERACOLOR = 0; //FIXME Not used?
 
-        public static final double AUTO_SHOOT_RPM = 3700; 
+        public static final double AUTO_SHOOT_RPM = 3750; 
         public static final double SHOOTER_TIMER_1 = 1;
         public static final double SHOOTER_TIMER_2 = 1.7;
 
