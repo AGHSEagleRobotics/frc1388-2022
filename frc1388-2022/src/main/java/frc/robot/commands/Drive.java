@@ -7,6 +7,7 @@ package frc.robot.commands;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.DriveTrainConstants;
 import frc.robot.Constants.RumbleConstants;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.RumbleSubsystem;
@@ -49,6 +50,9 @@ public class Drive extends CommandBase {
     //m_driveRightStickYAxis = driveRightStickYAxis;
     m_driveRightStickXAxis = driveRightStickXAxis;
     m_driveRightStickButton = driveRightStickButton;
+    m_guestLeftStickYAxis = guestLeftStickYAxis;
+    m_guestRightStickXAxis = guestRightStickXAxis;
+    m_guestMode = guestMode;
 
   }
 
@@ -61,14 +65,22 @@ public class Drive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double speed;
+    double rotation;
 
-    double speed = -m_driveLeftStickYAxis.get();
-    double rotation = m_driveRightStickXAxis.get();
+    if (m_guestMode.get()){
+      speed = -m_guestLeftStickYAxis.get() * DriveTrainConstants.GUEST_MODE_SLOW;
+      rotation = m_guestRightStickXAxis.get() * DriveTrainConstants.GUEST_MODE_SLOW;
+    }
+    else{
+      speed = -m_driveLeftStickYAxis.get();
+      rotation = m_driveRightStickXAxis.get();
+    }
+
 
     // For tank drive
     //double leftSpeed = -m_driveLeftStickYAxis.get();
     //double rightSpeed = -m_driveRightStickYAxis.get();
-
     // checks to see if the button has been pressed and then flags the precision mode
     // Don't trigger again if the button is continually held
     boolean rightStickButton = m_driveRightStickButton.get();
