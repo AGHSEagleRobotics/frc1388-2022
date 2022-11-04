@@ -242,7 +242,7 @@ public class RobotContainer {
   
 
     //EJECT AND REJECT commands OPERATOR
-    new Button (() -> isRightOpTriggerPressed())
+    new Button (() -> isRightGuestTriggerPressed())
     .whenHeld(new ShootEject(m_shooterFeederSubsystem, m_transitionSubsystem));
 
     new JoystickButton(m_guestController, XboxController.Button.kRightBumper.value)
@@ -340,9 +340,9 @@ public class RobotContainer {
   // }
 
   //EJECT REJECT FOR OP
-  public static boolean isRightOpTriggerPressed() {
-    return m_guestController.getRightTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
-  }
+  // public static boolean isRightOpTriggerPressed() {
+  //   return m_guestController.getRightTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
+  // }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
