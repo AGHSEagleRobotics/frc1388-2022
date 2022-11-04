@@ -144,13 +144,7 @@ public class RobotContainer {
         () -> m_driveController.getRightY(),
         () -> m_driveController.getRightX(),
         //rumble for precision mode
-        () -> m_driveController.getRightStickButtonPressed(),
-        () -> m_guestController.getLeftY(),
-        () -> m_guestController.getRightX(),
-        () -> true  //changeme
-        )
-        
-        );
+            () -> m_driveController.getRightStickButtonPressed()));
 
     m_transitionSubsystem.setDefaultCommand(
       new RunCommand(
@@ -405,7 +399,6 @@ public class RobotContainer {
           .withTimeout(2))
         .andThen(new AutoMove (m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_2_BALL_BACK, AUTO_DRIVE_SPEED)
           .withTimeout(2))
-        .andThen(new WaitCommand(3))
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
           .withTimeout(1.7))
         .andThen(new WaitCommand(2.5))
@@ -421,10 +414,9 @@ public class RobotContainer {
         .andThen(new AutoMove(m_driveTrainSubsystem, 64, AUTO_DRIVE_SPEED)
           .withTimeout(3))
           //change distance going backwards on automove to Auto_Tarmac distance -40 //old comment
-        .andThen(new AutoMove(m_driveTrainSubsystem, -46, AUTO_DRIVE_SPEED) //was -37 //was -52
+        .andThen(new AutoMove(m_driveTrainSubsystem, -52, AUTO_DRIVE_SPEED) //was -37
           .withTimeout(2))
           //If intake works properly, 1.8 or less works for both
-        .andThen(new WaitCommand(3))
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
           .withTimeout(1.7))
         .andThen(new WaitCommand(2.5))
@@ -501,7 +493,7 @@ public class RobotContainer {
         .andThen(new AutoMove(m_driveTrainSubsystem, 96, 0.6)) //changed speed from 0.8
         .andThen(new WaitCommand(0.5))
         .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, -30.5)) // was -40, changed to -34
-        .andThen(new AutoMove(m_driveTrainSubsystem, -37, 0.5)) //
+        .andThen(new AutoMove(m_driveTrainSubsystem, -37, 0.8)) //
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
           .withTimeout(2)
           .alongWith(new RetractIntake(m_intakeSubsystem)));
@@ -535,14 +527,14 @@ public class RobotContainer {
                 AUTO_TURN_SPEED,
                 AUTO_TURN_ANGLE_MAX))
             // .andThen(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem))
-            .andThen(new AutoMove(m_driveTrainSubsystem, 96, 0.5))// 
+            .andThen(new AutoMove(m_driveTrainSubsystem, 96, 0.8))// 
             .andThen(new WaitCommand(0.5))
             .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, -30.5)) // was -40, changed to -34
-            .andThen(new AutoMove(m_driveTrainSubsystem, -37, 0.5)) //
+            .andThen(new AutoMove(m_driveTrainSubsystem, -37, 0.8)) //
             .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
                 .withTimeout(2))
             .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, 13)) // change 16?
-            .andThen(new AutoMove(m_driveTrainSubsystem, 177, 0.6, 0)) // actual distance 177?
+            .andThen(new AutoMove(m_driveTrainSubsystem, 177, 0.75, 0)) // actual distance 177?
             .andThen(new WaitCommand(.75))
             .andThen(new RetractIntake(m_intakeSubsystem));
       }
