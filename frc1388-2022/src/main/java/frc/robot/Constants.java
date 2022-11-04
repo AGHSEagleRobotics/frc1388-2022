@@ -276,5 +276,10 @@ public final class Constants {
         public static final double RED_LARSON = -0.35;
         public static final double BLUE_LARSON = 0.19;
     }
+    public final class GuestModeConstants{
+        public static final double GUEST_MODE_MAX_SPEED = 1.0;
+        public static final double GUEST_MODE_MINIMUM_SPEED = 0.0;
+        
+    }
 
 }

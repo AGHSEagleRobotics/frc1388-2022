@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.RobotContainer.GuestMode;
 import frc.robot.subsystems.ClimberSubsystem;
 
 /**
@@ -86,7 +87,9 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     m_robotContainer.setNeutralMode(NeutralMode.Brake);
     log.info("########  Robot disabled");
+    GuestMode.setGuestMode(false);
   }
+  
 
   @Override
   public void disabledPeriodic() {}
@@ -102,6 +105,7 @@ public class Robot extends TimedRobot {
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
+      GuestMode.setGuestMode(false);
     }
 
     
@@ -143,6 +147,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     m_robotContainer.setNeutralMode(NeutralMode.Brake);
+    GuestMode.setGuestMode(false);
   }
   
   /** This function is called periodically during operator control. */
@@ -156,6 +161,7 @@ public class Robot extends TimedRobot {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
     // m_robotContainer.setNeutralMode(NeutralMode.Brake);
+    GuestMode.setGuestMode(false);
   }
   
   /** This function is called periodically during test mode. */
@@ -168,6 +174,7 @@ public class Robot extends TimedRobot {
     
     m_robotContainer.simulationInit(); 
     // m_robotContainer.setNeutralMode(NeutralMode.Brake);
+    GuestMode.setGuestMode(false);
   }
 
   public void simulationPeriodic() {
