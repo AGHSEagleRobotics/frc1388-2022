@@ -81,7 +81,7 @@ public class RobotContainer {
 
   // components
   public static XboxController m_driveController = new XboxController(USBConstants.DRIVE_CONTROLLER);
-  public static XboxController m_opController = new XboxController(USBConstants.OP_CONTROLLER);
+  public static XboxController m_guestController = new XboxController(USBConstants.GUEST_CONTROLLER);
 
   // The robot's subsystems and commands are defined here...
 
@@ -131,8 +131,8 @@ public class RobotContainer {
     m_climberSubsystem.setDefaultCommand(
       new ClimberCommand(
         m_climberSubsystem, 
-            () -> m_opController.getLeftY(), // extend
-        () -> m_opController.getRightY())    // articulate
+            () -> m_guestController.getLeftY(), // extend
+        () -> m_guestController.getRightY())    // articulate
       );
     // set default commands
 
@@ -167,10 +167,16 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    
+    new JoystickButton(m_driveController, XboxController.Button.kA.value)
+        .whenPressed(()-> GuestModeEnabled.setGuestMode(true));
 
 
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
-        .whenPressed(() -> m_driveTrainSubsystem.setForward(true));
+        .whenPressed(() -> GuestModeEnabled.setGuestMode(false));
+
+    new Button(()-> isGuestJoysticksMoved())
+      .whenPressed(()-> GuestModeEnabled.setGuestMode(false));
 
     
     //  dev mode
@@ -186,31 +192,37 @@ public class RobotContainer {
      //new JoystickButton(m_driveController, XboxController.Button.kB.value)
      //.whenPressed(() -> m_shooterFeederSubsystem.setShooterEnabled(false));
      
-     new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
-      .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
-            TransitionConstants.TRANSITION_SPEED_REVERSE_SLOW),
-            m_transitionSubsystem);
+    //  new JoystickButton(m_guestController, XboxController.Button.kRightBumper.value)
+    //   .whileHeld(() -> m_transitionSubsystem.setTransitionSpeed(
+    //         TransitionConstants.TRANSITION_SPEED_REVERSE_SLOW),
+    //         m_transitionSubsystem);
      
 
 
     // INTAKE DEPLOY LEFT TRIGGER
-    new Button(() -> isLeftDriverTriggerPressed() || isLeftOpTriggerPressed())
+    new Button(() -> isLeftDriverTriggerPressed())
         .whenPressed(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
 
     //INTAKE DRIVE UP
-    // new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
-    //     .whenPressed(new RetractIntake(m_intakeSubsystem));
+    new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
+        .whenPressed(new RetractIntake(m_intakeSubsystem));
 
     // INTAKE OP UP
-    new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value)
-        .whenPressed(new RetractIntake(m_intakeSubsystem));
+    // new JoystickButton(m_guestController, XboxController.Button.kLeftBumper.value)
+    //     .whenPressed(new RetractIntake(m_intakeSubsystem));
 
     // SHOOT LOW HIGH GOAL and EJECT
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
         .whenHeld(new ShootHigh(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
     
+    new JoystickButton(m_guestController, XboxController.Button.kRightBumper.value)
+        .whenHeld(new ShootHigh(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
+
     new Button(RobotContainer::isRightDriverTriggerPressed)
         .whenHeld(new ShootLow(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
+
+    new Button(RobotContainer::isRightGuestTriggerPressed)
+    .whenHeld(new ShootLow(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
 
     new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
         .whenHeld(new ShootHailHarry(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
@@ -219,31 +231,31 @@ public class RobotContainer {
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
       .whenHeld(new ShootEject(m_shooterFeederSubsystem, m_transitionSubsystem));
 
-    new Button (() -> isDriverDPadPressed()).whenHeld(new REject(
-      m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
+    // new Button (() -> isDriverDPadPressed()).whenHeld(new REject(
+    //   m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
 
-    new Button (() -> isDriverDPadPressed())
-    .whenReleased(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
+    // new Button (() -> isDriverDPadPressed())
+    // .whenReleased(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
   
 
     //EJECT AND REJECT commands OPERATOR
-    new Button (() -> isRightOpTriggerPressed())
+    new Button (() -> isRightGuestTriggerPressed())
     .whenHeld(new ShootEject(m_shooterFeederSubsystem, m_transitionSubsystem));
 
-    new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
+    new JoystickButton(m_guestController, XboxController.Button.kRightBumper.value)
     .whenHeld(new REject(m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
 
-    new JoystickButton(m_opController, XboxController.Button.kRightBumper.value)
+    new JoystickButton(m_guestController, XboxController.Button.kRightBumper.value)
     .whenReleased(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
 
 
 
     // Lower priority
     /*
-    new JoystickButton(m_opController, XboxController.Button.kX.value)
+    new JoystickButton(m_guestController, XboxController.Button.kX.value)
       .whenPressed(() -> m_climberSubsystem.setArticulatorReach());
       
-   new JoystickButton(m_opController, XboxController.Button.kY.value)
+   new JoystickButton(m_guestController, XboxController.Button.kY.value)
       .whenPressed(() -> m_climberSubsystem.setArticulatorVertical());
     */
 
@@ -265,14 +277,14 @@ public class RobotContainer {
             });
 
     //OP
-    new JoystickButton(m_opController, XboxController.Button.kStart.value)
-        .whenPressed(
-            new InstantCommand(() -> m_dashboard.switchCamera()) {
-              @Override
-              public boolean runsWhenDisabled() {
-                return true;
-              }
-            });
+    // new JoystickButton(m_guestController, XboxController.Button.kStart.value)
+    //     .whenPressed(
+    //         new InstantCommand(() -> m_dashboard.switchCamera()) {
+    //           @Override
+    //           public boolean runsWhenDisabled() {
+    //             return true;
+    //           }
+    //         });
 
     // .whenPressed(() -> m_dashboard.switchCamera());
 
@@ -298,32 +310,36 @@ public class RobotContainer {
     return m_driveController.getRightTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
 
+  public static boolean isRightGuestTriggerPressed() {
+    return m_guestController.getRightTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
+  }
+
   public static boolean isLeftDriverTriggerPressed() {
     return m_driveController.getLeftTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
 
-  public static boolean isLeftOpTriggerPressed() {
-    return m_opController.getLeftTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
+  public static boolean isLeftGuestTriggerPressed() {
+    return m_guestController.getLeftTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
   }
 
   // driver dpad
-  public static boolean isDriverDPadPressed() {
-    return m_driveController.getPOV() != -1 ;
-  }
+  // public static boolean isDriverDPadPressed() {
+  //   return m_driveController.getPOV() != -1 ;
+  // }
 
   // op dpad
-  public static boolean isOpUpDpadPressed() {
-    return m_opController.getPOV() == 0;
-  }
+  // public static boolean isOpUpDpadPressed() {
+  //   return m_guestController.getPOV() == 0;
+  // }
 
-  public static boolean isOpDownDpadPressed() {
-    return m_opController.getPOV() == 180;
-  }
+  // public static boolean isOpDownDpadPressed() {
+  //   return m_guestController.getPOV() == 180;
+  // }
 
   //EJECT REJECT FOR OP
-  public static boolean isRightOpTriggerPressed() {
-    return m_opController.getRightTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
-  }
+  // public static boolean isRightOpTriggerPressed() {
+  //   return m_guestController.getRightTriggerAxis() > XBoxControllerConstants.TRIGGER_THRESHOLD;
+  // }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -463,7 +479,7 @@ public class RobotContainer {
           //   .withTimeout(2))
           // .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_2, AUTO_DRIVE_SPEED)
           //   .withTimeout(2))
-        .andThen(new AutoMove (m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_3_BALL, 0.8) //test
+        .andThen(new AutoMove (m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_3_BALL, 0.5) //test
           .withTimeout(2))
         .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, 8)) // TODO 
         .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
@@ -500,7 +516,7 @@ public class RobotContainer {
             // .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_2,
             // AUTO_DRIVE_SPEED)
             // .withTimeout(2))
-            .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_3_BALL, 0.8) // test
+            .andThen(new AutoMove(m_driveTrainSubsystem, AUTO_POSITION_4_DISTANCE_3_BALL, 0.5) // test
                 .withTimeout(2))
             .andThen(new AutoTurn(m_driveTrainSubsystem, AUTO_TURN_SPEED, 8)) // TODO
             .andThen(new AutoShoot(m_shooterFeederSubsystem, m_transitionSubsystem, AUTO_SHOOT_RPM)
@@ -546,4 +562,30 @@ public class RobotContainer {
   public void setNeutralMode(NeutralMode mode) {
     m_driveTrainSubsystem.setNeutralMode(mode);
   }
+
+  public boolean isGuestJoysticksMoved(){
+    // boolean isGuestJoysticksMoved = (m_driveController.getLeftX()!= 0) || (m_driveController.getLeftY()!= 0) || (m_driveController.getRightX()!= 0) || (m_driveController.getRightY()!= 0);
+    boolean isGuestJoysticksMoved = (!isClosetoZero(m_driveController.getLeftX())) || (!isClosetoZero(m_driveController.getLeftY())) || (!isClosetoZero(m_driveController.getRightX())) || (!isClosetoZero(m_driveController.getRightY())) ;
+    return isGuestJoysticksMoved; 
+  }
+
+  public boolean isClosetoZero(double number){
+    boolean isClosetoZero = (number < DriveTrainConstants.DEADBAND && number > -DriveTrainConstants.DEADBAND);
+    return isClosetoZero;
+  }
+
+
+static class GuestModeEnabled{
+  private static boolean isGuestModeEnabled = true;
+
+  public boolean getisGuestModeEnabled () {
+    return isGuestModeEnabled;
+  }
+
+  public static void setGuestMode(boolean enabled){
+    isGuestModeEnabled = enabled;
+  }
+}
+
+
 }
