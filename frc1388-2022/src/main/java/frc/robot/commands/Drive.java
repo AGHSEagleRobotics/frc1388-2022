@@ -24,7 +24,7 @@ public class Drive extends CommandBase {
   private Supplier<Double> m_driveRightStickXAxis;
   private Supplier<Double> m_guestLeftStickYAxis;
   private Supplier<Double> m_guestRightStickXAxis;
-  private Supplier<Boolean> m_guestMode;
+  private GuestMode m_guestMode;
 
   private Supplier<Boolean> m_driveRightStickButton;
 
@@ -39,7 +39,7 @@ public class Drive extends CommandBase {
       Supplier<Boolean> driveRightStickButton,
       Supplier<Double> guestLeftStickYAxis,
       Supplier<Double> guestRightStickXAxis,
-      Supplier<Boolean> guestMode ) {
+      GuestMode guestMode ) {
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrainSubsystem);
@@ -68,9 +68,9 @@ public class Drive extends CommandBase {
     double speed;
     double rotation;
 
-    if (m_guestMode.get()){
-      speed = -m_guestLeftStickYAxis.get() * DriveTrainConstants.GUEST_MODE_SLOW;
-      rotation = m_guestRightStickXAxis.get() * DriveTrainConstants.GUEST_MODE_SLOW;
+    if (guestMode.isEnabled()){
+      speed = -m_guestLeftStickYAxis.get() * GuestMode.getSpeed();
+      rotation = m_guestRightStickXAxis.get() * GuestMode.getSpeed();
     }
     else{
       speed = -m_driveLeftStickYAxis.get();
