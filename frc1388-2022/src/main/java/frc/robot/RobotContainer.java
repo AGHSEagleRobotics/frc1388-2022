@@ -84,7 +84,7 @@ public class RobotContainer {
   // components
   public static XboxController m_driveController = new XboxController(USBConstants.DRIVE_CONTROLLER);
   public static XboxController m_opController = new XboxController(USBConstants.OP_CONTROLLER);
-  private final GuestMode m_guestmode = new GuestMode();
+  public static GuestMode m_guestMode = new GuestMode();
   // The robot's subsystems and commands are defined here...
 
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -169,14 +169,14 @@ public class RobotContainer {
   private void configureButtonBindings() {
     
     new JoystickButton(m_driveController, XboxController.Button.kA.value)
-        .whenPressed(()-> GuestMode.setGuestMode(true));
+        .whenPressed(()-> m_guestMode.setGuestMode(true));
 
 
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
-        .whenPressed(() -> GuestMode.setGuestMode(false));
+        .whenPressed(() -> m_guestMode.setGuestMode(false));
 
     new Button(()-> isDriverJoysticksMoved())
-      .whenPressed(()-> GuestMode.setGuestMode(false));
+      .whenPressed(()-> m_guestMode.setGuestMode(false));
 
     
     //  dev mode
@@ -589,7 +589,7 @@ static class GuestMode{
     return isGuestModeEnabled;
   }
 
-  public static void setGuestMode(boolean enabled){
+  public void setGuestMode(boolean enabled){
     isGuestModeEnabled = enabled;
   }
 }
