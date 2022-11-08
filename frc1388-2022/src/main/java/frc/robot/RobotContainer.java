@@ -130,12 +130,12 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
-    m_climberSubsystem.setDefaultCommand(
-      new ClimberCommand(
-        m_climberSubsystem, 
-            () -> m_guestController.getLeftY(), // extend
-        () -> m_guestController.getRightY())    // articulate
-      );
+    // m_climberSubsystem.setDefaultCommand(
+    //   new ClimberCommand(
+    //     m_climberSubsystem, 
+    //         () -> m_guestController.getLeftY(), // extend
+    //     () -> m_guestController.getRightY())    // articulate
+    //   );
     // set default commands
 
 
@@ -247,11 +247,11 @@ public class RobotContainer {
     new Button (() -> isRightGuestTriggerPressed())
     .whenHeld(new ShootEject(m_shooterFeederSubsystem, m_transitionSubsystem));
 
-    new JoystickButton(m_guestController, XboxController.Button.kRightBumper.value)
-    .whenHeld(new REject(m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
+    // new JoystickButton(m_guestController, XboxController.Button.kRightBumper.value)
+    // .whenHeld(new REject(m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
 
-    new JoystickButton(m_guestController, XboxController.Button.kRightBumper.value)
-    .whenReleased(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
+    // new JoystickButton(m_guestController, XboxController.Button.kRightBumper.value)
+    // .whenReleased(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
 
 
 
