@@ -141,12 +141,15 @@ public class RobotContainer {
 
     m_driveTrainSubsystem.setDefaultCommand(
         new Drive(
-            m_driveTrainSubsystem, m_rumbleSubsystem,
+            m_driveTrainSubsystem,
+            m_rumbleSubsystem,
             () -> m_driveController.getLeftY(),
             () -> m_driveController.getRightY(),
             () -> m_driveController.getRightX(),
             // rumble for precision mode
             () -> m_driveController.getRightStickButtonPressed(),
+            () -> m_guestController.getLeftY(),
+            () -> m_guestController.getRightX(),
             m_guestMode));
             
 
@@ -579,7 +582,7 @@ public class RobotContainer {
   }
 
 
-static class GuestMode{
+public static class GuestMode{
   private static boolean isGuestModeEnabled = false;
   private static double guestModeSpeed = 0.5;
 
