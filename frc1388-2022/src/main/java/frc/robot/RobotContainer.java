@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -21,6 +22,7 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.TransitionConstants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DriveTrainConstants;     // climber constats
+import frc.robot.Constants.GuestModeConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.LEDConstants;
 import frc.robot.Constants.USBConstants;            // USB
@@ -82,7 +84,7 @@ public class RobotContainer {
   // components
   public static XboxController m_driveController = new XboxController(USBConstants.DRIVE_CONTROLLER);
   public static XboxController m_guestController = new XboxController(USBConstants.GUEST_CONTROLLER);
-
+  public static GuestMode m_guestMode = new GuestMode();
   // The robot's subsystems and commands are defined here...
 
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -138,13 +140,19 @@ public class RobotContainer {
 
 
     m_driveTrainSubsystem.setDefaultCommand(
-      new Drive(
-            m_driveTrainSubsystem, m_rumbleSubsystem,
-        () -> m_driveController.getLeftY(),
-        () -> m_driveController.getRightY(),
-        () -> m_driveController.getRightX(),
-        //rumble for precision mode
-            () -> m_driveController.getRightStickButtonPressed()));
+        new Drive(
+            m_driveTrainSubsystem,
+            m_rumbleSubsystem,
+            () -> m_driveController.getLeftY(),
+            () -> m_driveController.getRightY(),
+            () -> m_driveController.getRightX(),
+            // rumble for precision mode
+            () -> m_driveController.getRightStickButtonPressed(),
+            () -> m_guestController.getLeftY(),
+            () -> m_guestController.getRightX(),
+            m_guestMode));
+            
+
 
     m_transitionSubsystem.setDefaultCommand(
       new RunCommand(
@@ -166,14 +174,14 @@ public class RobotContainer {
   private void configureButtonBindings() {
     
     new JoystickButton(m_driveController, XboxController.Button.kA.value)
-        .whenPressed(()-> GuestModeEnabled.setGuestMode(true));
+        .whenPressed(()-> m_guestMode.setGuestMode(true));
 
 
     new JoystickButton(m_driveController, XboxController.Button.kB.value)
-        .whenPressed(() -> GuestModeEnabled.setGuestMode(false));
+        .whenPressed(() -> m_guestMode.setGuestMode(false));
 
-    new Button(()-> isGuestJoysticksMoved())
-      .whenPressed(()-> GuestModeEnabled.setGuestMode(false));
+    new Button(()-> isDriverJoysticksMoved())
+      .whenPressed(()-> m_guestMode.setGuestMode(false));
 
     
     //  dev mode
@@ -560,10 +568,12 @@ public class RobotContainer {
     m_driveTrainSubsystem.setNeutralMode(mode);
   }
 
-  public boolean isGuestJoysticksMoved(){
+  //guest mode stuff
+
+  public boolean isDriverJoysticksMoved(){
     // boolean isGuestJoysticksMoved = (m_driveController.getLeftX()!= 0) || (m_driveController.getLeftY()!= 0) || (m_driveController.getRightX()!= 0) || (m_driveController.getRightY()!= 0);
-    boolean isGuestJoysticksMoved = (!isClosetoZero(m_driveController.getLeftX())) || (!isClosetoZero(m_driveController.getLeftY())) || (!isClosetoZero(m_driveController.getRightX())) || (!isClosetoZero(m_driveController.getRightY())) ;
-    return isGuestJoysticksMoved; 
+    boolean isDriverJoysticksMoved = (!isClosetoZero(m_driveController.getLeftX())) || (!isClosetoZero(m_driveController.getLeftY())) || (!isClosetoZero(m_driveController.getRightX())) || (!isClosetoZero(m_driveController.getRightY())) ;
+    return isDriverJoysticksMoved; 
   }
 
   public boolean isClosetoZero(double number){
@@ -572,14 +582,29 @@ public class RobotContainer {
   }
 
 
-static class GuestModeEnabled{
-  private static boolean isGuestModeEnabled = true;
+public static class GuestMode{
+  private static boolean isGuestModeEnabled = false;
+  private static double guestModeSpeed = 0.5;
 
-  public boolean getisGuestModeEnabled () {
+  public double getSpeed () {
+    return guestModeSpeed;
+  }
+
+  public static void setSpeed(double speed){
+    guestModeSpeed = MathUtil.clamp(speed, GuestModeConstants.GUEST_MODE_MINIMUM_SPEED, GuestModeConstants.GUEST_MODE_MAX_SPEED);
+   
+  }
+  public static void increasespeed(){
+    guestModeSpeed += (GuestModeConstants.GUEST_MODE_MAX_SPEED-GuestModeConstants.GUEST_MODE_MINIMUM_SPEED) / 4.0;
+    guestModeSpeed = MathUtil.clamp(guestModeSpeed,GuestModeConstants.GUEST_MODE_MINIMUM_SPEED, GuestModeConstants.GUEST_MODE_MAX_SPEED);
+    
+  }
+
+  public boolean isEnabled () {
     return isGuestModeEnabled;
   }
 
-  public static void setGuestMode(boolean enabled){
+  public void setGuestMode(boolean enabled){
     isGuestModeEnabled = enabled;
   }
 }
