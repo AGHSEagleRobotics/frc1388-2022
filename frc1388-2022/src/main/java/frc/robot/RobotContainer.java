@@ -605,6 +605,11 @@ public static class GuestMode{
   }
 
   public void setGuestMode(boolean enabled){
+    if (isEnabled()){
+      increasespeed();
+    } else {
+      guestModeSpeed = GuestModeConstants.GUEST_MODE_MINIMUM_SPEED;
+    }
     isGuestModeEnabled = enabled;
   }
 }
