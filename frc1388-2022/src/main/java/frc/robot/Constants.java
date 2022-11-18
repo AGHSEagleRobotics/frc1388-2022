@@ -19,7 +19,6 @@ public final class Constants {
     public final class USBConstants { //ADD STATIC?
         public static final int DRIVE_CONTROLLER = 0;
         public static final int GUEST_CONTROLLER = 2;
-        // public static final int OP_CONTROLLER = 1;
         //public static final void info(String msg) {    wanted to add this
         //}
     }
