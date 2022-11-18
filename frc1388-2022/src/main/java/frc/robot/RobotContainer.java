@@ -581,12 +581,17 @@ public class RobotContainer {
 
   public boolean isDriverJoysticksMoved(){
     // boolean isGuestJoysticksMoved = (m_driveController.getLeftX()!= 0) || (m_driveController.getLeftY()!= 0) || (m_driveController.getRightX()!= 0) || (m_driveController.getRightY()!= 0);
-    boolean isDriverJoysticksMoved = (!isClosetoZero(m_driveController.getLeftX())) || (!isClosetoZero(m_driveController.getLeftY())) || (!isClosetoZero(m_driveController.getRightX())) || (!isClosetoZero(m_driveController.getRightY())) ;
+    boolean isDriverJoysticksMoved = 
+      (!isClosetoZero(m_driveController.getLeftX())) 
+      || (!isClosetoZero(m_driveController.getLeftY())) 
+      || (!isClosetoZero(m_driveController.getRightX())) 
+      || (!isClosetoZero(m_driveController.getRightY()));
     return isDriverJoysticksMoved; 
   }
 
   public boolean isClosetoZero(double number){
     boolean isClosetoZero = (number < DriveTrainConstants.DEADBAND && number > -DriveTrainConstants.DEADBAND);
+    System.out.println(number + " is close to 0? " + isClosetoZero);
     return isClosetoZero;
   }
 
