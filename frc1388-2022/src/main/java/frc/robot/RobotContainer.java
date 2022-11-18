@@ -173,11 +173,13 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
+    //dpad climber
     new Button(() -> isDriverDPadUp())
-      .whenPressed(() -> m_climberSubsystem.setArticulatorPower(1));
-    
+      .whileHeld(() -> m_climberSubsystem.setWinchPower(-1));
     new Button(() -> isDriverDPadDown())
-      .whenPressed(() -> m_climberSubsystem.setArticulatorPower(-1));
+      .whileHeld(() -> m_climberSubsystem.setWinchPower(1));
+    new Button(() -> isDriverDPadOff())
+      .whileHeld(() -> m_climberSubsystem.setWinchPower(0));
 
     new JoystickButton(m_driveController, XboxController.Button.kA.value)
         .whenPressed(()-> m_guestMode.setGuestMode(true));
@@ -339,6 +341,9 @@ public class RobotContainer {
   }
   public static boolean isDriverDPadDown() {
     return m_driveController.getPOV() == 180;
+  }
+  public static boolean isDriverDPadOff() {
+    return m_driveController.getPOV() == -1;
   }
 
   // op dpad
@@ -591,7 +596,7 @@ public class RobotContainer {
 
   public boolean isClosetoZero(double number){
     boolean isClosetoZero = (number < DriveTrainConstants.DEADBAND && number > -DriveTrainConstants.DEADBAND);
-    System.out.println(number + " is close to 0? " + isClosetoZero);
+    // System.out.println(number + " is close to 0? " + isClosetoZero);
     return isClosetoZero;
   }
 
