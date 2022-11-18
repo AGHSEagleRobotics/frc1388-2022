@@ -130,12 +130,12 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
-    m_climberSubsystem.setDefaultCommand(
-      new ClimberCommand(
-        m_climberSubsystem, 
-            () -> m_guestController.getLeftY(), // extend
-        () -> m_guestController.getRightY())    // articulate
-      );
+    // m_climberSubsystem.setDefaultCommand(
+    //   new ClimberCommand(
+    //     m_climberSubsystem, 
+    //         () -> m_guestController.getLeftY(), // extend
+    //     () -> m_guestController.getRightY())    // articulate
+    //   );
     // set default commands
 
 
@@ -173,6 +173,12 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
+    new Button(() -> isDriverDPadUp())
+      .whenPressed(() -> m_climberSubsystem.setArticulatorPower(1));
+    
+    new Button(() -> isDriverDPadDown())
+      .whenPressed(() -> m_climberSubsystem.setArticulatorPower(-1));
+
     new JoystickButton(m_driveController, XboxController.Button.kA.value)
         .whenPressed(()-> m_guestMode.setGuestMode(true));
 
@@ -229,8 +235,8 @@ public class RobotContainer {
     new Button(RobotContainer::isRightGuestTriggerPressed)
     .whenHeld(new ShootLow(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
 
-    new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
-        .whenHeld(new ShootHailHarry(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
+    // new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
+    //     .whenHeld(new ShootHailHarry(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
 
     //EJECT AND REJECT commands DRIVER 
     new JoystickButton(m_driveController, XboxController.Button.kBack.value)
@@ -247,11 +253,11 @@ public class RobotContainer {
     new Button (() -> isRightGuestTriggerPressed())
     .whenHeld(new ShootEject(m_shooterFeederSubsystem, m_transitionSubsystem));
 
-    new JoystickButton(m_guestController, XboxController.Button.kRightBumper.value)
-    .whenHeld(new REject(m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
+    // new JoystickButton(m_guestController, XboxController.Button.kRightBumper.value)
+    // .whenHeld(new REject(m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
 
-    new JoystickButton(m_guestController, XboxController.Button.kRightBumper.value)
-    .whenReleased(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
+    // new JoystickButton(m_guestController, XboxController.Button.kRightBumper.value)
+    // .whenReleased(new DeployIntake(m_intakeSubsystem, m_transitionSubsystem));
 
 
 
@@ -265,11 +271,11 @@ public class RobotContainer {
     */
 
     // Reverse
-    new JoystickButton(m_driveController, XboxController.Button.kB.value)
-      .whenPressed(() -> setForward(true));
+    // new JoystickButton(m_driveController, XboxController.Button.kB.value)
+    //   .whenPressed(() -> setForward(true));
     
-    new JoystickButton(m_driveController, XboxController.Button.kA.value)
-      .whenPressed(() -> setForward(false));
+    // new JoystickButton(m_driveController, XboxController.Button.kA.value)
+    //   .whenPressed(() -> setForward(false));
 
     //Clean up?
     new JoystickButton(m_driveController, XboxController.Button.kStart.value)
@@ -328,9 +334,12 @@ public class RobotContainer {
   }
 
   // driver dpad
-  // public static boolean isDriverDPadPressed() {
-  //   return m_driveController.getPOV() != -1 ;
-  // }
+  public static boolean isDriverDPadUp() {
+    return m_driveController.getPOV() == 0;
+  }
+  public static boolean isDriverDPadDown() {
+    return m_driveController.getPOV() == 180;
+  }
 
   // op dpad
   // public static boolean isOpUpDpadPressed() {
@@ -572,42 +581,50 @@ public class RobotContainer {
 
   public boolean isDriverJoysticksMoved(){
     // boolean isGuestJoysticksMoved = (m_driveController.getLeftX()!= 0) || (m_driveController.getLeftY()!= 0) || (m_driveController.getRightX()!= 0) || (m_driveController.getRightY()!= 0);
-    boolean isDriverJoysticksMoved = (!isClosetoZero(m_driveController.getLeftX())) || (!isClosetoZero(m_driveController.getLeftY())) || (!isClosetoZero(m_driveController.getRightX())) || (!isClosetoZero(m_driveController.getRightY())) ;
+    boolean isDriverJoysticksMoved = 
+      (!isClosetoZero(m_driveController.getLeftX())) 
+      || (!isClosetoZero(m_driveController.getLeftY())) 
+      || (!isClosetoZero(m_driveController.getRightX())) 
+      || (!isClosetoZero(m_driveController.getRightY()));
     return isDriverJoysticksMoved; 
   }
 
   public boolean isClosetoZero(double number){
     boolean isClosetoZero = (number < DriveTrainConstants.DEADBAND && number > -DriveTrainConstants.DEADBAND);
+    System.out.println(number + " is close to 0? " + isClosetoZero);
     return isClosetoZero;
   }
 
 
-public static class GuestMode{
-  private static boolean isGuestModeEnabled = false;
-  private static double guestModeSpeed = 0.5;
+  public static class GuestMode{
+    private static boolean isGuestModeEnabled = false;
+    private static double guestModeSpeed = GuestModeConstants.GUEST_MODE_MINIMUM_SPEED;
 
-  public double getSpeed () {
-    return guestModeSpeed;
-  }
+    public double getSpeed () {
+      return guestModeSpeed;
+    }
 
-  public static void setSpeed(double speed){
-    guestModeSpeed = MathUtil.clamp(speed, GuestModeConstants.GUEST_MODE_MINIMUM_SPEED, GuestModeConstants.GUEST_MODE_MAX_SPEED);
-   
-  }
-  public static void increasespeed(){
-    guestModeSpeed += (GuestModeConstants.GUEST_MODE_MAX_SPEED-GuestModeConstants.GUEST_MODE_MINIMUM_SPEED) / 4.0;
-    guestModeSpeed = MathUtil.clamp(guestModeSpeed,GuestModeConstants.GUEST_MODE_MINIMUM_SPEED, GuestModeConstants.GUEST_MODE_MAX_SPEED);
+    public static void setSpeed(double speed){
+      guestModeSpeed = MathUtil.clamp(speed, GuestModeConstants.GUEST_MODE_MINIMUM_SPEED, GuestModeConstants.GUEST_MODE_MAX_SPEED);
     
-  }
+    }
+    public static void increasespeed(){
+      guestModeSpeed += (GuestModeConstants.GUEST_MODE_MAX_SPEED-GuestModeConstants.GUEST_MODE_MINIMUM_SPEED) / 4.0;
+      guestModeSpeed = MathUtil.clamp(guestModeSpeed,GuestModeConstants.GUEST_MODE_MINIMUM_SPEED, GuestModeConstants.GUEST_MODE_MAX_SPEED);
+    }
 
-  public boolean isEnabled () {
-    return isGuestModeEnabled;
-  }
+    public boolean isEnabled () {
+      return isGuestModeEnabled;
+    }
 
-  public void setGuestMode(boolean enabled){
-    isGuestModeEnabled = enabled;
+    public void setGuestMode(boolean enabled){
+      if (isEnabled()){
+        increasespeed();
+      } else {
+        guestModeSpeed = GuestModeConstants.GUEST_MODE_MINIMUM_SPEED;
+      }
+      isGuestModeEnabled = enabled;
+    }
   }
-}
-
 
 }
