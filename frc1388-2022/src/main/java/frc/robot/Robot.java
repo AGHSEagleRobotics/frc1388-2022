@@ -87,14 +87,14 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     m_robotContainer.setNeutralMode(NeutralMode.Brake);
     log.info("########  Robot disabled");
-    RobotContainer.m_guestMode.setGuestMode(false);
+    m_robotContainer.m_guestMode.setGuestMode(false);
   }
   
 
   @Override
   public void disabledPeriodic() {}
 
-  /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
+  /** This autonomous runs the autonomous command selected by your {@link m_robotContainer} class. */
   @Override
   public void autonomousInit() {
     log.info("########  Autonomous enabled");
@@ -105,7 +105,7 @@ public class Robot extends TimedRobot {
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
-      RobotContainer.m_guestMode.setGuestMode(false);
+      m_robotContainer.m_guestMode.setGuestMode(false);
     }
 
     
@@ -147,7 +147,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     m_robotContainer.setNeutralMode(NeutralMode.Brake);
-    RobotContainer.m_guestMode.setGuestMode(false);
+    m_robotContainer.m_guestMode.setGuestMode(false);
   }
   
   /** This function is called periodically during operator control. */
@@ -161,7 +161,7 @@ public class Robot extends TimedRobot {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
     // m_robotContainer.setNeutralMode(NeutralMode.Brake);
-    RobotContainer.m_guestMode.setGuestMode(false);
+    m_robotContainer.m_guestMode.setGuestMode(false);
   }
   
   /** This function is called periodically during test mode. */
@@ -174,7 +174,7 @@ public class Robot extends TimedRobot {
     
     m_robotContainer.simulationInit(); 
     // m_robotContainer.setNeutralMode(NeutralMode.Brake);
-    RobotContainer.m_guestMode.setGuestMode(false);
+    m_robotContainer.m_guestMode.setGuestMode(false);
   }
 
   public void simulationPeriodic() {
