@@ -1,0 +1,32 @@
+Configuration:
+  name: Default
+  
+  Properties:
+    Property:
+      name: log-path
+      value: "${sys:robot.logs.root:-/u/RobotLogs}"
+
+  Appenders:
+    Console:
+      name: STDOUT
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: '%-5level %c: %m%n'
+    RollingRandomAccessFile:
+      name: LOG_FILE
+      fileName: ${log-path}/robot.log
+      filePattern: ${log-path}/robot.%i.log
+      PatternLayout:
+        pattern: '%d %-5level %c: %m%n'
+      Policies:
+        OnStartupTriggeringPolicy:
+          minSize: 1
+  
+  Loggers:
+    Root:
+      level: debug
+      AppenderRef:
+        - ref: STDOUT
+          level: info
+        - ref: LOG_FILE
+          level: debug
