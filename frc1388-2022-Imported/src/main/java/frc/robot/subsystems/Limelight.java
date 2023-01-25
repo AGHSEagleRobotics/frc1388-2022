@@ -12,9 +12,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Limelight extends SubsystemBase {
   private final NetworkTableEntry m_tx;
+  private double txPrev;
   private final NetworkTableEntry m_ty;
   private final NetworkTableEntry m_ta;
   private final NetworkTableEntry m_tv;
+  private final NetworkTableEntry m_ts;
+  private final NetworkTableEntry m_tp;
+  private int tick = 0;
+
 
   private final NetworkTable m_table;
   /** Creates a new Limelight. */
@@ -24,6 +29,8 @@ public class Limelight extends SubsystemBase {
     m_ty = m_table.getEntry("ty");
     m_ta = m_table.getEntry("ta");
     m_tv = m_table.getEntry("tv");
+    m_ts = m_table.getEntry("ts");
+    m_tp = m_table.getEntry("tp");
 
 
   }
@@ -46,9 +53,13 @@ public class Limelight extends SubsystemBase {
 
   @Override
   public void periodic() {
+    tick++;
+    if (tick > 10)tick = 0;
     // // This method will be called once per scheduler run
     // PowerDistribution pdh = new PowerDistribution();
     // System.out.println("pdh 0: " + pdh.getCurrent(0) + " pdh 2: " + pdh.getCurrent(2));
+    // System.out.println("ts: " + m_ts.getDouble(0.0));
+    // System.out.println(m_tp.getDouble(0.0));
     
   }
 }

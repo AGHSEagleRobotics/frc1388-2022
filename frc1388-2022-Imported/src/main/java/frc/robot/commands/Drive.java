@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import java.sql.RowId;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.MathUtil;
@@ -129,38 +130,30 @@ public class Drive extends CommandBase {
 
     double speed = 0;
     double rotation = 0;
+    double llx = m_limelightX.get();
 
-    if (m_trigger.get() > .5) {
-      // double input = 0;
-      // double llrotation = 0;
-      if ((m_limelightV.get() == 1.0)) {
-        // input = m_PidController.calculate(input, 5.0); // 5%
-        // input = 1/(m_limelightAREA.get() * 10) + 0.4;
-        // input = 0.4;
-        // if (m_limelightAREA.get() > 1.0) {
-        //   input = -0.4;
-        // }\
-      
-        // if (m_limelightX.get() > 5) {
-        //   rotation = -.5;
-        // }
-        // if (m_limelightX.get() < 5) {
-        //   rotation = .5;
-        // }
+    if ((m_trigger.get() > .5) && (m_limelightV.get() == 1.0)) { // if we are going to a target
 
-        rotation = 0.12 * m_limelightX.get();
-        speed = 7 * m_limelightAREA.get();
+      // rotation = MathUtil.clamp(0.05 * llx, -0.4, 0.4);
+      // rotation = MathUtil.clamp(llx, -0.4, 0.4);
+      // if (Math.abs(m_limelightX.get()) < 5.0) {
+      // }
 
-        rotation = MathUtil.clamp(rotation, -0.6, 0.6);
-        speed = MathUtil.clamp(speed, -0.6, 0.6);
+      rotation = llx;
+      rotation /= 30.0;
+      if (Math.abs(rotation) < 0.34) rotation = Math.copySign(0.34, rotation);
+      rotation = MathUtil.clamp(rotation, -0.45, 0.45);
+      if (Math.abs(llx) < 1.5) rotation = 0.0;
 
-      }
-      // m_driveTrainSubsystem.arcadeDrive(input, llrotation);
+      speed = -m_driveLeftStickYAxis.get(); 
+
     } else {
-      speed = -m_driveLeftStickYAxis.get();
+      speed = -m_driveLeftStickYAxis.get(); 
       rotation = m_driveRightStickXAxis.get();
     }
+    if (Math.random() > 0.9)System.out.println("rotation: " + rotation + "\t\ttarget x: " + Math.round(llx));
     m_driveTrainSubsystem.arcadeDrive(speed, -rotation);
+
   }
 
   public double scale(double input) {
