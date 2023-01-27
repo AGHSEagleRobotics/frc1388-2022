@@ -83,6 +83,8 @@ public class RobotContainer {
   
   public static Limelight m_limelight = new Limelight();
 
+  public Command m_driveAutoCommand;
+
   // The robot's subsystems and commands are defined here...
 
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -549,5 +551,12 @@ public class RobotContainer {
 
   public void setNeutralMode(NeutralMode mode) {
     m_driveTrainSubsystem.setNeutralMode(mode);
+  }
+
+  public Command getAutoDriveCommand() {
+    return m_driveAutoCommand;
+  }
+  public void setAutoCommand(Command command) {
+    m_driveAutoCommand = command;
   }
 }

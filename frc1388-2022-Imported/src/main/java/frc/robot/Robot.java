@@ -27,6 +27,7 @@ public class Robot extends TimedRobot {
 
   private Command m_autonomousCommand;
   private Command m_retractClimberWinchCommand;
+  private Command m_driveAutoCommand;
 
   private RobotContainer m_robotContainer;
 
@@ -135,7 +136,12 @@ public class Robot extends TimedRobot {
   
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    m_driveAutoCommand = m_robotContainer.getAutoDriveCommand();
+    if (m_driveAutoCommand != null) {
+      m_driveAutoCommand.schedule();
+    }
+  }
   
   @Override
   public void testInit() {

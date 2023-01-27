@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.RumbleConstants;
 import frc.robot.subsystems.DriveTrainSubsystem;
@@ -37,6 +38,8 @@ public class Drive extends CommandBase {
 
   private Supplier<Double> m_trigger;
 
+  private Command m_autoCommand;
+
   /** Creates a new Drive. */
   public Drive(
       DriveTrainSubsystem driveTrainSubsystem,
@@ -51,6 +54,7 @@ public class Drive extends CommandBase {
       Supplier<Double> LimelightY,
       Supplier<Double> LimelightAREA,
       Supplier<Double> LimelightV
+
 
 
       ) {
@@ -154,6 +158,10 @@ public class Drive extends CommandBase {
     if (Math.random() > 0.9)System.out.println("rotation: " + rotation + "\t\ttarget x: " + Math.round(llx));
     m_driveTrainSubsystem.arcadeDrive(speed, -rotation);
 
+  }
+
+  public Command getCommand() {
+    return m_autoCommand;
   }
 
   public double scale(double input) {
