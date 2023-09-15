@@ -278,7 +278,7 @@ public final class Constants {
     }
     public final class GuestModeConstants{
         public static final double GUEST_MODE_MAX_SPEED = 0.8;
-        public static final double GUEST_MODE_MINIMUM_SPEED = 0.4;
+        public static final double GUEST_MODE_MINIMUM_SPEED = 0.5;
         
     }
 

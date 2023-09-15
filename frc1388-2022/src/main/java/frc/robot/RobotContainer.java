@@ -62,6 +62,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -84,6 +85,7 @@ public class RobotContainer {
   // components
   public static XboxController m_driveController = new XboxController(USBConstants.DRIVE_CONTROLLER);
   public static XboxController m_guestController = new XboxController(USBConstants.GUEST_CONTROLLER);
+  
   public static GuestMode m_guestMode = new GuestMode();
   // The robot's subsystems and commands are defined here...
 
@@ -225,17 +227,26 @@ public class RobotContainer {
     //     .whenPressed(new RetractIntake(m_intakeSubsystem));
 
     // SHOOT LOW HIGH GOAL and EJECT
+    
     new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
         .whenHeld(new ShootHigh(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
     
     new JoystickButton(m_guestController, XboxController.Button.kRightBumper.value)
-        .whenHeld(new ShootHigh(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
+        .whenHeld(new ConditionalCommand(
+          new ShootHigh(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED),
+          new WaitCommand(0),
+           () -> (m_guestMode.isEnabled())
+          ));
 
     new Button(RobotContainer::isRightDriverTriggerPressed)
         .whenHeld(new ShootLow(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
 
     new Button(RobotContainer::isRightGuestTriggerPressed)
-    .whenHeld(new ShootLow(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
+      .whenHeld(new ConditionalCommand(
+        new ShootLow(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED), 
+        new WaitCommand(0), 
+        () -> (m_guestMode.isEnabled())
+      ));
 
     // new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
     //     .whenHeld(new ShootHailHarry(m_shooterFeederSubsystem, m_transitionSubsystem, m_LED));
@@ -252,8 +263,6 @@ public class RobotContainer {
   
 
     //EJECT AND REJECT commands OPERATOR
-    new Button (() -> isRightGuestTriggerPressed())
-    .whenHeld(new ShootEject(m_shooterFeederSubsystem, m_transitionSubsystem));
 
     // new JoystickButton(m_guestController, XboxController.Button.kRightBumper.value)
     // .whenHeld(new REject(m_intakeSubsystem, m_transitionSubsystem, m_shooterFeederSubsystem));
@@ -602,7 +611,7 @@ public class RobotContainer {
 
 
   public static class GuestMode{
-    private static boolean isGuestModeEnabled = false;
+    private static boolean m_isGuestModeEnabled = false;
     private static double guestModeSpeed = GuestModeConstants.GUEST_MODE_MINIMUM_SPEED;
 
     public double getSpeed () {
@@ -619,7 +628,7 @@ public class RobotContainer {
     }
 
     public boolean isEnabled () {
-      return isGuestModeEnabled;
+      return m_isGuestModeEnabled;
     }
 
     public void setGuestMode(boolean enabled){
@@ -628,7 +637,7 @@ public class RobotContainer {
       } else {
         guestModeSpeed = GuestModeConstants.GUEST_MODE_MINIMUM_SPEED;
       }
-      isGuestModeEnabled = enabled;
+      m_isGuestModeEnabled = enabled;
     }
   }
 
